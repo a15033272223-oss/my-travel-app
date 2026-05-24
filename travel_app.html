@@ -1,0 +1,165 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+  <meta http-equiv="Content-Style-Type" content="text/css">
+  <title></title>
+  <meta name="Generator" content="Cocoa HTML Writer">
+  <meta name="CocoaVersion" content="2685.6">
+  <style type="text/css">
+    p.p1 {margin: 0.0px 0.0px 0.0px 0.0px; font: 12.0px Helvetica}
+    p.p2 {margin: 0.0px 0.0px 0.0px 0.0px; font: 12.0px Helvetica; min-height: 14.0px}
+  </style>
+</head>
+<body>
+<p class="p1">&lt;!DOCTYPE html&gt;</p>
+<p class="p1">&lt;html lang="zh-TW"&gt;</p>
+<p class="p1">&lt;head&gt;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>&lt;meta charset="UTF-8"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>&lt;meta name="viewport" content="width=device-width, initial-scale=1.0"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>&lt;title&gt;個人專屬旅遊管理&lt;/title&gt;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>&lt;script src="https://cdn.tailwindcss.com"&gt;&lt;/script&gt;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>&lt;style&gt;</p>
+<p class="p1"><span class="Apple-converted-space">        </span>.tab-content { display: none; }</p>
+<p class="p1"><span class="Apple-converted-space">        </span>.tab-content.active { display: block; }</p>
+<p class="p1"><span class="Apple-converted-space">        </span>.checked-item { text-decoration: line-through; color: #9ca3af; }</p>
+<p class="p1"><span class="Apple-converted-space">    </span>&lt;/style&gt;</p>
+<p class="p1">&lt;/head&gt;</p>
+<p class="p1">&lt;body class="bg-slate-50 text-slate-800"&gt;</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">    </span>&lt;header class="bg-blue-600 text-white p-6 shadow-md"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">        </span>&lt;h1 class="text-2xl font-bold"&gt;即將到來的旅程：峇里島潛水與自然探索&lt;/h1&gt;</p>
+<p class="p1"><span class="Apple-converted-space">        </span>&lt;p class="text-sm mt-2 opacity-80"&gt;出發日期：2026年6月29日 | 協作人：聖聖&lt;/p&gt;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>&lt;/header&gt;</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">    </span>&lt;div class="flex border-b border-gray-200 bg-white shadow-sm sticky top-0"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">        </span>&lt;button onclick="switchTab('itinerary')" class="flex-1 py-4 font-semibold text-gray-500 hover:text-blue-500 tab-btn" id="btn-itinerary"&gt;行程表&lt;/button&gt;</p>
+<p class="p1"><span class="Apple-converted-space">        </span>&lt;button onclick="switchTab('equipment')" class="flex-1 py-4 font-semibold text-blue-600 border-b-2 border-blue-600 tab-btn" id="btn-equipment"&gt;裝備清單&lt;/button&gt;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>&lt;/div&gt;</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">    </span>&lt;main class="max-w-md mx-auto mt-6 p-4"&gt;</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">        </span>&lt;!-- 行程表視圖 (暫時保持靜態) --&gt;</p>
+<p class="p1"><span class="Apple-converted-space">        </span>&lt;div id="itinerary" class="tab-content space-y-4"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>&lt;div class="bg-white p-4 rounded-xl shadow-sm border border-gray-100"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                </span>&lt;h2 class="text-lg font-bold text-slate-700 mb-2"&gt;6/29 (一) 抵達與安頓&lt;/h2&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                </span>&lt;div class="relative pl-4 border-l-2 border-blue-200 space-y-4"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>&lt;div class="relative"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                        </span>&lt;span class="absolute -left-6 top-1 w-3 h-3 bg-blue-500 rounded-full"&gt;&lt;/span&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                        </span>&lt;p class="text-sm font-bold text-blue-600"&gt;18:30&lt;/p&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                        </span>&lt;p class="font-medium"&gt;晚餐時間&lt;/p&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                        </span>&lt;p class="text-xs bg-yellow-100 text-yellow-800 p-1 rounded mt-1 inline-block"&gt;🍽️ 備註：避開含牛肉、蛋奶之餐點&lt;/p&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                </span>&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">        </span>&lt;/div&gt;</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">        </span>&lt;!-- 裝備清單視圖 (改為動態) --&gt;</p>
+<p class="p1"><span class="Apple-converted-space">        </span>&lt;div id="equipment" class="tab-content active bg-white p-4 rounded-xl shadow-sm border border-gray-100"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>&lt;h2 class="text-lg font-bold text-slate-700 mb-4"&gt;行前裝備檢查&lt;/h2&gt;</p>
+<p class="p2"><span class="Apple-converted-space">            </span></p>
+<p class="p1"><span class="Apple-converted-space">            </span>&lt;!-- 新增項目輸入框 --&gt;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>&lt;div class="flex gap-2 mb-6"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                </span>&lt;input type="text" id="newItemInput" class="flex-1 border border-gray-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500" placeholder="新增裝備 (例如：配重頸圈...)"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                </span>&lt;button onclick="addItem()" class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg text-sm font-bold transition-colors"&gt;新增&lt;/button&gt;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>&lt;/div&gt;</p>
+<p class="p2"><span class="Apple-converted-space">            </span></p>
+<p class="p1"><span class="Apple-converted-space">            </span>&lt;!-- 清單顯示區 (由 JavaScript 動態生成) --&gt;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>&lt;div id="equipmentList" class="space-y-2"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                </span>&lt;!-- 這裡的內容會由 JS 塞入 --&gt;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">        </span>&lt;/div&gt;</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">    </span>&lt;/main&gt;</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">    </span>&lt;script&gt;</p>
+<p class="p1"><span class="Apple-converted-space">        </span>// --- 頁籤切換邏輯 ---</p>
+<p class="p1"><span class="Apple-converted-space">        </span>function switchTab(tabId) {</p>
+<p class="p1"><span class="Apple-converted-space">            </span>document.querySelectorAll('.tab-content').forEach(el =&gt; el.classList.remove('active'));</p>
+<p class="p1"><span class="Apple-converted-space">            </span>document.querySelectorAll('.tab-btn').forEach(el =&gt; {</p>
+<p class="p1"><span class="Apple-converted-space">                </span>el.classList.remove('text-blue-600', 'border-b-2', 'border-blue-600');</p>
+<p class="p1"><span class="Apple-converted-space">                </span>el.classList.add('text-gray-500');</p>
+<p class="p1"><span class="Apple-converted-space">            </span>});</p>
+<p class="p1"><span class="Apple-converted-space">            </span>document.getElementById(tabId).classList.add('active');</p>
+<p class="p1"><span class="Apple-converted-space">            </span>const activeBtn = document.getElementById('btn-' + tabId);</p>
+<p class="p1"><span class="Apple-converted-space">            </span>activeBtn.classList.remove('text-gray-500');</p>
+<p class="p1"><span class="Apple-converted-space">            </span>activeBtn.classList.add('text-blue-600', 'border-b-2', 'border-blue-600');</p>
+<p class="p1"><span class="Apple-converted-space">        </span>}</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">        </span>// --- 動態裝備清單邏輯 ---</p>
+<p class="p2"><span class="Apple-converted-space">        </span></p>
+<p class="p1"><span class="Apple-converted-space">        </span>// 1. 從瀏覽器的 localStorage 讀取資料，如果沒有，就載入預設值</p>
+<p class="p1"><span class="Apple-converted-space">        </span>let equipmentData = JSON.parse(localStorage.getItem('myTripEquipment')) || [</p>
+<p class="p1"><span class="Apple-converted-space">            </span>{ id: 1, text: 'DJI Action 5 Pro 與防水殼', checked: false },</p>
+<p class="p1"><span class="Apple-converted-space">            </span>{ id: 2, text: '面鏡與長蛙鞋', checked: false },</p>
+<p class="p1"><span class="Apple-converted-space">            </span>{ id: 3, text: '個人藥品與護照', checked: false }</p>
+<p class="p1"><span class="Apple-converted-space">        </span>];</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">        </span>// 2. 將資料渲染(畫)到網頁上</p>
+<p class="p1"><span class="Apple-converted-space">        </span>function renderEquipment() {</p>
+<p class="p1"><span class="Apple-converted-space">            </span>const list = document.getElementById('equipmentList');</p>
+<p class="p1"><span class="Apple-converted-space">            </span>list.innerHTML = ''; // 先清空畫面</p>
+<p class="p2"><span class="Apple-converted-space">            </span></p>
+<p class="p1"><span class="Apple-converted-space">            </span>equipmentData.forEach(item =&gt; {</p>
+<p class="p1"><span class="Apple-converted-space">                </span>list.innerHTML += `</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>&lt;label class="flex items-center space-x-3 cursor-pointer p-2 hover:bg-slate-50 rounded-lg transition-colors border border-transparent hover:border-slate-100"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                        </span>&lt;input type="checkbox" class="w-5 h-5 text-blue-600 rounded"<span class="Apple-converted-space"> </span></p>
+<p class="p1"><span class="Apple-converted-space">                               </span>${item.checked ? 'checked' : ''}<span class="Apple-converted-space"> </span></p>
+<p class="p1"><span class="Apple-converted-space">                               </span>onchange="toggleItem(${item.id})"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                        </span>&lt;span class="text-slate-700 ${item.checked ? 'checked-item' : ''}"&gt;${item.text}&lt;/span&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                        </span>&lt;button onclick="deleteItem(${item.id})" class="ml-auto text-xs text-red-400 hover:text-red-600 hidden md:block"&gt;刪除&lt;/button&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>&lt;/label&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                </span>`;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>});</p>
+<p class="p1"><span class="Apple-converted-space">        </span>}</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">        </span>// 3. 新增項目的功能</p>
+<p class="p1"><span class="Apple-converted-space">        </span>function addItem() {</p>
+<p class="p1"><span class="Apple-converted-space">            </span>const input = document.getElementById('newItemInput');</p>
+<p class="p1"><span class="Apple-converted-space">            </span>const text = input.value.trim(); // 取得輸入內容並去除前後空白</p>
+<p class="p2"><span class="Apple-converted-space">            </span></p>
+<p class="p1"><span class="Apple-converted-space">            </span>if (text !== '') {</p>
+<p class="p1"><span class="Apple-converted-space">                </span>// 給新項目一個唯一的 ID (用當下時間戳記)</p>
+<p class="p1"><span class="Apple-converted-space">                </span>equipmentData.push({ id: Date.now(), text: text, checked: false });</p>
+<p class="p1"><span class="Apple-converted-space">                </span>input.value = ''; // 清空輸入框</p>
+<p class="p1"><span class="Apple-converted-space">                </span>saveData(); <span class="Apple-converted-space">      </span>// 存檔</p>
+<p class="p1"><span class="Apple-converted-space">                </span>renderEquipment(); // 重新整理畫面</p>
+<p class="p1"><span class="Apple-converted-space">            </span>}</p>
+<p class="p1"><span class="Apple-converted-space">        </span>}</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">        </span>// 4. 打勾/取消打勾的功能</p>
+<p class="p1"><span class="Apple-converted-space">        </span>function toggleItem(id) {</p>
+<p class="p1"><span class="Apple-converted-space">            </span>// 找出被點擊的那個項目</p>
+<p class="p1"><span class="Apple-converted-space">            </span>const item = equipmentData.find(i =&gt; i.id === id);</p>
+<p class="p1"><span class="Apple-converted-space">            </span>if (item) {</p>
+<p class="p1"><span class="Apple-converted-space">                </span>item.checked = !item.checked; // 狀態反轉</p>
+<p class="p1"><span class="Apple-converted-space">                </span>saveData();</p>
+<p class="p1"><span class="Apple-converted-space">                </span>renderEquipment();</p>
+<p class="p1"><span class="Apple-converted-space">            </span>}</p>
+<p class="p1"><span class="Apple-converted-space">        </span>}</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">        </span>// 5. 刪除項目的功能</p>
+<p class="p1"><span class="Apple-converted-space">        </span>function deleteItem(id) {</p>
+<p class="p1"><span class="Apple-converted-space">            </span>// 過濾掉要刪除的 ID，保留其他項目</p>
+<p class="p1"><span class="Apple-converted-space">            </span>equipmentData = equipmentData.filter(i =&gt; i.id !== id);</p>
+<p class="p1"><span class="Apple-converted-space">            </span>saveData();</p>
+<p class="p1"><span class="Apple-converted-space">            </span>renderEquipment();</p>
+<p class="p1"><span class="Apple-converted-space">        </span>}</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">        </span>// 6. 存檔到 localStorage</p>
+<p class="p1"><span class="Apple-converted-space">        </span>function saveData() {</p>
+<p class="p1"><span class="Apple-converted-space">            </span>localStorage.setItem('myTripEquipment', JSON.stringify(equipmentData));</p>
+<p class="p1"><span class="Apple-converted-space">        </span>}</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">        </span>// 網頁載入時，執行第一次畫面渲染</p>
+<p class="p1"><span class="Apple-converted-space">        </span>renderEquipment();</p>
+<p class="p2"><span class="Apple-converted-space">        </span></p>
+<p class="p1"><span class="Apple-converted-space">        </span>// 讓輸入框按下 Enter 也能新增</p>
+<p class="p1"><span class="Apple-converted-space">        </span>document.getElementById('newItemInput').addEventListener('keypress', function (e) {</p>
+<p class="p1"><span class="Apple-converted-space">            </span>if (e.key === 'Enter') addItem();</p>
+<p class="p1"><span class="Apple-converted-space">        </span>});</p>
+<p class="p1"><span class="Apple-converted-space">    </span>&lt;/script&gt;</p>
+<p class="p1">&lt;/body&gt;</p>
+<p class="p1">&lt;/html&gt;</p>
+</body>
+</html>
