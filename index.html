@@ -842,6 +842,111 @@
       border-color: #374151 !important;
     }
 
+  
+    /* === PLUS BUTTON MODAL ADD FORMS === */
+    .form-source-panel {
+      display: none !important;
+    }
+
+    #form-modal-body .form-source-panel {
+      display: block !important;
+      box-shadow: none !important;
+      border: 0 !important;
+      border-radius: 0 !important;
+      padding: 0 !important;
+      background: transparent !important;
+    }
+
+    .add-item-btn {
+      width: 2.35rem;
+      height: 2.35rem;
+      border-radius: 999px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 900;
+      font-size: 1.05rem;
+      background: var(--accent, #111827);
+      color: #ffffff;
+      border: 1px solid var(--accent, #111827);
+      flex-shrink: 0;
+    }
+
+    .add-item-btn:hover {
+      opacity: .88;
+      transform: translateY(-1px);
+    }
+
+    #formModal .modal-shell {
+      max-height: min(86vh, 760px);
+      overflow-y: auto;
+    }
+
+    body.dark-mode #formModal .modal-shell {
+      background: #111827 !important;
+      color: #f9fafb !important;
+      border-color: #374151 !important;
+    }
+
+    body.dark-mode #form-modal-body .form-source-panel {
+      background: transparent !important;
+      color: #f9fafb !important;
+    }
+
+  
+    /* === GLOBAL FLOATING ADD BUTTON === */
+    .global-add-fab {
+      position: fixed;
+      right: max(1rem, env(safe-area-inset-right));
+      bottom: max(1rem, env(safe-area-inset-bottom));
+      z-index: 58;
+      width: 3.35rem;
+      height: 3.35rem;
+      border-radius: 999px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      background: var(--accent, #111827);
+      color: #ffffff;
+      border: 1px solid var(--accent, #111827);
+      box-shadow: 0 18px 40px rgba(17, 24, 39, .22);
+      opacity: .34;
+      transform: translateY(0) scale(.96);
+      transition: opacity .18s ease, transform .18s ease, box-shadow .18s ease;
+      touch-action: manipulation;
+    }
+
+    .global-add-fab:hover,
+    .global-add-fab:focus-visible,
+    .global-add-fab:active,
+    .global-add-fab.is-active {
+      opacity: 1;
+      transform: translateY(-2px) scale(1);
+      box-shadow: 0 22px 50px rgba(17, 24, 39, .28);
+      outline: none;
+    }
+
+    .global-add-fab i {
+      font-size: 1.25rem;
+      color: #ffffff !important;
+    }
+
+    body.dark-mode .global-add-fab {
+      background: #f9fafb !important;
+      color: #111827 !important;
+      border-color: #f9fafb !important;
+    }
+
+    body.dark-mode .global-add-fab i {
+      color: #111827 !important;
+    }
+
+  
+    /* Hide global + button on pages that do not need direct creation */
+    .global-add-fab.hidden-fab {
+      display: none !important;
+    }
+
   </style>
 </head>
 <body class="flex h-[100dvh] overflow-hidden relative">
@@ -910,10 +1015,10 @@
     </header>
 
     <nav class="bg-white border-b border-[#f1d7ce] px-4 md:px-8 flex gap-2 md:gap-3 text-sm overflow-x-auto no-scrollbar flex-shrink-0">
-      <button onclick="switchModule('timeline')" id="tab-timeline" class="tab-btn active">🗺️ 行程列表</button>
-      <button onclick="switchModule('checklist')" id="tab-checklist" class="tab-btn">🎒 行李與待辦</button>
-      <button onclick="switchModule('budget')" id="tab-budget" class="tab-btn">💸 預算結算</button>
-      <button onclick="switchModule('journal')" id="tab-journal" class="tab-btn">📝 心得總覽</button>
+      <button onclick="switchModule('timeline')" id="tab-timeline" class="tab-btn active">行程</button>
+      <button onclick="switchModule('checklist')" id="tab-checklist" class="tab-btn">待辦</button>
+      <button onclick="switchModule('budget')" id="tab-budget" class="tab-btn">分帳</button>
+      <button onclick="switchModule('journal')" id="tab-journal" class="tab-btn">心得</button>
     </nav>
 
     <div class="flex-1 overflow-y-auto p-4 md:p-8">
@@ -931,7 +1036,7 @@
           </div>
         </div>
 
-        <div id="event-form-container" class="card p-4 md:p-5">
+        <div id="event-form-container" class="card p-4 md:p-5 form-source-panel">
           <h3 class="text-sm font-black text-stone-800 mb-3 flex items-center">
             <span class="mr-2">✨</span><span id="form-title">新增行程</span>
             <button id="cancel-edit-btn" onclick="cancelEdit()" class="hidden ml-auto text-xs text-stone-400 hover:text-stone-700 underline">取消編輯</button>
@@ -969,7 +1074,7 @@
               <h3 id="itinerary-title" class="font-black text-stone-900 flex items-center">🗓️ 行程列表</h3>
               <p id="itinerary-hint" class="text-xs text-stone-400 mt-1">拖曳排序、時間防呆、潛水後高空活動提醒都會自動檢查。</p>
             </div>
-            <button id="auto-sort-btn" onclick="autoSortItineraryByTime()" class="touch-safe primary-btn text-xs font-black px-3 py-2 rounded-2xl"><i class="fa-solid fa-arrow-down-short-wide mr-1"></i>按時間自動排序</button>
+            <button id="auto-sort-btn" onclick="autoSortItineraryByTime()" class="touch-safe secondary-btn text-xs font-black px-3 py-2 rounded-2xl"><i class="fa-solid fa-arrow-down-short-wide mr-1"></i>按時間自動排序</button>
           </div>
           <div id="itinerary-validation-summary" class="hidden mb-4 rounded-2xl border px-3 py-2 text-xs md:text-sm font-black"></div>
           <div id="itinerary-list" class="space-y-2"></div>
@@ -978,47 +1083,33 @@
 
       <section id="module-checklist" class="module-content hidden max-w-5xl mx-auto space-y-6">
         <div class="card p-5 md:p-6">
-          <h3 class="font-black text-lg text-stone-900 mb-4 flex items-center">
-            <span id="checklist-title">🎒 行李清單與行前待辦</span>
-            <button id="cancel-checklist-edit-btn" onclick="cancelChecklistEdit()" class="hidden ml-auto text-xs text-stone-400 hover:text-stone-700 underline">取消編輯</button>
-          </h3>
-          <div class="grid grid-cols-1 md:grid-cols-12 gap-2 mb-6">
+          <div class="flex items-center justify-between gap-3 mb-4">
+            <h3 class="font-black text-lg text-stone-900 flex items-center">
+              <span id="checklist-title">🎒 行李清單與行前待辦</span>
+            </h3>
+          </div>
+          <div id="checklist-form-container" class="form-source-panel">
+            <h3 class="font-black text-base text-stone-900 mb-3 flex items-center">
+              <span id="checklist-form-title">新增待辦事項</span>
+              <button id="cancel-checklist-edit-btn" onclick="cancelChecklistEdit()" class="hidden ml-auto text-xs text-stone-400 hover:text-stone-700 underline">取消編輯</button>
+            </h3>
+            <div class="grid grid-cols-1 md:grid-cols-12 gap-2 mb-4">
             <input type="text" id="newChecklistItem" class="md:col-span-5 px-3 py-2 text-sm" placeholder="物品或待辦事項">
             <input type="date" id="newChecklistDueDay" class="md:col-span-2 px-3 py-2 text-sm">
             <input type="time" id="newChecklistDueTime" class="md:col-span-2 px-3 py-2 text-sm" value="09:00">
             <input id="newChecklistTarget" type="hidden" value="calendar">
             <button id="submit-checklist-btn" onclick="submitChecklistItem()" class="touch-safe md:col-span-3 primary-btn px-5 py-2 rounded-2xl text-sm font-black">新增項目</button>
+            </div>
           </div>
-          <p id="checklist-hint" class="text-xs text-stone-400 -mt-4 mb-3">完成後會自動移到底部。</p>
+          <p id="checklist-hint" class="text-xs text-stone-400 mt-0 mb-3">完成後會自動移到底部。</p>
           <div id="checklist-progress" class="mb-3 text-xs font-black text-stone-500 soft-card px-3 py-2">待辦狀態載入中...</div>
           <div id="checklist-container" class="space-y-2"></div>
         </div>
       </section>
 
+      
       <section id="module-budget" class="module-content hidden max-w-5xl mx-auto space-y-5">
-        <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
-          <div class="card p-5 text-center md:text-left">
-            <p id="budget-total-label" class="text-xs font-black text-stone-400 uppercase">Total Spend</p>
-            <p class="text-3xl md:text-4xl font-black text-stone-900" id="budget-total">$0</p>
-            <p class="text-xs text-stone-400 mt-1" id="budget-per-capita">依每筆分帳對象計算</p>
-          </div>
-          <div class="card p-5 md:col-span-2 bg-[#aee4ff] text-stone-900" style="background:#aee4ff; color:#111827;">
-            <p id="budget-settlement-label" class="text-sm font-black uppercase mb-2 flex items-center"><i class="fa-solid fa-comments-dollar mr-2"></i>結算建議</p>
-            <div id="budget-settlement" class="space-y-2 text-sm md:text-base"></div>
-          </div>
-        </div>
-
-        <div class="card p-4 md:p-6">
-          <h4 id="budget-summary-label" class="font-black text-sm text-stone-500 uppercase mb-3"><i class="fa-solid fa-users-viewfinder mr-2"></i>成員分帳概況</h4>
-          <div class="overflow-x-auto no-scrollbar">
-            <table class="w-full text-left border-collapse text-xs md:text-sm whitespace-nowrap">
-              <thead><tr class="bg-[#fff2ea] text-stone-500 border-b border-[#f1d7ce] font-black"><th class="p-3">成員</th><th class="p-3 text-right">代墊</th><th class="p-3 text-right">應攤</th><th class="p-3 text-right">結算狀態</th></tr></thead>
-              <tbody id="member-summary-list" class="divide-y divide-[#f1d7ce]"></tbody>
-            </table>
-          </div>
-        </div>
-
-        <div class="card p-4 md:p-6">
+        <div id="budget-form-container" class="form-source-panel">
           <h3 class="font-black text-base md:text-lg text-stone-900 mb-3 flex items-center">
             <span id="budget-form-title">💳 記一筆新的</span>
             <button id="cancel-budget-edit-btn" onclick="cancelBudgetEdit()" class="hidden ml-auto text-xs text-stone-400 hover:text-stone-700 underline">取消編輯</button>
@@ -1042,11 +1133,39 @@
             </div>
             <button id="submit-budget-btn" onclick="submitBudgetItem()" class="primary-btn py-2 rounded-2xl text-sm font-black w-full">記錄</button>
           </div>
+        </div>
+
+        <div class="card p-4 md:p-6">
+          <div class="flex items-center justify-between gap-3 mb-3">
+            <h3 class="font-black text-base md:text-lg text-stone-900">💸 花費列表</h3>
+          </div>
           <div class="overflow-x-auto no-scrollbar">
             <table class="w-full text-left border-collapse text-xs md:text-sm whitespace-nowrap">
               <thead><tr class="bg-[#fff2ea] text-stone-500 border-b border-[#f1d7ce] font-black"><th class="p-3">項目</th><th class="p-3">代墊</th><th class="p-3">分帳對象</th><th class="p-3 text-right">金額</th><th class="p-3 text-center">操作</th></tr></thead>
               <tbody id="budget-list" class="divide-y divide-[#f1d7ce]"></tbody>
             </table>
+          </div>
+          <div class="mt-3 pt-3 border-t border-[#eeeeee] flex items-center justify-between text-xs md:text-sm">
+            <span class="font-black text-stone-500" id="budget-total-label">總花費</span>
+            <span class="font-black text-stone-900" id="budget-total">$0</span>
+          </div>
+          <p class="text-[11px] text-stone-400 mt-1" id="budget-per-capita">依每筆分帳對象計算</p>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+          <div class="card p-4 md:p-6 md:col-span-2">
+            <h4 id="budget-summary-label" class="font-black text-sm text-stone-500 uppercase mb-3"><i class="fa-solid fa-users-viewfinder mr-2"></i>成員分帳概況</h4>
+            <div class="overflow-x-auto no-scrollbar">
+              <table class="w-full text-left border-collapse text-xs md:text-sm whitespace-nowrap">
+                <thead><tr class="bg-[#fff2ea] text-stone-500 border-b border-[#f1d7ce] font-black"><th class="p-3">成員</th><th class="p-3 text-right">代墊</th><th class="p-3 text-right">應攤</th><th class="p-3 text-right">結算狀態</th></tr></thead>
+                <tbody id="member-summary-list" class="divide-y divide-[#f1d7ce]"></tbody>
+              </table>
+            </div>
+          </div>
+
+          <div class="card p-5">
+            <p id="budget-settlement-label" class="text-sm font-black uppercase mb-2 flex items-center"><i class="fa-solid fa-comments-dollar mr-2"></i>結算建議</p>
+            <div id="budget-settlement" class="space-y-2 text-sm md:text-base"></div>
           </div>
         </div>
       </section>
@@ -1055,8 +1174,8 @@
         <div class="card p-5 md:p-6">
           <div class="flex flex-col md:flex-row md:items-center md:justify-between gap-3 mb-4">
             <div>
-              <h3 id="journal-title" class="font-black text-lg text-stone-900">📝 心得總覽</h3>
-              <p id="journal-hint" class="text-xs text-stone-500 mt-1">這裡會自動統整每一段行程下方儲存的體驗心得。</p>
+              <h3 id="journal-title" class="font-black text-lg text-stone-900">📝 心得</h3>
+              <p id="journal-hint" class="text-xs text-stone-500 mt-1">這裡會自動統整每一段行程下方儲存的心得。</p>
             </div>
             <div class="flex flex-wrap gap-2">
               <button id="copy-journal-btn" onclick="copyAllJournalText()" class="secondary-btn px-4 py-2 rounded-2xl text-sm font-black">複製 Notes</button>
@@ -1069,6 +1188,64 @@
       </section>
     </div>
   </main>
+
+
+  <div id="formModal" class="fixed inset-0 bg-black/40 hidden items-center justify-center z-[60] p-4">
+    <div class="modal-shell card w-full max-w-2xl p-5">
+      <div class="flex items-center justify-between gap-3 mb-4">
+        <h3 id="form-modal-title" class="font-black text-lg text-stone-900">新增</h3>
+        <button type="button" onclick="closeFormModal()" class="touch-safe text-stone-400 hover:text-stone-900 text-xl"><i class="fa-solid fa-xmark"></i></button>
+      </div>
+      <div id="form-modal-body"></div>
+    </div>
+  </div>
+
+  <div id="form-panel-parking" class="hidden"></div>
+
+
+  <button id="global-add-fab" onclick="handleGlobalAdd()" onpointerdown="this.classList.add('is-active')" onpointerup="this.classList.remove('is-active')" onpointercancel="this.classList.remove('is-active')" class="global-add-fab" aria-label="新增">
+    <i class="fa-solid fa-plus"></i>
+  </button>
+
+
+  <div id="eventJournalModal" class="fixed inset-0 bg-black/40 hidden items-center justify-center z-[65] p-4">
+    <div class="modal-shell card w-full max-w-2xl p-5">
+      <div class="flex items-center justify-between gap-3 mb-4">
+        <div class="min-w-0">
+          <h3 id="event-journal-modal-title" class="font-black text-lg text-stone-900 truncate">寫心得</h3>
+          <p id="event-journal-modal-subtitle" class="text-xs text-stone-500 mt-1"></p>
+        </div>
+        <button type="button" onclick="closeEventJournalModal()" class="touch-safe text-stone-400 hover:text-stone-900 text-xl"><i class="fa-solid fa-xmark"></i></button>
+      </div>
+
+      <div class="event-journal-rating-row">
+        <label id="event-journal-rating-label" for="event-journal-rating-modal">評分</label>
+        <select id="event-journal-rating-modal">
+          <option value="5">★★★★★</option>
+          <option value="4">★★★★☆</option>
+          <option value="3">★★★☆☆</option>
+          <option value="2">★★☆☆☆</option>
+          <option value="1">★☆☆☆☆</option>
+        </select>
+      </div>
+
+      <textarea id="event-journal-body-modal" rows="6" class="w-full px-3 py-2 text-sm" placeholder="心得、推薦、踩雷、花費感想、下次提醒..."></textarea>
+
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-2 mt-3">
+        <input id="event-journal-photo-modal" type="file" accept="image/*" class="px-3 py-2 text-sm">
+        <input id="event-journal-video-modal" type="file" accept="video/*" class="px-3 py-2 text-sm">
+      </div>
+
+      <div id="event-journal-modal-preview" class="grid grid-cols-1 md:grid-cols-2 gap-2 mt-3"></div>
+
+      <div class="flex flex-wrap gap-2 mt-4">
+        <button onclick="saveEventJournalFromModal(true)" class="primary-btn px-4 py-2 rounded-full text-xs font-black">儲存</button>
+        <button onclick="copyEventJournalFromModal()" class="secondary-btn px-4 py-2 rounded-full text-xs font-black">複製 Notes</button>
+        <button onclick="shareEventJournalFromModal()" class="secondary-btn px-4 py-2 rounded-full text-xs font-black">分享</button>
+        <button onclick="downloadEventJournalFromModal()" class="bg-white border border-[#eeeeee] px-4 py-2 rounded-full text-xs font-black text-stone-800">下載 TXT</button>
+      </div>
+    </div>
+  </div>
 
   <div id="newTripModal" class="fixed inset-0 bg-black/40 hidden items-center justify-center z-50 p-4">
     <div class="card max-w-md w-full p-5">
@@ -1120,6 +1297,8 @@
     let editingChecklistId = null;
     let editingBudgetId = null;
     let editingJournalId = null;
+    let currentModule = 'timeline';
+    let currentEventJournalId = null;
 
     let tripsMaster = JSON.parse(localStorage.getItem('tripsMasterV6')) || {
       cairns: { name: '凱恩斯海陸空大冒險', dates: '2026/06/28 - 2026/07/13', lat: -16.9203, lng: 145.7710, emoji: '🤿', icon: 'fa-anchor' },
@@ -1162,18 +1341,18 @@
       zh: {
         pageTitle: 'TripManager', langButton: 'EN', tripListTitle: '我的行程清單',
         newTrip: '<i class="fa-solid fa-plus mr-2"></i>建立新旅程', newTripShort: '<i class="fa-solid fa-plus mr-2"></i>新旅程',
-        tabs: ['🗺️ 行程列表', '🎒 行李與待辦', '💸 預算結算', '📝 體驗心得'], weather: '目的地天氣', loading: '連線中...', sunny: '多雲時晴', rain: '有降雨機率', timeout: '讀取逾時',
+        tabs: ['行程', '待辦', '分帳', '心得'], weather: '目的地天氣', loading: '連線中...', sunny: '多雲時晴', rain: '有降雨機率', timeout: '讀取逾時',
         eventAdd: '新增行程', eventEdit: '編輯行程', add: '加入', save: '儲存更新', cancelEdit: '取消編輯', sort: '<i class="fa-solid fa-arrow-down-short-wide mr-1"></i>按時間自動排序', itineraryTitle: '🗓️ 行程列表', itineraryHint: '拖曳排序、時間防呆、潛水後高空活動提醒都會自動檢查。',
         checklistTitle: '🎒 行李清單與行前待辦', checklistHint: '完成後會自動移到底部。提醒日可一鍵加入 Google Calendar。', checklistAdd: '新增項目', pending: '未完成事項', completed: '已完成事項', done: '已完成', todo: '未完成', noReminder: '未設定提醒', addCal: '<i class="fa-solid fa-calendar-plus mr-1"></i>加到 Calendar', edit: '<i class="fa-solid fa-pen mr-1"></i>編輯', emptyTodo: '目前還沒有任何待辦事項。', progress: (d,t,p,pc)=>`已完成 ${d} / ${t}，未完成 ${p}`, progressRate: pc=>`完成率 ${pc}%｜勾選後即時置底`,
         budgetTotal: 'Total Spend', settlement: '結算建議', budgetSummary: '成員分帳概況', budgetNew: '💳 記一筆新的', record: '記錄', selectAll: '全選', clear: '清空', splitLabel: '分帳對象', splitHint: '只勾選這筆帳要一起分的人。若都不勾，系統會視為所有旅伴一起分。', allMembers: '所有成員', calculatedByGroup: '依每筆分帳對象計算', noExpense: '無開銷', settled: '兩清', receive: a=>`收 $${a}`, pay: a=>`付 $${a}`, noDebt: '互不相欠！', pays: (a,b)=>`<b>${a}</b> 給 <b>${b}</b>`,
         table: ['成員','代墊','應攤','結算狀態','項目','分帳對象','金額','操作'], status: { none: '無票券', toBook: '待訂', booked: '已訂' },
-        journalTitle: '📝 心得總覽', journalSave: '儲存心得', journalCopy: '複製到 Notes', journalShare: '分享', journalDownload: '下載 TXT', journalEmpty: '目前還沒有心得，先寫下第一篇吧！', journalHint: '這裡會自動統整每一段行程下方儲存的體驗心得，可複製到 Notes、分享或下載 TXT。', journalPhoto: '附上照片', journalVideo: '附上影片', modalTitle: '建立全新旅程計畫', icon: '代表圖示', start: '開始日期', end: '結束日期', cancel: '取消', create: '確認建立',
-        ph: { companion:'如: 中偉, 聖聖, Ryan', eventTitle:'做什麼？例如：吃海鮮大餐', eventNote:'備註（選填）', todo:'物品或待辦事項，例如：訂餐廳、防風外套', budgetTitle:'花費項目', amount:'金額', payer:'代墊人', tripName:'行程目的地', journalTitle:'心得標題，例如：第一次船宿超值得', journalTags:'標籤，例如：美食, 潛水, 住宿', journalBody:'寫下你的體驗心得、推薦、踩雷、花費感想...' }
+        journalTitle: '📝 心得', journalSave: '儲存心得', journalCopy: '複製到 Notes', journalShare: '分享', journalDownload: '下載 TXT', journalEmpty: '目前還沒有心得，先寫下第一篇吧！', journalHint: '這裡會自動統整每一段行程下方儲存的心得，可複製到 Notes、分享或下載 TXT。', journalPhoto: '附上照片', journalVideo: '附上影片', modalTitle: '建立全新旅程計畫', icon: '代表圖示', start: '開始日期', end: '結束日期', cancel: '取消', create: '確認建立',
+        ph: { companion:'如: 中偉, 聖聖, Ryan', eventTitle:'做什麼？例如：吃海鮮大餐', eventNote:'備註（選填）', todo:'物品或待辦事項，例如：訂餐廳、防風外套', budgetTitle:'花費項目', amount:'金額', payer:'代墊人', tripName:'行程目的地', journalTitle:'心得標題，例如：第一次船宿超值得', journalTags:'標籤，例如：美食, 潛水, 住宿', journalBody:'寫下你的心得、推薦、踩雷、花費感想...' }
       },
       en: {
         pageTitle: 'TripManager', langButton: '中', tripListTitle: 'My Trips',
         newTrip: '<i class="fa-solid fa-plus mr-2"></i>New Trip', newTripShort: '<i class="fa-solid fa-plus mr-2"></i>Trip',
-        tabs: ['🗺️ Itinerary', '🎒 Packing & To-dos', '💸 Budget', '📝 Journal'], weather: 'Destination Weather', loading: 'Loading...', sunny: 'Partly cloudy', rain: 'Chance of rain', timeout: 'Weather timeout',
+        tabs: ['Itinerary', 'To-dos', 'Split', 'Journal'], weather: 'Destination Weather', loading: 'Loading...', sunny: 'Partly cloudy', rain: 'Chance of rain', timeout: 'Weather timeout',
         eventAdd: 'Add itinerary item', eventEdit: 'Edit itinerary item', add: 'Add', save: 'Save Changes', cancelEdit: 'Cancel edit', sort: '<i class="fa-solid fa-arrow-down-short-wide mr-1"></i>Sort by time', itineraryTitle: '🗓️ Itinerary', itineraryHint: 'Drag to reorder. Time conflicts and no-fly-after-diving warnings are checked automatically.',
         checklistTitle: '🎒 Packing List & To-dos', checklistHint: 'Completed items move to the bottom automatically. Reminders can be added to Google Calendar.', checklistAdd: 'Add item', pending: 'Pending', completed: 'Completed', done: 'Done', todo: 'Pending', noReminder: 'No reminder', addCal: '<i class="fa-solid fa-calendar-plus mr-1"></i>Add to Calendar', edit: '<i class="fa-solid fa-pen mr-1"></i>Edit', emptyTodo: 'No to-do items yet.', progress: (d,t,p,pc)=>`${d} / ${t} completed, ${p} pending`, progressRate: pc=>`${pc}% complete｜Checked items update instantly`,
         budgetTotal: 'Total Spend', settlement: 'Settlement Plan', budgetSummary: 'Member Summary', budgetNew: '💳 Add expense', record: 'Record', selectAll: 'Select all', clear: 'Clear', splitLabel: 'Split with', splitHint: 'Only check the people sharing this expense. If no one is checked, it will split with all trip members.', allMembers: 'All members', calculatedByGroup: 'Calculated by each expense split group', noExpense: 'No expense yet', settled: 'Settled', receive: a=>`Receive $${a}`, pay: a=>`Pay $${a}`, noDebt: 'All settled!', pays: (a,b)=>`<b>${a}</b> pays <b>${b}</b>`,
@@ -1441,8 +1620,167 @@
       let dive=null, warn=''; sorted.forEach(({e,p})=>{ if(e.type==='dive') dive=p.date; if(['flight','altitude'].includes(e.type)&&dive){const h=(p.date-dive)/36e5; if(h>=0&&h<24) warn=currentLang==='zh'?`注意！距離上次潛水僅 ${h.toFixed(1)} 小時，處於 24H 禁飛/高空紅區。`:`Warning: only ${h.toFixed(1)} hours after diving. This is within the 24h no-fly/altitude window.`; }});
       if(warn){text.textContent=warn; box.classList.remove('hidden');} else box.classList.add('hidden');
     }
-    function editEvent(id){const it=(itineraries[currentTripKey]||[]).find(x=>x.id===id); if(!it)return; editingEventId=id; ['day','time','type','status','title','note'].forEach(k=>{const el=document.getElementById(`event-${k}`); if(el) el.value=it[k]||'';}); applyLanguage(); document.getElementById('cancel-edit-btn').classList.remove('hidden'); document.getElementById('event-form-container').scrollIntoView({behavior:'smooth',block:'center'});}
-    function cancelEdit(){editingEventId=null; ['event-day','event-time','event-title','event-note'].forEach(id=>document.getElementById(id).value=''); document.getElementById('event-type').value='general'; document.getElementById('event-status').value='none'; document.getElementById('cancel-edit-btn').classList.add('hidden'); applyLanguage(); checkLiveWarning();}
+
+
+
+    function updateGlobalAddButton() {
+      const fab = document.getElementById('global-add-fab');
+      if (!fab) return;
+      fab.classList.toggle('hidden-fab', currentModule === 'journal');
+    }
+
+    function handleGlobalAdd() {
+      const active = currentModule || 'timeline';
+      const fab = document.getElementById('global-add-fab');
+      if (fab) {
+        fab.classList.add('is-active');
+        setTimeout(() => fab.classList.remove('is-active'), 180);
+      }
+
+      if (active === 'timeline') return openAddEventModal();
+      if (active === 'checklist') return openAddChecklistModal();
+      if (active === 'budget') return openAddBudgetModal();
+      if (active === 'journal') return;
+      openAddEventModal();
+    }
+
+    function openEventJournalModal(eventId) {
+      const eventItem = (itineraries[currentTripKey] || []).find(x => x.id === eventId);
+      if (!eventItem) return;
+      const entry = getEventJournal(eventId) || {};
+      currentEventJournalId = eventId;
+
+      const title = document.getElementById('event-journal-modal-title');
+      const subtitle = document.getElementById('event-journal-modal-subtitle');
+      const rating = document.getElementById('event-journal-rating-modal');
+      const body = document.getElementById('event-journal-body-modal');
+      const photo = document.getElementById('event-journal-photo-modal');
+      const video = document.getElementById('event-journal-video-modal');
+      const preview = document.getElementById('event-journal-modal-preview');
+      const modal = document.getElementById('eventJournalModal');
+
+      if (title) title.textContent = currentLang === 'zh' ? '行程心得' : 'Itinerary notes';
+      if (subtitle) subtitle.textContent = `${eventItem.day || ''} ${eventItem.time || ''} · ${eventItem.title || ''}`.trim();
+      if (rating) rating.value = String(entry.rating || '5');
+      if (body) body.value = entry.body || '';
+      if (photo) photo.value = '';
+      if (video) video.value = '';
+      if (preview) {
+        preview.innerHTML = `${entry.photo ? `<img src="${entry.photo}" class="event-journal-media" alt="journal photo">` : ''}${entry.video ? `<video src="${entry.video}" class="event-journal-media" controls playsinline></video>` : ''}`;
+      }
+
+      if (modal) modal.classList.replace('hidden','flex');
+      setTimeout(() => body && body.focus(), 30);
+    }
+
+    function closeEventJournalModal() {
+      const modal = document.getElementById('eventJournalModal');
+      if (modal) modal.classList.replace('flex','hidden');
+      currentEventJournalId = null;
+    }
+
+    async function saveEventJournalFromModal(closeAfter = false) {
+      if (!currentEventJournalId) return;
+      await saveEventJournal(currentEventJournalId);
+      if (closeAfter) closeEventJournalModal();
+    }
+
+    async function copyEventJournalFromModal() {
+      if (!currentEventJournalId) return;
+      await saveEventJournal(currentEventJournalId);
+      await copyEventJournal(currentEventJournalId);
+    }
+
+    async function shareEventJournalFromModal() {
+      if (!currentEventJournalId) return;
+      await saveEventJournal(currentEventJournalId);
+      await shareEventJournal(currentEventJournalId);
+    }
+
+    async function downloadEventJournalFromModal() {
+      if (!currentEventJournalId) return;
+      await saveEventJournal(currentEventJournalId);
+      downloadEventJournal(currentEventJournalId);
+    }
+
+
+    let currentFormPanelId = null;
+
+    function setupFormPanels() {
+      const parking = document.getElementById('form-panel-parking');
+      ['event-form-container','checklist-form-container','budget-form-container'].forEach(id => {
+        const panel = document.getElementById(id);
+        if (panel && parking && panel.parentElement !== parking && !document.getElementById('form-modal-body')?.contains(panel)) {
+          parking.appendChild(panel);
+        }
+      });
+    }
+
+    function openFormModal(type) {
+      const map = {
+        event: { id: 'event-form-container', title: editingEventId ? (currentLang === 'zh' ? '編輯行程' : 'Edit itinerary item') : (currentLang === 'zh' ? '新增行程' : 'Add itinerary item') },
+        checklist: { id: 'checklist-form-container', title: editingChecklistId ? (currentLang === 'zh' ? '編輯待辦事項' : 'Edit to-do item') : (currentLang === 'zh' ? '新增待辦事項' : 'Add to-do item') },
+        budget: { id: 'budget-form-container', title: editingBudgetId ? (currentLang === 'zh' ? '編輯花費' : 'Edit expense') : (currentLang === 'zh' ? '新增花費' : 'Add expense') }
+      };
+      const cfg = map[type];
+      if (!cfg) return;
+      const panel = document.getElementById(cfg.id);
+      const body = document.getElementById('form-modal-body');
+      const modal = document.getElementById('formModal');
+      const parking = document.getElementById('form-panel-parking');
+      if (!panel || !body || !modal) return;
+      Array.from(body.querySelectorAll('.form-source-panel')).forEach(child => {
+        if (parking) parking.appendChild(child);
+      });
+      body.innerHTML = '';
+      body.appendChild(panel);
+      currentFormPanelId = cfg.id;
+      document.getElementById('form-modal-title').textContent = cfg.title;
+      modal.classList.replace('hidden','flex');
+      setTimeout(() => {
+        const first = panel.querySelector('input:not([type="hidden"]), select, textarea');
+        if (first) first.focus();
+      }, 30);
+    }
+
+    function closeFormModal() {
+      const modal = document.getElementById('formModal');
+      const parking = document.getElementById('form-panel-parking');
+      if (currentFormPanelId && parking) {
+        const panel = document.getElementById(currentFormPanelId);
+        if (panel) parking.appendChild(panel);
+      }
+      currentFormPanelId = null;
+      if (modal) modal.classList.replace('flex','hidden');
+    }
+
+    function openAddEventModal() {
+      editingEventId = null;
+      ['event-day','event-time','event-title','event-note'].forEach(id => {
+        const el = document.getElementById(id);
+        if (el) el.value = '';
+      });
+      document.getElementById('event-type').value = 'general';
+      document.getElementById('event-status').value = 'none';
+      document.getElementById('cancel-edit-btn').classList.add('hidden');
+      applyLanguage();
+      checkLiveWarning();
+      openFormModal('event');
+    }
+
+    function openAddChecklistModal() {
+      resetChecklistForm();
+      openFormModal('checklist');
+    }
+
+    function openAddBudgetModal() {
+      resetBudgetForm();
+      openFormModal('budget');
+    }
+
+
+    function editEvent(id){const it=(itineraries[currentTripKey]||[]).find(x=>x.id===id); if(!it)return; editingEventId=id; ['day','time','type','status','title','note'].forEach(k=>{const el=document.getElementById(`event-${k}`); if(el) el.value=it[k]||'';}); applyLanguage(); document.getElementById('cancel-edit-btn').classList.remove('hidden'); openFormModal('event');}
+    function cancelEdit(){editingEventId=null; ['event-day','event-time','event-title','event-note'].forEach(id=>document.getElementById(id).value=''); document.getElementById('event-type').value='general'; document.getElementById('event-status').value='none'; document.getElementById('cancel-edit-btn').classList.add('hidden'); applyLanguage(); checkLiveWarning(); closeFormModal();}
     function submitEvent(){const title=document.getElementById('event-title').value.trim(); if(!title)return alert(currentLang==='zh'?'請填寫行程名稱':'Please enter a title.'); const item={id:editingEventId||Date.now(),day:document.getElementById('event-day').value,time:document.getElementById('event-time').value,type:document.getElementById('event-type').value,status:document.getElementById('event-status').value,title,note:document.getElementById('event-note').value.trim()}; if(item.day){const p=parseTripDate(item.day,item.time||'00:00'); if(!p.valid)return alert(p.reason);} if(!itineraries[currentTripKey]) itineraries[currentTripKey]=[]; if(editingEventId){const i=itineraries[currentTripKey].findIndex(x=>x.id===editingEventId); if(i>-1) itineraries[currentTripKey][i]=item;} else itineraries[currentTripKey].push(item); saveAll(); cancelEdit(); renderItinerary();}
     function validateItinerary(){const arr=itineraries[currentTripKey]||[], issues=[]; const parsed=arr.map((e,i)=>({e,i,p:parseTripDate(e.day,e.time||'00:00')})); parsed.forEach(x=>{if(!x.p.valid) issues.push({id:x.e.id,severity:'error',message:x.p.reason}); else if(!x.p.withinTrip) issues.push({id:x.e.id,severity:'warn',message:currentLang==='zh'?'日期可能不在旅程期間內':'Date may be outside this trip.'});}); for(let i=1;i<parsed.length;i++){if(parsed[i-1].p.valid&&parsed[i].p.valid&&parsed[i].p.date<parsed[i-1].p.date) issues.push({id:parsed[i].e.id,severity:'danger',message:currentLang==='zh'?'順序錯亂：這筆時間早於上一筆行程。':'Order conflict: this item is earlier than the previous item.'});}
       let lastDive=null; parsed.forEach(x=>{if(!x.p.valid)return; if(x.e.type==='dive')lastDive=x.p.date; if(['flight','altitude'].includes(x.e.type)&&lastDive){const h=(x.p.date-lastDive)/36e5; if(h>=0&&h<24) issues.push({id:x.e.id,severity:'danger',message:currentLang==='zh'?`排氮警告：距離上次潛水僅 ${h.toFixed(1)} 小時。`:`No-fly warning: only ${h.toFixed(1)} hours after diving.`});}}); return issues;}
@@ -1455,51 +1793,26 @@
 
     function renderEventJournalPanel(item) {
       const entry = getEventJournal(item.id) || {};
-      const body = escapeHTML(entry.body || '');
-      const currentRating = String(entry.rating || '5');
-      const photoPreview = entry.photo ? `<img src="${entry.photo}" class="event-journal-media" alt="journal photo">` : '';
-      const videoPreview = entry.video ? `<video src="${entry.video}" class="event-journal-media" controls playsinline></video>` : '';
-      const title = currentLang === 'zh' ? '寫下這段體驗心得' : 'Write experience notes';
-      const placeholder = currentLang === 'zh' ? '心得、推薦、踩雷、花費感想、下次提醒...' : 'Highlights, tips, costs, things to avoid, reminders for next time...';
-      const ratingLabel = currentLang === 'zh' ? '評分' : 'Rating';
-      const saveLabel = currentLang === 'zh' ? '儲存心得' : 'Save';
-      const copyLabel = currentLang === 'zh' ? '複製 Notes' : 'Copy';
-      const shareLabel = currentLang === 'zh' ? '分享' : 'Share';
-      const downloadLabel = currentLang === 'zh' ? '下載 TXT' : 'TXT';
-
-      const ratingOptions = [5,4,3,2,1].map(n => `<option value="${n}" ${currentRating === String(n) ? 'selected' : ''}>${'★'.repeat(n)}${'☆'.repeat(5-n)}</option>`).join('');
-
-      return `
-        <details class="event-journal-panel">
-          <summary>${title}</summary>
-          <div class="event-journal-body">
-            <div class="event-journal-rating-row">
-              <label for="event-journal-rating-${item.id}">${ratingLabel}</label>
-              <select id="event-journal-rating-${item.id}">${ratingOptions}</select>
-            </div>
-            <textarea id="event-journal-body-${item.id}" rows="4" class="w-full px-3 py-2 text-sm" placeholder="${placeholder}">${body}</textarea>
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-2 mt-2">
-              <input id="event-journal-photo-${item.id}" type="file" accept="image/*" class="px-3 py-2 text-sm">
-              <input id="event-journal-video-${item.id}" type="file" accept="video/*" class="px-3 py-2 text-sm">
-            </div>
-            ${(photoPreview || videoPreview) ? `<div class="grid grid-cols-1 md:grid-cols-2 gap-2 mt-3">${photoPreview}${videoPreview}</div>` : ''}
-            <div class="flex flex-wrap gap-2 mt-3">
-              <button onclick="saveEventJournal(${item.id})" class="primary-btn px-4 py-2 rounded-full text-xs font-black">${saveLabel}</button>
-              <button onclick="copyEventJournal(${item.id})" class="secondary-btn px-4 py-2 rounded-full text-xs font-black">${copyLabel}</button>
-              <button onclick="shareEventJournal(${item.id})" class="secondary-btn px-4 py-2 rounded-full text-xs font-black">${shareLabel}</button>
-              <button onclick="downloadEventJournal(${item.id})" class="bg-white border border-[#eeeeee] px-4 py-2 rounded-full text-xs font-black text-stone-800">${downloadLabel}</button>
-            </div>
-          </div>
-        </details>`;
+      const hasContent = !!((entry.body || '').trim() || entry.photo || entry.video);
+      const stars = entry.rating ? '★'.repeat(Number(entry.rating || 0)) : '';
+      const label = hasContent
+        ? `${currentLang === 'zh' ? '查看/編輯心得' : 'View/Edit notes'} ${stars ? '· ' + stars : ''}`
+        : (currentLang === 'zh' ? '寫心得' : 'Add notes');
+      return `<div class="mt-3">
+        <button onclick="openEventJournalModal(${item.id})" class="secondary-btn px-3 py-2 rounded-full text-xs font-black">
+          <i class="fa-regular fa-note-sticky mr-1"></i>${label}
+        </button>
+      </div>`;
     }
 
     async function saveEventJournal(eventId) {
       const eventItem = (itineraries[currentTripKey] || []).find(x => x.id === eventId);
       if (!eventItem) return;
-      const bodyEl = document.getElementById(`event-journal-body-${eventId}`);
-      const photoEl = document.getElementById(`event-journal-photo-${eventId}`);
-      const videoEl = document.getElementById(`event-journal-video-${eventId}`);
-      const ratingEl = document.getElementById(`event-journal-rating-${eventId}`);
+      const usingModal = currentEventJournalId && String(currentEventJournalId) === String(eventId);
+      const bodyEl = usingModal ? document.getElementById('event-journal-body-modal') : document.getElementById(`event-journal-body-${eventId}`);
+      const photoEl = usingModal ? document.getElementById('event-journal-photo-modal') : document.getElementById(`event-journal-photo-${eventId}`);
+      const videoEl = usingModal ? document.getElementById('event-journal-video-modal') : document.getElementById(`event-journal-video-${eventId}`);
+      const ratingEl = usingModal ? document.getElementById('event-journal-rating-modal') : document.getElementById(`event-journal-rating-${eventId}`);
       const old = getEventJournal(eventId) || {};
       const photo = photoEl && photoEl.files[0] ? await fileToDataURL(photoEl.files[0]) : old.photo || null;
       const video = videoEl && videoEl.files[0] ? await fileToDataURL(videoEl.files[0]) : old.video || null;
@@ -1660,9 +1973,9 @@
     }
 
     function getChecklistItem(id){return (checklists[currentTripKey]||[]).find(x=>x.id===id);} function resetChecklistForm(){editingChecklistId=null; document.getElementById('newChecklistItem').value='';document.getElementById('newChecklistDueDay').value='';document.getElementById('newChecklistDueTime').value='09:00';document.getElementById('newChecklistTarget').value='calendar';document.getElementById('cancel-checklist-edit-btn').classList.add('hidden');applyLanguage();}
-    function editChecklistItem(id){const x=getChecklistItem(id); if(!x)return; editingChecklistId=id; document.getElementById('newChecklistItem').value=x.text||'';document.getElementById('newChecklistDueDay').value=x.dueDay||'';document.getElementById('newChecklistDueTime').value=x.dueTime||'09:00';document.getElementById('newChecklistTarget').value=x.target||'calendar';document.getElementById('cancel-checklist-edit-btn').classList.remove('hidden');applyLanguage();document.getElementById('newChecklistItem').focus();}
-    function cancelChecklistEdit(){resetChecklistForm();}
-    function submitChecklistItem(){const text=document.getElementById('newChecklistItem').value.trim(); if(!text)return; const item={id:editingChecklistId||Date.now(),text,checked:false,dueDay:document.getElementById('newChecklistDueDay').value,dueTime:document.getElementById('newChecklistDueTime').value||'09:00',target:document.getElementById('newChecklistTarget').value,createdAt:Date.now(),updatedAt:Date.now()}; if(!checklists[currentTripKey])checklists[currentTripKey]=[]; if(editingChecklistId){const old=getChecklistItem(editingChecklistId); Object.assign(old,item,{checked:old.checked,completedAt:old.completedAt,createdAt:old.createdAt});} else checklists[currentTripKey].push(item); resetChecklistForm(); renderChecklist();}
+    function editChecklistItem(id){const x=getChecklistItem(id); if(!x)return; editingChecklistId=id; document.getElementById('newChecklistItem').value=x.text||'';document.getElementById('newChecklistDueDay').value=x.dueDay||'';document.getElementById('newChecklistDueTime').value=x.dueTime||'09:00';document.getElementById('newChecklistTarget').value=x.target||'calendar';document.getElementById('cancel-checklist-edit-btn').classList.remove('hidden');applyLanguage();openFormModal('checklist');}
+    function cancelChecklistEdit(){resetChecklistForm(); closeFormModal();}
+    function submitChecklistItem(){const text=document.getElementById('newChecklistItem').value.trim(); if(!text)return; const item={id:editingChecklistId||Date.now(),text,checked:false,dueDay:document.getElementById('newChecklistDueDay').value,dueTime:document.getElementById('newChecklistDueTime').value||'09:00',target:document.getElementById('newChecklistTarget').value,createdAt:Date.now(),updatedAt:Date.now()}; if(!checklists[currentTripKey])checklists[currentTripKey]=[]; if(editingChecklistId){const old=getChecklistItem(editingChecklistId); Object.assign(old,item,{checked:old.checked,completedAt:old.completedAt,createdAt:old.createdAt});} else checklists[currentTripKey].push(item); resetChecklistForm(); closeFormModal(); renderChecklist();}
     function toggleChecklist(id){const x=getChecklistItem(id); if(!x)return; x.checked=!x.checked; x.updatedAt=Date.now(); if(x.checked)x.completedAt=Date.now(); else delete x.completedAt; saveAll(); renderChecklist();}
     function deleteChecklist(id){ if(!confirm(currentLang === 'zh' ? '確定刪除這個待辦嗎？' : 'Delete this to-do item?')) return; checklists[currentTripKey]=checklists[currentTripKey].filter(x=>x.id!==id); saveAll(); renderChecklist();}
     function addChecklistReminderToCalendar(id){const x=getChecklistItem(id); if(!x||!x.dueDay)return alert(currentLang==='zh'?'這個待辦還沒有設定提醒日期':'This item has no reminder date.'); const p=parseTripDate(x.dueDay,x.dueTime||'09:00'); if(!p.valid)return alert(p.reason); window.open(calendarUrl(`To-do｜${x.text}`,p.date,30,tripsMaster[currentTripKey]?.name||''),'_blank','noopener,noreferrer');}
@@ -1846,16 +2159,17 @@
     function updateBudgetTableHeaders(){const tables=document.querySelectorAll('#module-budget table'); if(tables[0]){const th=tables[0].querySelectorAll('th'); [0,1,2,3].forEach((i)=>{if(th[i])th[i].textContent=T('table')[i];});} if(tables[1]){const th=tables[1].querySelectorAll('th'); if(th[0])th[0].textContent=T('table')[4]; if(th[1])th[1].textContent=T('table')[1]; if(th[2])th[2].textContent=T('table')[5]; if(th[3])th[3].textContent=T('table')[6]; if(th[4])th[4].textContent=T('table')[7];}}
     function renderBudget(){const list=document.getElementById('budget-list'), sum=document.getElementById('member-summary-list'); list.innerHTML=''; sum.innerHTML=''; const items=budgets[currentTripKey]||[], base=getTripMembers(), people=new Set(base); let paid={}, share={}, total=0; const ensure=p=>{if(!p)return; people.add(p); if(!paid[p])paid[p]=0;if(!share[p])share[p]=0;}; base.forEach(ensure); items.forEach(item=>{const amount=+item.amount||0,payer=(item.payer||'我').trim(); let splits=getBudgetSplitMembers(item,base); if(!splits.length)splits=[payer]; ensure(payer); splits.forEach(ensure); total+=amount; paid[payer]=(paid[payer]||0)+amount; splits.forEach(p=>share[p]=(share[p]||0)+amount/splits.length); const label=parseList(item.splitWith).length?splits.join(', '):T('allMembers'); list.innerHTML+=`<tr><td class="p-3 font-bold text-stone-800">${escapeHTML(item.title)}</td><td class="p-3"><span class="pill pill-green">${escapeHTML(payer)}</span></td><td class="p-3 text-stone-500 text-xs max-w-[220px] whitespace-normal">${escapeHTML(label)}</td><td class="p-3 text-right font-black text-stone-900">$${Math.round(amount).toLocaleString()}</td><td class="p-3 text-center whitespace-nowrap"><button onclick="editBudgetItem(${item.id})" class="text-stone-300 hover:text-amber-600 px-1"><i class="fa-solid fa-pen"></i></button><button onclick="deleteBudgetItem(${item.id})" class="text-stone-300 hover:text-red-500 px-1"><i class="fa-solid fa-trash-can"></i></button></td></tr>`;}); setText('budget-total','$'+Math.round(total).toLocaleString()); setText('budget-per-capita',T('calculatedByGroup')); if(total===0){setHTML('budget-settlement',`<span class="text-white/70 text-sm">${T('noExpense')}</span>`);return;} let balances={}; [...people].forEach(p=>{const pa=paid[p]||0, sh=share[p]||0, net=pa-sh; balances[p]=net; const status=net>.01?`<span class="text-stone-900 font-black">${T('receive',Math.round(net).toLocaleString())}</span>`:net<-.01?`<span class="text-red-500 font-black">${T('pay',Math.round(Math.abs(net)).toLocaleString())}</span>`:`<span class="text-stone-400">${T('settled')}</span>`; sum.innerHTML+=`<tr><td class="p-3 font-bold text-stone-800">${escapeHTML(p)}</td><td class="p-3 text-right text-stone-600">$${Math.round(pa).toLocaleString()}</td><td class="p-3 text-right text-stone-600">$${Math.round(sh).toLocaleString()}</td><td class="p-3 text-right">${status}</td></tr>`;}); let debtors=[], creditors=[]; Object.entries(balances).forEach(([p,n])=>{if(n<-.01)debtors.push({p,amt:-n}); else if(n>.01)creditors.push({p,amt:n});}); let out='',i=0,j=0; while(i<debtors.length&&j<creditors.length){const amt=Math.min(debtors[i].amt,creditors[j].amt); out+=`<div class="flex justify-between items-center bg-white/10 px-3 py-1.5 rounded-xl border border-white/10 text-xs md:text-sm"><span>${T('pays',escapeHTML(debtors[i].p),escapeHTML(creditors[j].p))}</span><span class="font-black text-[#fff2ea]">$${Math.round(amt).toLocaleString()}</span></div>`; debtors[i].amt-=amt; creditors[j].amt-=amt; if(debtors[i].amt<.01)i++; if(creditors[j].amt<.01)j++;} setHTML('budget-settlement',out||T('noDebt')); updateBudgetTableHeaders();}
     function resetBudgetForm(){editingBudgetId=null; document.getElementById('budget-title').value='';document.getElementById('budget-amount').value='';document.getElementById('budget-payer').value='';selectAllBudgetMembers(false);document.getElementById('cancel-budget-edit-btn').classList.add('hidden');applyLanguage();}
-    function editBudgetItem(id){const item=(budgets[currentTripKey]||[]).find(x=>x.id===id); if(!item)return; editingBudgetId=id; document.getElementById('budget-title').value=item.title||'';document.getElementById('budget-amount').value=item.amount||'';document.getElementById('budget-payer').value=item.payer||''; renderBudgetSplitOptions(parseList(item.splitWith)); document.getElementById('cancel-budget-edit-btn').classList.remove('hidden'); applyLanguage(); document.getElementById('budget-title').focus();}
-    function cancelBudgetEdit(){resetBudgetForm();}
-    function submitBudgetItem(){const title=document.getElementById('budget-title').value.trim(), amount=parseFloat(document.getElementById('budget-amount').value), payer=document.getElementById('budget-payer').value.trim()||'我', splitWith=getSelectedSplitMembers().join(', '); if(!title||isNaN(amount))return alert(currentLang==='zh'?'輸入不完整':'Please complete the expense item and amount.'); if(!budgets[currentTripKey])budgets[currentTripKey]=[]; if(editingBudgetId){const item=budgets[currentTripKey].find(x=>x.id===editingBudgetId); Object.assign(item,{title,amount,payer,splitWith,updatedAt:Date.now()});} else budgets[currentTripKey].push({id:Date.now(),title,amount,payer,splitWith,createdAt:Date.now(),updatedAt:Date.now()}); saveAll(); resetBudgetForm(); renderBudget();}
+    function editBudgetItem(id){const item=(budgets[currentTripKey]||[]).find(x=>x.id===id); if(!item)return; editingBudgetId=id; document.getElementById('budget-title').value=item.title||'';document.getElementById('budget-amount').value=item.amount||'';document.getElementById('budget-payer').value=item.payer||''; renderBudgetSplitOptions(parseList(item.splitWith)); document.getElementById('cancel-budget-edit-btn').classList.remove('hidden'); applyLanguage(); openFormModal('budget');}
+    function cancelBudgetEdit(){resetBudgetForm(); closeFormModal();}
+    function submitBudgetItem(){const title=document.getElementById('budget-title').value.trim(), amount=parseFloat(document.getElementById('budget-amount').value), payer=document.getElementById('budget-payer').value.trim()||'我', splitWith=getSelectedSplitMembers().join(', '); if(!title||isNaN(amount))return alert(currentLang==='zh'?'輸入不完整':'Please complete the expense item and amount.'); if(!budgets[currentTripKey])budgets[currentTripKey]=[]; if(editingBudgetId){const item=budgets[currentTripKey].find(x=>x.id===editingBudgetId); Object.assign(item,{title,amount,payer,splitWith,updatedAt:Date.now()});} else budgets[currentTripKey].push({id:Date.now(),title,amount,payer,splitWith,createdAt:Date.now(),updatedAt:Date.now()}); saveAll(); resetBudgetForm(); closeFormModal(); renderBudget();}
     function deleteBudgetItem(id){budgets[currentTripKey]=budgets[currentTripKey].filter(x=>x.id!==id); saveAll(); renderBudget();}
 
     function openNewTripModal(){ if(!isAdminMode){ alert(currentLang==='zh'?'請先輸入管理密碼，才能建立新旅程。':'Please enter the admin password before creating a new trip.'); const input=document.getElementById('admin-password-input'); if(input) input.focus(); return; } document.getElementById('newTripModal').classList.replace('hidden','flex'); applyLanguage();} function closeNewTripModal(){document.getElementById('newTripModal').classList.replace('flex','hidden');}
     function formatTripDate(v){return v.replace(/-/g,'/');}
-    function createNewTrip(){const name=document.getElementById('new-trip-name').value.trim(), start=document.getElementById('new-trip-start').value, end=document.getElementById('new-trip-end').value, emoji=document.getElementById('new-trip-emoji').value||'🧳'; if(!name||!start||!end)return alert(currentLang==='zh'?'請填寫旅程名稱、開始日期與結束日期':'Please enter destination, start date, and end date.'); if(new Date(end)<new Date(start))return alert(currentLang==='zh'?'結束日期不能早於開始日期':'End date cannot be earlier than start date.'); const key='trip_'+Date.now(); tripsMaster[key]={name,dates:`${formatTripDate(start)} - ${formatTripDate(end)}`,lat:-16.9203,lng:145.7710,emoji,icon:'fa-route'}; itineraries[key]=[]; checklists[key]=[]; budgets[key]=[]; journals[key]=[]; tripAccess[key]=false; currentTripKey=key; localStorage.setItem('activeTripKey',key); saveAll(); closeNewTripModal(); ['new-trip-name','new-trip-start','new-trip-end'].forEach(id=>document.getElementById(id).value=''); document.getElementById('new-trip-emoji').value='🧳'; renderSidebar(); initCurrentTripData();}
+    function createNewTrip(){const name=document.getElementById('new-trip-name').value.trim(), start=document.getElementById('new-trip-start').value, end=document.getElementById('new-trip-end').value, emoji=document.getElementById('new-trip-emoji').value||'🧳'; if(!name||!start||!end)return alert(currentLang==='zh'?'請填寫旅程名稱、開始日期與結束日期':'Please enter destination, start date, and end date.'); if(new Date(end)<new Date(start))return alert(currentLang==='zh'?'結束日期不能早於開始日期':'End date cannot be earlier than start date.'); const key='trip_'+Date.now(); tripsMaster[key]={name,dates:`${formatTripDate(start)} - ${formatTripDate(end)}`,lat:-16.9203,lng:145.7710,emoji,icon:'fa-route'}; itineraries[key]=[]; checklists[key]=[]; budgets[key]=[]; journals[key]=[]; tripAccess[key]=false; currentTripKey=key; localStorage.setItem('activeTripKey',key); saveAll(); closeNewTripModal(); ['new-trip-name','new-trip-start','new-trip-end'].forEach(id=>document.getElementById(id).value=''); document.getElementById('new-trip-emoji').value='🧳'; renderSidebar(); initCurrentTripData(); updateGlobalAddButton();}
     function deleteCurrentTrip(){if(!isAdminMode)return alert(currentLang==='zh'?'請先輸入管理密碼，才能刪除旅程。':'Please enter the admin password before deleting a trip.'); if(Object.keys(tripsMaster).length<=1)return alert(currentLang==='zh'?'至少保留一個旅程':'Keep at least one trip.'); if(confirm(currentLang==='zh'?'確定刪除這個旅程？':'Delete this trip?')){delete tripsMaster[currentTripKey]; delete itineraries[currentTripKey]; delete checklists[currentTripKey]; delete budgets[currentTripKey]; delete journals[currentTripKey]; delete tripAccess[currentTripKey]; currentTripKey=Object.keys(tripsMaster)[0]; localStorage.setItem('activeTripKey',currentTripKey); saveAll(); renderSidebar(); initCurrentTripData();}}
     function switchModule(m){
+      currentModule = m;
       const target=document.getElementById('module-'+m);
       if(!target) return;
       document.querySelectorAll('.module-content').forEach(e=>{e.classList.add('hidden');e.classList.remove('block');});
@@ -1864,7 +2178,7 @@
       document.querySelectorAll('.tab-btn').forEach(e=>e.classList.remove('active'));
       const tab=document.getElementById('tab-'+m);
       if(tab) tab.classList.add('active');
-      if(m==='budget') renderBudgetSplitOptions(); if(m==='journal') renderJournal();
+      if(m==='budget') renderBudgetSplitOptions(); if(m==='journal') renderJournal(); updateGlobalAddButton();
     }
     function showToast(msg){const old=document.getElementById('toast-message'); if(old)old.remove(); const d=document.createElement('div'); d.id='toast-message'; d.className='fixed left-1/2 -translate-x-1/2 bottom-20 z-[70] px-4 py-3 rounded-2xl shadow-xl text-sm font-black bg-stone-900 text-white'; d.textContent=msg; document.body.appendChild(d); setTimeout(()=>d.remove(),2500);}
     async function fetchWeather(lat,lng){
@@ -1892,7 +2206,7 @@
       }
     }
 
-    applyLanguage(false); applyTheme(); ensureTripAccessDefaults(); syncActiveTripAccess(); renderSidebar(); initCurrentTripData();
+    applyLanguage(false); applyTheme(); setupFormPanels(); ensureTripAccessDefaults(); syncActiveTripAccess(); renderSidebar(); initCurrentTripData();
   </script>
 </body>
 </html>
