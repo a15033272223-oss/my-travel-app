@@ -550,6 +550,234 @@
       background: rgba(249,250,251,.10);
     }
 
+  
+    /* === FINAL POLISH: layout, contrast, dark mode, event journal, weather pills === */
+    #member-pill {
+      overflow: hidden;
+      flex-shrink: 1;
+    }
+
+    #member-pill input {
+      min-width: 0 !important;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+      padding-left: .25rem !important;
+      padding-right: .25rem !important;
+      border: 0 !important;
+      box-shadow: none !important;
+      background: transparent !important;
+    }
+
+    #member-pill i {
+      flex-shrink: 0;
+      color: #111827 !important;
+    }
+
+    @media (max-width: 420px) {
+      #member-pill {
+        min-width: 8.5rem !important;
+        max-width: 45vw !important;
+      }
+      #trip-title {
+        max-width: 42vw;
+      }
+      header {
+        gap: .35rem;
+      }
+    }
+
+    .event-journal-panel {
+      margin-top: .9rem;
+      border: 1px solid var(--line);
+      border-radius: 18px;
+      background: #ffffff;
+      color: #111827;
+      overflow: hidden;
+    }
+
+    .event-journal-panel summary {
+      cursor: pointer;
+      padding: .85rem 1rem;
+      font-weight: 900;
+      color: #111827;
+      list-style: none;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: .75rem;
+    }
+
+    .event-journal-panel summary::-webkit-details-marker {
+      display: none;
+    }
+
+    .event-journal-panel summary::after {
+      content: "⌄";
+      font-size: 1rem;
+      opacity: .75;
+      transition: transform .15s ease;
+    }
+
+    .event-journal-panel[open] summary::after {
+      transform: rotate(180deg);
+    }
+
+    .event-journal-body {
+      padding: 0 1rem 1rem;
+    }
+
+    .event-journal-media {
+      width: 100%;
+      max-height: 220px;
+      object-fit: cover;
+      border-radius: 14px;
+      border: 1px solid var(--line);
+      background: #ffffff;
+    }
+
+    .event-action-btn,
+    .checklist-icon-btn {
+      color: #111827 !important;
+      width: 1.85rem;
+      height: 1.85rem;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: 999px;
+      background: transparent;
+    }
+
+    .event-action-btn:hover,
+    .checklist-icon-btn:hover {
+      background: rgba(17, 24, 39, .06);
+      opacity: .85;
+    }
+
+    .weather-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: .35rem;
+      padding: .3rem .65rem;
+      border-radius: 999px;
+      font-size: 11px;
+      font-weight: 900;
+      background: #f7f7f8;
+      color: #111827;
+      border: 1px solid #e5e7eb;
+    }
+
+    .weather-pill.unavailable {
+      background: #ffffff;
+      color: #6b7280;
+      border-color: #e5e7eb;
+    }
+
+    .event-card-note {
+      background: #ffffff;
+      color: #374151;
+      border: 1px solid #eeeeee;
+    }
+
+    body.dark-mode #member-pill {
+      background: #1f2937 !important;
+      border-color: #374151 !important;
+    }
+
+    body.dark-mode #member-pill i,
+    body.dark-mode #member-pill input {
+      color: #f9fafb !important;
+    }
+
+    body.dark-mode .event-journal-panel {
+      background: #111827 !important;
+      color: #f9fafb !important;
+      border-color: #374151 !important;
+    }
+
+    body.dark-mode .event-journal-panel summary {
+      color: #f9fafb !important;
+    }
+
+    body.dark-mode .event-journal-body textarea,
+    body.dark-mode .event-journal-body input {
+      background: #0b1220 !important;
+      color: #f9fafb !important;
+      border-color: #374151 !important;
+    }
+
+    body.dark-mode .event-action-btn,
+    body.dark-mode .checklist-icon-btn {
+      color: #f9fafb !important;
+    }
+
+    body.dark-mode .event-action-btn:hover,
+    body.dark-mode .checklist-icon-btn:hover {
+      background: rgba(249,250,251,.10);
+    }
+
+    body.dark-mode .weather-pill,
+    body.dark-mode .weather-pill.unavailable {
+      background: #1f2937 !important;
+      color: #f9fafb !important;
+      border-color: #374151 !important;
+    }
+
+    body.dark-mode .event-card-note {
+      background: #111827 !important;
+      color: #e5e7eb !important;
+      border-color: #374151 !important;
+    }
+
+  
+    /* === JOURNAL UX PATCH: smaller inline title, rating, overview === */
+    .event-journal-panel summary {
+      font-size: 12px !important;
+      line-height: 1.35 !important;
+      font-weight: 700 !important;
+      padding: .55rem .75rem !important;
+    }
+
+    .event-journal-body {
+      padding: 0 .75rem .75rem !important;
+    }
+
+    .event-journal-rating-row {
+      display: flex;
+      align-items: center;
+      gap: .5rem;
+      margin-top: .55rem;
+      margin-bottom: .55rem;
+      font-size: 12px;
+      font-weight: 700;
+      color: #374151;
+    }
+
+    .event-journal-rating-row select {
+      width: auto !important;
+      min-width: 7.5rem;
+      padding: .4rem .65rem !important;
+      font-size: 12px !important;
+      border-radius: 999px !important;
+    }
+
+    .journal-overview-card {
+      background: #ffffff;
+      color: #111827;
+      border: 1px solid var(--line);
+      border-radius: 20px;
+    }
+
+    body.dark-mode .event-journal-rating-row {
+      color: #f9fafb !important;
+    }
+
+    body.dark-mode .journal-overview-card {
+      background: #1f2937 !important;
+      color: #f9fafb !important;
+      border-color: #374151 !important;
+    }
+
   </style>
 </head>
 <body class="flex h-[100dvh] overflow-hidden relative">
@@ -574,7 +802,7 @@
 
   <main class="flex-1 flex flex-col overflow-hidden w-full">
     <header class="bg-white border-b border-[#f1d7ce] px-4 md:px-8 py-4 flex justify-between items-center z-10 flex-shrink-0">
-      <div class="flex items-center min-w-0">
+      <div class="flex items-center min-w-0 flex-1">
         <button onclick="toggleSidebar()" class="md:hidden mr-4 text-stone-500 hover:text-stone-800 text-xl"><i class="fa-solid fa-bars"></i></button>
         <div class="min-w-0">
           <div class="flex items-center space-x-2">
@@ -585,9 +813,9 @@
         </div>
       </div>
       <div class="flex items-center gap-2 ml-2 flex-shrink-0">
-        <div class="flex items-center bg-[#eefaff] border border-[#cfefff] rounded-full px-2 md:px-3 py-1">
+        <div id="member-pill" class="flex items-center bg-[#f7f7f8] border border-[#e5e7eb] rounded-full px-2 md:px-3 py-1 min-w-[11rem] md:min-w-[18rem] max-w-[54vw] md:max-w-none">
           <i class="fa-solid fa-user-group text-stone-900 mr-1 text-xs"></i>
-          <input type="text" id="companionInput" class="bg-transparent border-none focus:outline-none text-xs md:text-sm font-bold w-24 md:w-40" placeholder="如: 聖聖, Ryan" oninput="saveCompanion(this.value)" onchange="renderBudget()">
+          <input type="text" id="companionInput" class="bg-transparent border-none focus:outline-none text-xs md:text-sm font-bold w-full min-w-0" placeholder="如: 聖聖, Ryan" oninput="saveCompanion(this.value)" onchange="renderBudget()">
         </div>
         <button onclick="toggleTheme()" class="touch-safe bg-white hover:bg-stone-50 border border-[#f1d7ce] text-stone-700 px-3 py-1.5 rounded-full text-xs font-black" title="Dark mode">
           <span id="theme-toggle-label">🌙</span>
@@ -602,7 +830,7 @@
       <button onclick="switchModule('timeline')" id="tab-timeline" class="tab-btn active">🗺️ 行程列表</button>
       <button onclick="switchModule('checklist')" id="tab-checklist" class="tab-btn">🎒 行李與待辦</button>
       <button onclick="switchModule('budget')" id="tab-budget" class="tab-btn">💸 預算結算</button>
-      <button onclick="switchModule('journal')" id="tab-journal" class="tab-btn">📝 體驗心得</button>
+      <button onclick="switchModule('journal')" id="tab-journal" class="tab-btn">📝 心得總覽</button>
     </nav>
 
     <div class="flex-1 overflow-y-auto p-4 md:p-8">
@@ -742,48 +970,19 @@
 
       <section id="module-journal" class="module-content hidden max-w-5xl mx-auto space-y-5">
         <div class="card p-5 md:p-6">
-          <h3 class="font-black text-lg text-stone-900 mb-4 flex items-center">
-            <span id="journal-title">📝 行程體驗心得</span>
-            <button id="cancel-journal-edit-btn" onclick="cancelJournalEdit()" class="hidden ml-auto text-xs text-stone-500 hover:text-stone-800 underline">取消編輯</button>
-          </h3>
-
-          <div class="grid grid-cols-1 md:grid-cols-2 gap-3 mb-3">
-            <input type="text" id="journal-entry-title" placeholder="心得標題，例如：第一次船宿超值得" class="px-3 py-2 text-sm">
-            <input type="date" id="journal-entry-date" class="px-3 py-2 text-sm">
-            <select id="journal-entry-rating" class="px-3 py-2 text-sm bg-white">
-              <option value="5">★★★★★</option>
-              <option value="4">★★★★☆</option>
-              <option value="3">★★★☆☆</option>
-              <option value="2">★★☆☆☆</option>
-              <option value="1">★☆☆☆☆</option>
-            </select>
-            <input type="text" id="journal-entry-tags" placeholder="標籤，例如：美食, 潛水, 住宿" class="px-3 py-2 text-sm">
-          </div>
-
-          <textarea id="journal-entry-body" rows="6" placeholder="寫下你的體驗心得、推薦、踩雷、花費感想..." class="w-full px-3 py-2 text-sm mb-3"></textarea>
-
-          <div class="grid grid-cols-1 md:grid-cols-2 gap-3 mb-3">
-            <div class="journal-card p-4">
-              <label id="journal-photo-label" class="block text-sm font-black mb-2">附上照片</label>
-              <input id="journal-photo-input" type="file" accept="image/*" class="w-full text-sm">
+          <div class="flex flex-col md:flex-row md:items-center md:justify-between gap-3 mb-4">
+            <div>
+              <h3 id="journal-title" class="font-black text-lg text-stone-900">📝 心得總覽</h3>
+              <p id="journal-hint" class="text-xs text-stone-500 mt-1">這裡會自動統整每一段行程下方儲存的體驗心得。</p>
             </div>
-            <div class="journal-card p-4">
-              <label id="journal-video-label" class="block text-sm font-black mb-2">附上影片</label>
-              <input id="journal-video-input" type="file" accept="video/*" class="w-full text-sm">
+            <div class="flex flex-wrap gap-2">
+              <button id="copy-journal-btn" onclick="copyAllJournalText()" class="secondary-btn px-4 py-2 rounded-2xl text-sm font-black">複製 Notes</button>
+              <button id="share-journal-btn" onclick="shareJournalText()" class="secondary-btn px-4 py-2 rounded-2xl text-sm font-black">分享</button>
+              <button id="download-journal-btn" onclick="downloadJournalTxt()" class="bg-white border border-[#eeeeee] px-4 py-2 rounded-2xl text-sm font-black text-stone-800">下載 TXT</button>
             </div>
           </div>
-
-          <div class="flex flex-wrap gap-2 mb-3">
-            <button id="submit-journal-btn" onclick="submitJournalEntry()" class="primary-btn px-5 py-2 rounded-2xl text-sm font-black">儲存心得</button>
-            <button id="copy-journal-btn" onclick="copyAllJournalText()" class="secondary-btn px-4 py-2 rounded-2xl text-sm font-black">複製到 Notes</button>
-            <button id="share-journal-btn" onclick="shareJournalText()" class="secondary-btn px-4 py-2 rounded-2xl text-sm font-black">分享</button>
-            <button id="download-journal-btn" onclick="downloadJournalTxt()" class="bg-white border border-[#efd4c6] px-4 py-2 rounded-2xl text-sm font-black text-stone-800">下載 TXT</button>
-          </div>
-
-          <p id="journal-hint" class="text-xs text-stone-500">照片與影片會存在目前瀏覽器，建議檔案不要太大；需要備份時請下載文字檔或複製到 Notes。</p>
+          <div id="journal-list" class="space-y-4"></div>
         </div>
-
-        <div id="journal-list" class="space-y-4"></div>
       </section>
     </div>
   </main>
@@ -882,7 +1081,7 @@
         checklistTitle: '🎒 行李清單與行前待辦', checklistHint: '完成後會自動移到底部。提醒日可一鍵加入 Google Calendar。', checklistAdd: '新增項目', pending: '未完成事項', completed: '已完成事項', done: '已完成', todo: '未完成', noReminder: '未設定提醒', addCal: '<i class="fa-solid fa-calendar-plus mr-1"></i>加到 Calendar', edit: '<i class="fa-solid fa-pen mr-1"></i>編輯', emptyTodo: '目前還沒有任何待辦事項。', progress: (d,t,p,pc)=>`已完成 ${d} / ${t}，未完成 ${p}`, progressRate: pc=>`完成率 ${pc}%｜勾選後即時置底`,
         budgetTotal: 'Total Spend', settlement: '結算建議', budgetSummary: '成員分帳概況', budgetNew: '💳 記一筆新的', record: '記錄', selectAll: '全選', clear: '清空', splitLabel: '分帳對象', splitHint: '只勾選這筆帳要一起分的人。若都不勾，系統會視為所有旅伴一起分。', allMembers: '所有成員', calculatedByGroup: '依每筆分帳對象計算', noExpense: '無開銷', settled: '兩清', receive: a=>`收 $${a}`, pay: a=>`付 $${a}`, noDebt: '互不相欠！', pays: (a,b)=>`<b>${a}</b> 給 <b>${b}</b>`,
         table: ['成員','代墊','應攤','結算狀態','項目','分帳對象','金額','操作'], status: { none: '無票券', toBook: '待訂', booked: '已訂' },
-        journalTitle: '📝 行程體驗心得', journalSave: '儲存心得', journalCopy: '複製到 Notes', journalShare: '分享', journalDownload: '下載 TXT', journalEmpty: '目前還沒有心得，先寫下第一篇吧！', journalHint: '照片與影片會存在目前瀏覽器，建議檔案不要太大；需要備份時請下載文字檔或複製到 Notes。', journalPhoto: '附上照片', journalVideo: '附上影片', modalTitle: '建立全新旅程計畫', icon: '代表圖示', start: '開始日期', end: '結束日期', cancel: '取消', create: '確認建立',
+        journalTitle: '📝 心得總覽', journalSave: '儲存心得', journalCopy: '複製到 Notes', journalShare: '分享', journalDownload: '下載 TXT', journalEmpty: '目前還沒有心得，先寫下第一篇吧！', journalHint: '這裡會自動統整每一段行程下方儲存的體驗心得，可複製到 Notes、分享或下載 TXT。', journalPhoto: '附上照片', journalVideo: '附上影片', modalTitle: '建立全新旅程計畫', icon: '代表圖示', start: '開始日期', end: '結束日期', cancel: '取消', create: '確認建立',
         ph: { companion:'如: 中偉, 聖聖, Ryan', eventTitle:'做什麼？例如：吃海鮮大餐', eventNote:'備註（選填）', todo:'物品或待辦事項，例如：訂餐廳、防風外套', budgetTitle:'花費項目', amount:'金額', payer:'代墊人', tripName:'行程目的地', journalTitle:'心得標題，例如：第一次船宿超值得', journalTags:'標籤，例如：美食, 潛水, 住宿', journalBody:'寫下你的體驗心得、推薦、踩雷、花費感想...' }
       },
       en: {
@@ -893,7 +1092,7 @@
         checklistTitle: '🎒 Packing List & To-dos', checklistHint: 'Completed items move to the bottom automatically. Reminders can be added to Google Calendar.', checklistAdd: 'Add item', pending: 'Pending', completed: 'Completed', done: 'Done', todo: 'Pending', noReminder: 'No reminder', addCal: '<i class="fa-solid fa-calendar-plus mr-1"></i>Add to Calendar', edit: '<i class="fa-solid fa-pen mr-1"></i>Edit', emptyTodo: 'No to-do items yet.', progress: (d,t,p,pc)=>`${d} / ${t} completed, ${p} pending`, progressRate: pc=>`${pc}% complete｜Checked items update instantly`,
         budgetTotal: 'Total Spend', settlement: 'Settlement Plan', budgetSummary: 'Member Summary', budgetNew: '💳 Add expense', record: 'Record', selectAll: 'Select all', clear: 'Clear', splitLabel: 'Split with', splitHint: 'Only check the people sharing this expense. If no one is checked, it will split with all trip members.', allMembers: 'All members', calculatedByGroup: 'Calculated by each expense split group', noExpense: 'No expense yet', settled: 'Settled', receive: a=>`Receive $${a}`, pay: a=>`Pay $${a}`, noDebt: 'All settled!', pays: (a,b)=>`<b>${a}</b> pays <b>${b}</b>`,
         table: ['Member','Paid','Share','Status','Item','Split with','Amount','Action'], status: { none: 'No ticket', toBook: 'To book', booked: 'Booked' },
-        journalTitle: '📝 Trip Journal', journalSave: 'Save journal', journalCopy: 'Copy to Notes', journalShare: 'Share', journalDownload: 'Download TXT', journalEmpty: 'No journal entries yet. Write your first one!', journalHint: 'Photos and videos are stored in this browser. Keep files small; use TXT or Notes for backup.', journalPhoto: 'Add photo', journalVideo: 'Add video', modalTitle: 'Create a New Trip', icon: 'Trip Icon', start: 'Start Date', end: 'End Date', cancel: 'Cancel', create: 'Create',
+        journalTitle: '📝 Journal Overview', journalSave: 'Save journal', journalCopy: 'Copy to Notes', journalShare: 'Share', journalDownload: 'Download TXT', journalEmpty: 'No journal entries yet. Write your first one!', journalHint: 'This overview collects the notes saved under each itinerary item. You can copy, share, or download TXT.', journalPhoto: 'Add photo', journalVideo: 'Add video', modalTitle: 'Create a New Trip', icon: 'Trip Icon', start: 'Start Date', end: 'End Date', cancel: 'Cancel', create: 'Create',
         ph: { companion:'e.g. Will, Sheng, Ryan', eventTitle:'What to do? e.g. Seafood dinner', eventNote:'Notes (optional)', todo:'Item or task, e.g. book restaurant, windbreaker', budgetTitle:'Expense item', amount:'Amount', payer:'Payer', tripName:'Destination', journalTitle:'Entry title, e.g. Best day of the trip', journalTags:'Tags, e.g. food, diving, hotel', journalBody:'Write your experience, highlights, recommendations, costs, or things to avoid...' }
       }
     };
@@ -958,7 +1157,27 @@
       });
     }
     function selectTrip(key) { currentTripKey=key; localStorage.setItem('activeTripKey', key); renderSidebar(); initCurrentTripData(); cancelEdit(); if (window.innerWidth<768 && isSidebarOpen) toggleSidebar(); }
-    function initCurrentTripData() { const trip=tripsMaster[currentTripKey]; if (!trip) return; setHTML('trip-title', `<span class="trip-title-emoji">${escapeHTML(trip.emoji || '🧭')}</span>${escapeHTML(trip.name)}`); setText('trip-dates', trip.dates); if (currentTripKey==='cairns' && !localStorage.getItem(`companion_${currentTripKey}`)) localStorage.setItem(`companion_${currentTripKey}`, '中偉, 聖聖, Ryan'); document.getElementById('companionInput').value = localStorage.getItem(`companion_${currentTripKey}`) || '我'; renderBudgetSplitOptions(); fetchWeather(trip.lat, trip.lng); renderItinerary(); renderChecklist(); renderBudget(); renderJournal(); }
+    function initCurrentTripData() { const trip=tripsMaster[currentTripKey]; if (!trip) return; setHTML('trip-title', `<span class="trip-title-emoji">${escapeHTML(trip.emoji || '🧭')}</span>${escapeHTML(trip.name)}`); setText('trip-dates', trip.dates); if (currentTripKey==='cairns' && !localStorage.getItem(`companion_${currentTripKey}`)) localStorage.setItem(`companion_${currentTripKey}`, '中偉, 聖聖, Ryan'); document.getElementById('companionInput').value = localStorage.getItem(`companion_${currentTripKey}`) || '我'; renderBudgetSplitOptions(); fetchWeather(trip.lat, trip.lng); renderItinerary(); renderChecklist(); renderBudget(); }
+
+
+    function weatherCodeToIcon(code) {
+      if (code === undefined || code === null) return '🌤️';
+      if ([0,1].includes(Number(code))) return '☀️';
+      if ([2,3].includes(Number(code))) return '⛅';
+      if ([45,48].includes(Number(code))) return '🌫️';
+      if ([51,53,55,61,63,65,80,81,82].includes(Number(code))) return '🌧️';
+      if ([71,73,75,77,85,86].includes(Number(code))) return '❄️';
+      if ([95,96,99].includes(Number(code))) return '⛈️';
+      return '🌤️';
+    }
+
+    function getEventWeatherHTML(day) {
+      const data = dailyWeatherMap && dailyWeatherMap[day];
+      if (!day || !data) {
+        return `<span class="weather-pill unavailable">🌤️ ${currentLang === 'zh' ? '天氣預測未開放' : 'Forecast unavailable'}</span>`;
+      }
+      return `<span class="weather-pill">${weatherCodeToIcon(data.code)} ${Math.round(data.min)}° / ${Math.round(data.max)}°C</span>`;
+    }
 
     function parseTripDateRange(text) { const m=String(text||'').match(/(\d{4})[\/\-](\d{1,2})[\/\-](\d{1,2}).*?(\d{4})[\/\-](\d{1,2})[\/\-](\d{1,2})/); if(!m) return null; return { start:new Date(+m[1],+m[2]-1,+m[3]), end:new Date(+m[4],+m[5]-1,+m[6]) }; }
     function normalizeYear(month) { const r=parseTripDateRange(tripsMaster[currentTripKey]?.dates||''); if(!r) return 2026; if(r.start.getFullYear()!==r.end.getFullYear()) { if(month>=r.start.getMonth()+1) return r.start.getFullYear(); return r.end.getFullYear(); } return r.start.getFullYear(); }
@@ -992,7 +1211,168 @@
     function validateItinerary(){const arr=itineraries[currentTripKey]||[], issues=[]; const parsed=arr.map((e,i)=>({e,i,p:parseTripDate(e.day,e.time||'00:00')})); parsed.forEach(x=>{if(!x.p.valid) issues.push({id:x.e.id,severity:'error',message:x.p.reason}); else if(!x.p.withinTrip) issues.push({id:x.e.id,severity:'warn',message:currentLang==='zh'?'日期可能不在旅程期間內':'Date may be outside this trip.'});}); for(let i=1;i<parsed.length;i++){if(parsed[i-1].p.valid&&parsed[i].p.valid&&parsed[i].p.date<parsed[i-1].p.date) issues.push({id:parsed[i].e.id,severity:'danger',message:currentLang==='zh'?'順序錯亂：這筆時間早於上一筆行程。':'Order conflict: this item is earlier than the previous item.'});}
       let lastDive=null; parsed.forEach(x=>{if(!x.p.valid)return; if(x.e.type==='dive')lastDive=x.p.date; if(['flight','altitude'].includes(x.e.type)&&lastDive){const h=(x.p.date-lastDive)/36e5; if(h>=0&&h<24) issues.push({id:x.e.id,severity:'danger',message:currentLang==='zh'?`排氮警告：距離上次潛水僅 ${h.toFixed(1)} 小時。`:`No-fly warning: only ${h.toFixed(1)} hours after diving.`});}}); return issues;}
     function renderValidationSummary(issues){const box=document.getElementById('itinerary-validation-summary'); if(!issues.length){box.className='hidden mb-4 rounded-2xl border px-3 py-2 text-xs md:text-sm font-black'; box.innerHTML=''; return;} const danger=issues.some(i=>i.severity==='danger'||i.severity==='error'); box.className=`mb-4 rounded-2xl border px-3 py-2 text-xs md:text-sm font-black ${danger?'nitrogen-blink':'bg-amber-50 border-amber-200 text-amber-700'}`; const title=currentLang==='zh'?`偵測到 ${issues.length} 個行程提醒`:`${issues.length} itinerary alert${issues.length>1?'s':''} found`; box.innerHTML=`<div class="flex items-start"><i class="fa-solid fa-triangle-exclamation mt-0.5 mr-2"></i><div><p>${title}</p><ul class="list-disc ml-4 mt-1 space-y-0.5">${issues.slice(0,3).map(i=>`<li>${escapeHTML(i.message)}</li>`).join('')}</ul></div></div>`;}
-    function renderItinerary(){const list=document.getElementById('itinerary-list'); list.innerHTML=''; const arr=itineraries[currentTripKey]||[]; const issues=validateItinerary(); renderValidationSummary(issues); arr.forEach(item=>{const its=issues.filter(i=>i.id===item.id); const icon={dive:'🤿',altitude:'🚁',flight:'✈️',accommodation:'⛺️',dining:'🍽️'}[item.type]||'📍'; const status=item.status==='to-book'?`<span class="pill pill-red">${T('status.toBook')}</span>`:item.status==='booked'?`<span class="pill pill-green">${T('status.booked')}</span>`:''; const warns=its.map(i=>`<div class="mt-2 ${i.severity==='danger'||i.severity==='error'?'nitrogen-blink':'bg-amber-100 text-amber-800'} text-[11px] font-black px-2 py-1 rounded-xl">⚠️ ${escapeHTML(i.message)}</div>`).join(''); list.innerHTML+=`<div data-id="${item.id}" class="soft-card p-4 group"><div class="flex justify-between gap-3"><div class="min-w-0 flex-1"><div class="flex flex-wrap items-center gap-2"><button class="drag-handle text-stone-300 hover:text-stone-700"><i class="fa-solid fa-grip-vertical"></i></button><span class="pill pill-green">${formatShortDate(item.day)}</span><span class="text-xs font-black text-stone-400">${item.time||'--:--'}</span>${status}</div><p class="font-black text-stone-900 text-base md:text-lg mt-2">${icon} ${escapeHTML(item.title)}</p>${item.note?`<p class="text-xs text-stone-500 mt-1 bg-white px-2 py-1 rounded-xl inline-block">${escapeHTML(item.note)}</p>`:''}${warns}</div><div class="flex flex-col gap-2 opacity-100 md:opacity-0 md:group-hover:opacity-100"><button onclick="addEventToGoogleCalendar(${item.id})" class="text-stone-300 hover:text-stone-900"><i class="fa-solid fa-calendar-plus"></i></button><button onclick="editEvent(${item.id})" class="text-stone-300 hover:text-amber-600"><i class="fa-solid fa-pen"></i></button><button onclick="deleteEvent(${item.id})" class="text-stone-300 hover:text-red-500"><i class="fa-solid fa-trash"></i></button></div></div></div>`;});}
+
+    function getEventJournal(eventId) {
+      if (!journals[currentTripKey]) journals[currentTripKey] = [];
+      return journals[currentTripKey].find(x => String(x.eventId) === String(eventId));
+    }
+
+    function renderEventJournalPanel(item) {
+      const entry = getEventJournal(item.id) || {};
+      const body = escapeHTML(entry.body || '');
+      const currentRating = String(entry.rating || '5');
+      const photoPreview = entry.photo ? `<img src="${entry.photo}" class="event-journal-media" alt="journal photo">` : '';
+      const videoPreview = entry.video ? `<video src="${entry.video}" class="event-journal-media" controls playsinline></video>` : '';
+      const title = currentLang === 'zh' ? '寫下這段體驗心得' : 'Write experience notes';
+      const placeholder = currentLang === 'zh' ? '心得、推薦、踩雷、花費感想、下次提醒...' : 'Highlights, tips, costs, things to avoid, reminders for next time...';
+      const ratingLabel = currentLang === 'zh' ? '評分' : 'Rating';
+      const saveLabel = currentLang === 'zh' ? '儲存心得' : 'Save';
+      const copyLabel = currentLang === 'zh' ? '複製 Notes' : 'Copy';
+      const shareLabel = currentLang === 'zh' ? '分享' : 'Share';
+      const downloadLabel = currentLang === 'zh' ? '下載 TXT' : 'TXT';
+
+      const ratingOptions = [5,4,3,2,1].map(n => `<option value="${n}" ${currentRating === String(n) ? 'selected' : ''}>${'★'.repeat(n)}${'☆'.repeat(5-n)}</option>`).join('');
+
+      return `
+        <details class="event-journal-panel">
+          <summary>${title}</summary>
+          <div class="event-journal-body">
+            <div class="event-journal-rating-row">
+              <label for="event-journal-rating-${item.id}">${ratingLabel}</label>
+              <select id="event-journal-rating-${item.id}">${ratingOptions}</select>
+            </div>
+            <textarea id="event-journal-body-${item.id}" rows="4" class="w-full px-3 py-2 text-sm" placeholder="${placeholder}">${body}</textarea>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-2 mt-2">
+              <input id="event-journal-photo-${item.id}" type="file" accept="image/*" class="px-3 py-2 text-sm">
+              <input id="event-journal-video-${item.id}" type="file" accept="video/*" class="px-3 py-2 text-sm">
+            </div>
+            ${(photoPreview || videoPreview) ? `<div class="grid grid-cols-1 md:grid-cols-2 gap-2 mt-3">${photoPreview}${videoPreview}</div>` : ''}
+            <div class="flex flex-wrap gap-2 mt-3">
+              <button onclick="saveEventJournal(${item.id})" class="primary-btn px-4 py-2 rounded-full text-xs font-black">${saveLabel}</button>
+              <button onclick="copyEventJournal(${item.id})" class="secondary-btn px-4 py-2 rounded-full text-xs font-black">${copyLabel}</button>
+              <button onclick="shareEventJournal(${item.id})" class="secondary-btn px-4 py-2 rounded-full text-xs font-black">${shareLabel}</button>
+              <button onclick="downloadEventJournal(${item.id})" class="bg-white border border-[#eeeeee] px-4 py-2 rounded-full text-xs font-black text-stone-800">${downloadLabel}</button>
+            </div>
+          </div>
+        </details>`;
+    }
+
+    async function saveEventJournal(eventId) {
+      const eventItem = (itineraries[currentTripKey] || []).find(x => x.id === eventId);
+      if (!eventItem) return;
+      const bodyEl = document.getElementById(`event-journal-body-${eventId}`);
+      const photoEl = document.getElementById(`event-journal-photo-${eventId}`);
+      const videoEl = document.getElementById(`event-journal-video-${eventId}`);
+      const ratingEl = document.getElementById(`event-journal-rating-${eventId}`);
+      const old = getEventJournal(eventId) || {};
+      const photo = photoEl && photoEl.files[0] ? await fileToDataURL(photoEl.files[0]) : old.photo || null;
+      const video = videoEl && videoEl.files[0] ? await fileToDataURL(videoEl.files[0]) : old.video || null;
+      const payload = {
+        id: old.id || Date.now(),
+        eventId,
+        title: eventItem.title,
+        date: eventItem.day,
+        rating: ratingEl ? ratingEl.value : (old.rating || '5'),
+        tags: old.tags || ['itinerary'],
+        body: bodyEl ? bodyEl.value.trim() : '',
+        photo,
+        video,
+        updatedAt: Date.now()
+      };
+      if (!journals[currentTripKey]) journals[currentTripKey] = [];
+      const idx = journals[currentTripKey].findIndex(x => String(x.eventId) === String(eventId));
+      if (idx >= 0) journals[currentTripKey][idx] = payload;
+      else journals[currentTripKey].unshift(payload);
+      saveAll();
+      renderItinerary();
+      renderJournal();
+      showToast(currentLang === 'zh' ? '心得已儲存。' : 'Journal saved.');
+    }
+
+    function eventJournalText(eventId) {
+      const eventItem = (itineraries[currentTripKey] || []).find(x => x.id === eventId);
+      const entry = getEventJournal(eventId);
+      if (!eventItem && !entry) return '';
+      return `${eventItem?.title || entry?.title || ''}\nDate: ${eventItem?.day || entry?.date || '-'}\nRating: ${'★'.repeat(Number(entry?.rating || 0))}\n\n${entry?.body || ''}`;
+    }
+
+    async function copyEventJournal(eventId) {
+      const text = eventJournalText(eventId);
+      if (!text.trim()) return alert(currentLang === 'zh' ? '請先儲存這段心得。' : 'Please save notes first.');
+      try {
+        await navigator.clipboard.writeText(text);
+        showToast(currentLang === 'zh' ? '已複製，可貼到 Notes。' : 'Copied. You can paste it into Notes.');
+      } catch (e) {
+        alert(text);
+      }
+    }
+
+    async function shareEventJournal(eventId) {
+      const text = eventJournalText(eventId);
+      if (!text.trim()) return alert(currentLang === 'zh' ? '請先儲存這段心得。' : 'Please save notes first.');
+      if (navigator.share) {
+        try { await navigator.share({ title: tripsMaster[currentTripKey]?.name || 'Trip Journal', text }); } catch(e) {}
+      } else {
+        await copyEventJournal(eventId);
+      }
+    }
+
+    function downloadEventJournal(eventId) {
+      const text = eventJournalText(eventId);
+      if (!text.trim()) return alert(currentLang === 'zh' ? '請先儲存這段心得。' : 'Please save notes first.');
+      const eventItem = (itineraries[currentTripKey] || []).find(x => x.id === eventId);
+      const blob = new Blob([text], { type: 'text/plain;charset=utf-8' });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = `${(eventItem?.title || 'itinerary_journal').replace(/\s+/g, '_')}.txt`;
+      a.click();
+      URL.revokeObjectURL(url);
+    }
+
+    function renderItinerary(){
+      const list=document.getElementById('itinerary-list');
+      list.innerHTML='';
+      const arr=itineraries[currentTripKey]||[];
+      const issues=validateItinerary();
+      renderValidationSummary(issues);
+
+      if(!arr.length){
+        list.innerHTML=`<p class="text-sm text-stone-400 text-center py-6">${currentLang==='zh'?'目前還沒有行程。':'No itinerary items yet.'}</p>`;
+        return;
+      }
+
+      arr.forEach(item=>{
+        const its=issues.filter(i=>i.id===item.id);
+        const icon={dive:'🤿',altitude:'🚁',flight:'✈️',accommodation:'⛺️',dining:'🍽️'}[item.type]||'📍';
+        const status=item.status==='to-book'?`<span class="pill pill-red">${T('status.toBook')}</span>`:item.status==='booked'?`<span class="pill pill-green">${T('status.booked')}</span>`:'';
+        const warns=its.map(i=>`<div class="mt-2 ${i.severity==='danger'||i.severity==='error'?'nitrogen-blink':'bg-amber-100 text-amber-800'} text-[11px] font-black px-2 py-1 rounded-xl">⚠️ ${escapeHTML(i.message)}</div>`).join('');
+        const noteHTML=item.note?`<p class="event-card-note text-xs mt-2 px-2 py-1 rounded-xl inline-block">${escapeHTML(item.note)}</p>`:'';
+        list.innerHTML+=`
+          <div data-id="${item.id}" class="soft-card p-4 group">
+            <div class="flex justify-between gap-3">
+              <div class="min-w-0 flex-1">
+                <div class="flex flex-wrap items-center gap-2">
+                  <button class="drag-handle text-stone-400 hover:text-stone-900"><i class="fa-solid fa-grip-vertical"></i></button>
+                  <span class="pill pill-green">${formatShortDate(item.day)}</span>
+                  <span class="text-xs font-black text-stone-500">${item.time||'--:--'}</span>
+                  ${getEventWeatherHTML(item.day)}
+                  ${status}
+                </div>
+                <p class="font-black text-stone-900 text-base md:text-lg mt-2">${icon} ${escapeHTML(item.title)}</p>
+                ${noteHTML}
+                ${warns}
+              </div>
+              <div class="flex flex-col gap-2 opacity-100 md:opacity-0 md:group-hover:opacity-100">
+                <button onclick="addEventToGoogleCalendar(${item.id})" class="event-action-btn" title="Google Calendar"><i class="fa-solid fa-calendar-plus"></i></button>
+                <button onclick="editEvent(${item.id})" class="event-action-btn" title="Edit"><i class="fa-solid fa-pen"></i></button>
+                <button onclick="deleteEvent(${item.id})" class="event-action-btn" title="Delete"><i class="fa-solid fa-trash"></i></button>
+              </div>
+            </div>
+            ${renderEventJournalPanel(item)}
+          </div>`;
+      });
+    }
     function addEventToGoogleCalendar(id){const item=(itineraries[currentTripKey]||[]).find(x=>x.id===id); if(!item)return; const p=parseTripDate(item.day,item.time||'09:00'); if(!p.valid)return alert(p.reason); window.open(calendarUrl(item.title,p.date,item.type==='dining'?90:60,item.note||''),'_blank','noopener,noreferrer');}
     function deleteEvent(id){if(confirm(currentLang==='zh'?'確定刪除這個行程嗎？':'Delete this itinerary item?')){itineraries[currentTripKey]=itineraries[currentTripKey].filter(x=>x.id!==id); saveAll(); renderItinerary();}}
     function autoSortItineraryByTime(){itineraries[currentTripKey]=(itineraries[currentTripKey]||[]).sort((a,b)=>{const pa=parseTripDate(a.day,a.time||'00:00'), pb=parseTripDate(b.day,b.time||'00:00'); return (pa.valid?pa.date:Infinity)-(pb.valid?pb.date:Infinity);}); saveAll(); renderItinerary(); showToast(currentLang==='zh'?'已依照日期時間重新排序。':'Sorted by date and time.');}
@@ -1135,6 +1515,7 @@
       journals[currentTripKey] = (journals[currentTripKey] || []).filter(x => x.id !== id);
       saveAll();
       renderJournal();
+      renderItinerary();
     }
 
     function journalEntryToText(entry) {
@@ -1142,7 +1523,12 @@
     }
 
     function allJournalText() {
-      return (journals[currentTripKey] || []).map(journalEntryToText).join('\n----------------------\n\n');
+      return (journals[currentTripKey] || [])
+        .filter(entry => (entry.body || '').trim() || entry.photo || entry.video)
+        .slice()
+        .sort((a,b) => String(a.date || '').localeCompare(String(b.date || '')) || (a.updatedAt || 0) - (b.updatedAt || 0))
+        .map(journalEntryToText)
+        .join('\n----------------------\n\n');
     }
 
     async function copyAllJournalText() {
@@ -1181,38 +1567,41 @@
     function renderJournal() {
       const list = document.getElementById('journal-list');
       if (!list) return;
-      const entries = journals[currentTripKey] || [];
+      const entries = (journals[currentTripKey] || []).filter(entry => (entry.body || '').trim() || entry.photo || entry.video);
       list.innerHTML = '';
       if (!entries.length) {
-        list.innerHTML = `<div class="journal-card p-5 text-center text-sm font-bold text-stone-700">${T('journalEmpty')}</div>`;
+        list.innerHTML = `<div class="journal-overview-card p-5 text-center text-sm font-bold text-stone-700">${T('journalEmpty')}</div>`;
         return;
       }
-      entries.forEach(entry => {
-        const stars = '★'.repeat(Number(entry.rating || 0));
-        const tags = (entry.tags || []).map(tag => `<span class="pill pill-sand">#${escapeHTML(tag)}</span>`).join('');
-        list.innerHTML += `
-          <div class="journal-card p-4 md:p-5">
-            <div class="flex flex-col md:flex-row md:items-start md:justify-between gap-3">
-              <div class="min-w-0 flex-1">
-                <div class="flex flex-wrap items-center gap-2 mb-2">
-                  <span class="pill pill-red">${stars}</span>
-                  ${entry.date ? `<span class="pill pill-gray">${escapeHTML(entry.date)}</span>` : ''}
-                  ${tags}
+      entries
+        .slice()
+        .sort((a,b) => String(a.date || '').localeCompare(String(b.date || '')) || (a.updatedAt || 0) - (b.updatedAt || 0))
+        .forEach(entry => {
+          const stars = '★'.repeat(Number(entry.rating || 0)) + '☆'.repeat(Math.max(0, 5 - Number(entry.rating || 0)));
+          const tags = (entry.tags || []).map(tag => `<span class="pill pill-sand">#${escapeHTML(tag)}</span>`).join('');
+          list.innerHTML += `
+            <div class="journal-overview-card p-4 md:p-5">
+              <div class="flex flex-col md:flex-row md:items-start md:justify-between gap-3">
+                <div class="min-w-0 flex-1">
+                  <div class="flex flex-wrap items-center gap-2 mb-2">
+                    <span class="pill pill-red">${stars}</span>
+                    ${entry.date ? `<span class="pill pill-gray">${escapeHTML(entry.date)}</span>` : ''}
+                    ${tags}
+                  </div>
+                  <h4 class="text-base font-black text-stone-900">${escapeHTML(entry.title || '')}</h4>
+                  <p class="text-sm text-stone-700 whitespace-pre-wrap mt-2">${escapeHTML(entry.body || '')}</p>
                 </div>
-                <h4 class="text-lg font-black text-stone-900">${escapeHTML(entry.title)}</h4>
-                <p class="text-sm text-stone-700 whitespace-pre-wrap mt-2">${escapeHTML(entry.body || '')}</p>
+                <div class="flex gap-2 shrink-0">
+                  ${entry.eventId ? `<button onclick="switchModule('timeline')" class="secondary-btn px-3 py-1.5 rounded-full text-xs font-black">${currentLang === 'zh' ? '回行程' : 'Itinerary'}</button>` : ''}
+                  <button onclick="deleteJournalEntry(${entry.id})" class="bg-white border border-[#eeeeee] px-3 py-1.5 rounded-full text-xs font-black text-stone-800">${currentLang === 'zh' ? '刪除' : 'Delete'}</button>
+                </div>
               </div>
-              <div class="flex gap-2 shrink-0">
-                <button onclick="editJournalEntry(${entry.id})" class="secondary-btn px-3 py-1.5 rounded-full text-xs font-black">${T('edit')}</button>
-                <button onclick="deleteJournalEntry(${entry.id})" class="bg-white border border-[#efd4c6] px-3 py-1.5 rounded-full text-xs font-black text-stone-800">${currentLang === 'zh' ? '刪除' : 'Delete'}</button>
+              <div class="grid grid-cols-1 md:grid-cols-2 gap-3 mt-4">
+                ${entry.photo ? `<img src="${entry.photo}" class="journal-media" alt="journal photo">` : ''}
+                ${entry.video ? `<video src="${entry.video}" class="journal-media" controls playsinline></video>` : ''}
               </div>
-            </div>
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-3 mt-4">
-              ${entry.photo ? `<img src="${entry.photo}" class="journal-media" alt="journal photo">` : ''}
-              ${entry.video ? `<video src="${entry.video}" class="journal-media" controls playsinline></video>` : ''}
-            </div>
-          </div>`;
-      });
+            </div>`;
+        });
     }
 
     function parseList(value){return Array.isArray(value)?value.map(String).map(x=>x.trim()).filter(Boolean):String(value||'').split(/[,，]/).map(x=>x.trim()).filter(Boolean);} function getBudgetSplitMembers(item, base){const selected=parseList(item.splitWith); return selected.length?selected:[...base];}
@@ -1230,9 +1619,42 @@
     function formatTripDate(v){return v.replace(/-/g,'/');}
     function createNewTrip(){const name=document.getElementById('new-trip-name').value.trim(), start=document.getElementById('new-trip-start').value, end=document.getElementById('new-trip-end').value, emoji=document.getElementById('new-trip-emoji').value||'🧭'; if(!name||!start||!end)return alert(currentLang==='zh'?'請填寫旅程名稱、開始日期與結束日期':'Please enter destination, start date, and end date.'); if(new Date(end)<new Date(start))return alert(currentLang==='zh'?'結束日期不能早於開始日期':'End date cannot be earlier than start date.'); const key='trip_'+Date.now(); tripsMaster[key]={name,dates:`${formatTripDate(start)} - ${formatTripDate(end)}`,lat:-16.9203,lng:145.7710,emoji,icon:'fa-route'}; itineraries[key]=[]; checklists[key]=[]; budgets[key]=[]; journals[key]=[]; currentTripKey=key; localStorage.setItem('activeTripKey',key); saveAll(); closeNewTripModal(); ['new-trip-name','new-trip-start','new-trip-end'].forEach(id=>document.getElementById(id).value=''); document.getElementById('new-trip-emoji').value='🧭'; renderSidebar(); initCurrentTripData();}
     function deleteCurrentTrip(){if(Object.keys(tripsMaster).length<=1)return alert(currentLang==='zh'?'至少保留一個旅程':'Keep at least one trip.'); if(confirm(currentLang==='zh'?'確定刪除這個旅程？':'Delete this trip?')){delete tripsMaster[currentTripKey]; delete itineraries[currentTripKey]; delete checklists[currentTripKey]; delete budgets[currentTripKey]; delete journals[currentTripKey]; currentTripKey=Object.keys(tripsMaster)[0]; localStorage.setItem('activeTripKey',currentTripKey); saveAll(); renderSidebar(); initCurrentTripData();}}
-    function switchModule(m){document.querySelectorAll('.module-content').forEach(e=>{e.classList.add('hidden');e.classList.remove('block');}); document.getElementById('module-'+m).classList.remove('hidden'); document.getElementById('module-'+m).classList.add('block'); document.querySelectorAll('.tab-btn').forEach(e=>e.classList.remove('active')); document.getElementById('tab-'+m).classList.add('active'); if(m==='budget') renderBudgetSplitOptions(); if(m==='journal') renderJournal();}
+    function switchModule(m){
+      const target=document.getElementById('module-'+m);
+      if(!target) return;
+      document.querySelectorAll('.module-content').forEach(e=>{e.classList.add('hidden');e.classList.remove('block');});
+      target.classList.remove('hidden');
+      target.classList.add('block');
+      document.querySelectorAll('.tab-btn').forEach(e=>e.classList.remove('active'));
+      const tab=document.getElementById('tab-'+m);
+      if(tab) tab.classList.add('active');
+      if(m==='budget') renderBudgetSplitOptions(); if(m==='journal') renderJournal();
+    }
     function showToast(msg){const old=document.getElementById('toast-message'); if(old)old.remove(); const d=document.createElement('div'); d.id='toast-message'; d.className='fixed left-1/2 -translate-x-1/2 bottom-20 z-[70] px-4 py-3 rounded-2xl shadow-xl text-sm font-black bg-stone-900 text-white'; d.textContent=msg; document.body.appendChild(d); setTimeout(()=>d.remove(),2500);}
-    async function fetchWeather(lat,lng){if(!lat||!lng)return; try{setText('weather-desc',T('loading')); const r=await fetch(`https://api.open-meteo.com/v1/forecast?latitude=${lat}&longitude=${lng}&current_weather=true&daily=weathercode,temperature_2m_max,temperature_2m_min&timezone=auto`); const data=await r.json(); setText('temp-display',`${data.current_weather.temperature}°C`); setText('weather-desc',data.current_weather.weathercode<=3?T('sunny'):T('rain')); dailyWeatherMap={};}catch(e){setText('weather-desc',T('timeout'));}}
+    async function fetchWeather(lat,lng){
+      if(!lat||!lng)return;
+      try{
+        setText('weather-desc',T('loading'));
+        const r=await fetch(`https://api.open-meteo.com/v1/forecast?latitude=${lat}&longitude=${lng}&current_weather=true&daily=weathercode,temperature_2m_max,temperature_2m_min&forecast_days=16&timezone=auto`);
+        const data=await r.json();
+        setText('temp-display',`${data.current_weather.temperature}°C`);
+        setText('weather-desc',data.current_weather.weathercode<=3?T('sunny'):T('rain'));
+        dailyWeatherMap={};
+        const daily=data.daily||{};
+        (daily.time||[]).forEach((day,idx)=>{
+          dailyWeatherMap[day]={
+            code: daily.weathercode?.[idx],
+            max: daily.temperature_2m_max?.[idx],
+            min: daily.temperature_2m_min?.[idx]
+          };
+        });
+        renderItinerary();
+      }catch(e){
+        dailyWeatherMap={};
+        setText('weather-desc',T('timeout'));
+        renderItinerary();
+      }
+    }
 
     applyLanguage(false); applyTheme(); renderSidebar(); initCurrentTripData();
   </script>
