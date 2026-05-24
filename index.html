@@ -83,13 +83,56 @@
         </header>
 
         <div class="bg-white border-b border-slate-200 px-8 flex space-x-6 text-sm font-medium text-slate-500">
-            <button class="py-4 text-blue-600 border-b-2 border-blue-600 font-bold">日曆視圖 (Timeline)</button>
-            <button class="py-4 hover:text-blue-600 transition-colors">裝備清單 (Checklist)</button>
-            <button class="py-4 hover:text-blue-600 transition-colors">交通與地圖</button>
-            <button class="py-4 hover:text-blue-600 transition-colors">預算與分帳</button>
+            <button onclick="switchModule('timeline')" id="tab-timeline" class="module-tab py-4 text-blue-600 border-b-2 border-blue-600 font-bold">日曆視圖</button>
+            <button onclick="switchModule('checklist')" id="tab-checklist" class="module-tab py-4 hover:text-blue-600 transition-colors">裝備清單</button>
+            <button onclick="switchModule('map')" id="tab-map" class="module-tab py-4 hover:text-blue-600 transition-colors">交通與地圖</button>
+            <button onclick="switchModule('budget')" id="tab-budget" class="module-tab py-4 hover:text-blue-600 transition-colors">預算與分帳</button>
         </div>
 
-        <div class="flex-1 overflow-y-auto p-8 space-y-6">
+        <div class="flex-1 overflow-y-auto p-8 space-y-6 relative">
+            
+            <div id="module-timeline" class="module-content block space-y-6">
+                <div class="bg-white rounded-xl shadow-sm border border-slate-200 p-6 flex items-center justify-between">
+                    <div>
+                        <h3 class="text-sm font-bold text-slate-500 uppercase tracking-wider mb-1">當地即時天氣 (峇里島)</h3>
+                        <div class="flex items-end space-x-2">
+                            <span id="temp-display" class="text-4xl font-extrabold text-slate-700">--°C</span>
+                            <span id="weather-desc" class="text-lg font-medium text-slate-500 mb-1">載入中...</span>
+                        </div>
+                    </div>
+                    <div class="text-5xl text-blue-400" id="weather-icon">
+                        <i class="fa-solid fa-cloud-arrow-down animate-bounce"></i>
+                    </div>
+                </div>
+
+                <div class="bg-slate-50 rounded-xl border border-dashed border-slate-300 p-8 text-center text-slate-500">
+                    <i class="fa-solid fa-calendar-days text-3xl mb-3 text-slate-300"></i>
+                    <h3 class="text-sm font-bold text-slate-600">日曆視圖開發中...</h3>
+                </div>
+            </div>
+
+            <div id="module-checklist" class="module-content hidden">
+                <div class="bg-white rounded-xl shadow-sm border border-slate-200 p-8 text-center text-slate-500">
+                    <i class="fa-solid fa-clipboard-list text-3xl mb-3 text-slate-300"></i>
+                    <h3 class="text-sm font-bold text-slate-600">裝備清單模組 (準備搬移舊程式碼)</h3>
+                </div>
+            </div>
+
+            <div id="module-map" class="module-content hidden">
+                <div class="bg-white rounded-xl shadow-sm border border-slate-200 p-8 text-center text-slate-500">
+                    <i class="fa-solid fa-map-location-dot text-3xl mb-3 text-slate-300"></i>
+                    <h3 class="text-sm font-bold text-slate-600">Google Maps 整合準備中</h3>
+                </div>
+            </div>
+
+            <div id="module-budget" class="module-content hidden">
+                <div class="bg-white rounded-xl shadow-sm border border-slate-200 p-8 text-center text-slate-500">
+                    <i class="fa-solid fa-file-invoice-dollar text-3xl mb-3 text-slate-300"></i>
+                    <h3 class="text-sm font-bold text-slate-600">分帳演算法開發中</h3>
+                </div>
+            </div>
+            
+        </div>
             
             <div class="bg-white rounded-xl shadow-sm border border-slate-200 p-6 flex items-center justify-between">
                 <div>
@@ -167,6 +210,29 @@
 
         // 網頁載入時自動抓取天氣
         fetchWeather();
+  // --- 模組頁籤切換邏輯 ---
+        function switchModule(moduleId) {
+            // 1. 隱藏所有的內容區塊
+            document.querySelectorAll('.module-content').forEach(el => {
+                el.classList.remove('block');
+                el.classList.add('hidden');
+            });
+
+            // 2. 顯示剛剛被點擊的那一個區塊
+            document.getElementById('module-' + moduleId).classList.remove('hidden');
+            document.getElementById('module-' + moduleId).classList.add('block');
+
+            // 3. 把導覽列所有的按鈕都變回灰色
+            document.querySelectorAll('.module-tab').forEach(el => {
+                el.classList.remove('text-blue-600', 'border-b-2', 'border-blue-600', 'font-bold');
+                el.classList.add('hover:text-blue-600');
+            });
+
+            // 4. 把剛剛被點擊的那個按鈕變成藍色粗體
+            const activeTab = document.getElementById('tab-' + moduleId);
+            activeTab.classList.remove('hover:text-blue-600');
+            activeTab.classList.add('text-blue-600', 'border-b-2', 'border-blue-600', 'font-bold');
+        }
     </script>
 </body>
 </html>
