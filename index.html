@@ -142,6 +142,68 @@
 
         .text-slate-400, .text-slate-500 { color: var(--apple-subtext) !important; }
         .shadow-sm { box-shadow: 0 14px 34px rgba(15, 23, 42, 0.055) !important; }
+    
+
+        /* --- Outdoor Cream Orange Theme Override --- */
+        :root {
+            --apple-bg: #fff7ed;
+            --apple-card: rgba(255, 255, 255, 0.88);
+            --apple-card-strong: rgba(255, 255, 255, 0.96);
+            --apple-line: rgba(154, 92, 38, 0.14);
+            --apple-text: #2b2118;
+            --apple-subtext: #8a7463;
+            --apple-blue: #ea8a3a;
+            --apple-dark: #7c4a21;
+            --trip-accent: #f59e5b;
+            --trip-accent-soft: #ffedd5;
+            --trip-accent-strong: #c9681a;
+        }
+
+        html, body {
+            background: #fff7ed !important;
+            color: var(--apple-text) !important;
+        }
+
+        input:focus, select:focus {
+            border-color: rgba(234, 138, 58, 0.65) !important;
+            box-shadow: 0 0 0 4px rgba(234, 138, 58, 0.14) !important;
+        }
+
+        .module-tab.text-blue-600 {
+            background: #ea8a3a !important;
+            color: white !important;
+            box-shadow: 0 10px 24px rgba(234, 138, 58, 0.18) !important;
+        }
+
+        #sidebar-trip-list button.bg-blue-50 {
+            background: #ffedd5 !important;
+            color: #9a4b12 !important;
+            border-color: rgba(234, 138, 58, 0.20) !important;
+        }
+
+        #mobile-create-trip-fab,
+        #submit-event-btn,
+        #submit-checklist-btn,
+        #submit-budget-btn,
+        button.bg-blue-600,
+        button.bg-slate-800,
+        button.bg-emerald-600 {
+            background: #ea8a3a !important;
+            box-shadow: 0 12px 28px rgba(234, 138, 58, 0.18) !important;
+        }
+
+        button.hover\:bg-blue-700:hover,
+        button.hover\:bg-slate-700:hover,
+        button.hover\:bg-emerald-700:hover {
+            background: #c9681a !important;
+        }
+
+        .text-blue-500, .text-blue-600, .text-blue-700 { color: #c9681a !important; }
+        .bg-blue-50, .bg-blue-100 { background-color: #ffedd5 !important; }
+        .border-blue-100, .border-blue-200 { border-color: rgba(234, 138, 58, 0.22) !important; }
+        .border-blue-200, .border-l-2.border-blue-200 { border-color: rgba(234, 138, 58, 0.35) !important; }
+        .bg-blue-500 { background-color: #ea8a3a !important; }
+        .bg-blue-600 { background-color: #ea8a3a !important; }
     </style>
 </head>
 <body class="bg-slate-100 text-slate-800 flex h-[100dvh] overflow-hidden relative">
@@ -308,10 +370,15 @@
                     </h3>
                     <div class="flex flex-col gap-2 mb-4">
                         <input type="text" id="budget-title" placeholder="花費項目" class="border border-slate-300 rounded-lg px-3 py-2 text-sm outline-none">
-                        <div class="grid grid-cols-2 gap-2"><input type="number" id="budget-amount" placeholder="金額" class="border border-slate-300 rounded-lg px-3 py-2 text-sm outline-none"><input type="text" id="budget-payer" placeholder="代墊人" class="border border-slate-300 rounded-lg px-3 py-2 text-sm outline-none"></div>
+                        <div class="grid grid-cols-1 md:grid-cols-3 gap-2">
+                            <input type="number" id="budget-amount" placeholder="金額" class="border border-slate-300 rounded-lg px-3 py-2 text-sm outline-none">
+                            <input type="text" id="budget-payer" placeholder="代墊人" class="border border-slate-300 rounded-lg px-3 py-2 text-sm outline-none">
+                            <input type="text" id="budget-split-with" placeholder="分帳對象，留空=所有人" class="border border-slate-300 rounded-lg px-3 py-2 text-sm outline-none">
+                        </div>
+                        <p id="budget-split-hint" class="text-xs text-slate-400">例如：五人團中只有中偉、聖聖、Ryan 去吃飯，就填：中偉, 聖聖, Ryan。留空則所有旅伴平均分攤。</p>
                         <button id="submit-budget-btn" onclick="submitBudgetItem()" class="bg-emerald-600 hover:bg-emerald-700 text-white py-2 rounded-lg text-sm font-bold w-full">記錄</button>
                     </div>
-                    <div class="overflow-x-auto no-scrollbar"><table class="w-full text-left border-collapse text-xs md:text-sm whitespace-nowrap"><thead><tr class="bg-slate-50 text-slate-500 border-b border-slate-200 font-bold"><th class="p-2 md:p-3">項目</th><th class="p-2 md:p-3">代墊</th><th class="p-2 md:p-3 text-right">金額</th><th class="p-2 md:p-3 text-center">操作</th></tr></thead><tbody id="budget-list" class="divide-y divide-slate-100"></tbody></table></div>
+                    <div class="overflow-x-auto no-scrollbar"><table class="w-full text-left border-collapse text-xs md:text-sm whitespace-nowrap"><thead><tr class="bg-slate-50 text-slate-500 border-b border-slate-200 font-bold"><th class="p-2 md:p-3">項目</th><th class="p-2 md:p-3">代墊</th><th class="p-2 md:p-3">分帳對象</th><th class="p-2 md:p-3 text-right">金額</th><th class="p-2 md:p-3 text-center">操作</th></tr></thead><tbody id="budget-list" class="divide-y divide-slate-100"></tbody></table></div>
                 </div>
             </div>
         </div>
@@ -422,6 +489,9 @@
                 payer: '代墊',
                 amount: '金額',
                 action: '操作',
+                splitWith: '分帳對象',
+                splitWithDefault: '所有成員',
+                budgetSplitHint: '例如：五人團中只有中偉、聖聖、Ryan 去吃飯，就填：中偉, 聖聖, Ryan。留空則所有旅伴平均分攤。',
                 perPerson: amount => `每人平均分攤：$${amount}`,
                 noExpense: '無開銷',
                 receive: amount => `收 $${amount}`,
@@ -435,7 +505,7 @@
                 confirmCreate: '確認建立',
                 placeholders: {
                     companion: '如: 聖聖', eventDay: '日期(7/5)', eventTitle: '做什麼？(例如：吃海鮮大餐)', eventNote: '備註 (選填)',
-                    checklistText: '物品或待辦事項，例如：訂餐廳、防風外套', checklistDay: '提醒日 7/4', budgetTitle: '花費項目', budgetAmount: '金額', budgetPayer: '代墊人', tripName: '行程目的地', tripDates: '日期區間'
+                    checklistText: '物品或待辦事項，例如：訂餐廳、防風外套', checklistDay: '提醒日 7/4', budgetTitle: '花費項目', budgetAmount: '金額', budgetPayer: '代墊人', budgetSplitWith: '分帳對象，留空=所有人', tripName: '行程目的地', tripDates: '日期區間'
                 }
             },
             en: {
@@ -487,6 +557,9 @@
                 payer: 'Payer',
                 amount: 'Amount',
                 action: 'Action',
+                splitWith: 'Split with',
+                splitWithDefault: 'All members',
+                budgetSplitHint: 'Example: for a 5-person trip, if only Will, Sheng, and Ryan ate together, enter: Will, Sheng, Ryan. Leave blank to split with all trip members.',
                 perPerson: amount => `Per person: $${amount}`,
                 noExpense: 'No expense yet',
                 receive: amount => `Receive $${amount}`,
@@ -500,7 +573,7 @@
                 confirmCreate: 'Create',
                 placeholders: {
                     companion: 'e.g. Sheng', eventDay: 'Date (7/5)', eventTitle: 'What to do? e.g. Seafood dinner', eventNote: 'Notes (optional)',
-                    checklistText: 'Item or task, e.g. book restaurant, windbreaker', checklistDay: 'Reminder 7/4', budgetTitle: 'Expense item', budgetAmount: 'Amount', budgetPayer: 'Payer', tripName: 'Destination', tripDates: 'Date range'
+                    checklistText: 'Item or task, e.g. book restaurant, windbreaker', checklistDay: 'Reminder 7/4', budgetTitle: 'Expense item', budgetAmount: 'Amount', budgetPayer: 'Payer', budgetSplitWith: 'Split with, blank = everyone', tripName: 'Destination', tripDates: 'Date range'
                 }
             }
         };
@@ -541,6 +614,8 @@
             setPlaceholder('budget-title', tr('placeholders.budgetTitle'));
             setPlaceholder('budget-amount', tr('placeholders.budgetAmount'));
             setPlaceholder('budget-payer', tr('placeholders.budgetPayer'));
+            setPlaceholder('budget-split-with', tr('placeholders.budgetSplitWith'));
+            setTextById('budget-split-hint', tr('budgetSplitHint'));
             setPlaceholder('new-trip-name', tr('placeholders.tripName'));
             setPlaceholder('new-trip-dates', tr('placeholders.tripDates'));
             const weatherLabel = document.querySelector('#module-timeline h3.text-\[10px\]'); if (weatherLabel) weatherLabel.textContent = tr('weatherTitle');
@@ -585,8 +660,9 @@
                 const th = budgetTables[1].querySelectorAll('thead th');
                 if (th[0]) th[0].textContent = tr('item');
                 if (th[1]) th[1].textContent = tr('payer');
-                if (th[2]) th[2].textContent = tr('amount');
-                if (th[3]) th[3].textContent = tr('action');
+                if (th[2]) th[2].textContent = tr('splitWith');
+                if (th[3]) th[3].textContent = tr('amount');
+                if (th[4]) th[4].textContent = tr('action');
             }
 
             if (shouldRender) { renderSidebar(); renderItinerary(); renderChecklist(); renderBudget(); }
@@ -1254,41 +1330,131 @@
         // --- 預算分帳 (沿用完美版) ---
         let editingBudgetId = null;
 
+        function getTripMembers() {
+            const inputNames = document.getElementById('companionInput').value.trim();
+            const members = [];
+            if (inputNames) {
+                inputNames.split(/[,，]/).forEach(name => {
+                    const clean = name.trim();
+                    if (clean && !members.includes(clean)) members.push(clean);
+                });
+            }
+            if (members.length === 0) members.push('我');
+            return members;
+        }
+
+        function parseBudgetSplitWith(value) {
+            if (Array.isArray(value)) return value.map(v => String(v).trim()).filter(Boolean);
+            return String(value || '')
+                .split(/[,，]/)
+                .map(v => v.trim())
+                .filter(Boolean);
+        }
+
+        function getBudgetSplitMembers(item, baseMembers) {
+            const selected = parseBudgetSplitWith(item.splitWith);
+            return selected.length ? selected : [...baseMembers];
+        }
+
         function renderBudget() {
-            const list = document.getElementById('budget-list'); const summaryTable = document.getElementById('member-summary-list');
-            list.innerHTML = ''; summaryTable.innerHTML = ''; const items = budgets[currentTripKey] || [];
-            let participants = new Set(); const inputNames = document.getElementById('companionInput').value.trim();
-            if (inputNames) inputNames.split(',').forEach(n => { if(n.trim()) participants.add(n.trim()); });
-            if (participants.size === 0) participants.add("我");
-            let totalAmount = 0; let paidByPerson = {}; participants.forEach(p => paidByPerson[p] = 0);
+            const list = document.getElementById('budget-list');
+            const summaryTable = document.getElementById('member-summary-list');
+            list.innerHTML = '';
+            summaryTable.innerHTML = '';
+
+            const items = budgets[currentTripKey] || [];
+            const baseMembers = getTripMembers();
+            let participants = new Set(baseMembers);
+            let totalAmount = 0;
+            let paidByPerson = {};
+            let shareByPerson = {};
+
+            function ensurePerson(person) {
+                if (!person) return;
+                participants.add(person);
+                if (!paidByPerson[person]) paidByPerson[person] = 0;
+                if (!shareByPerson[person]) shareByPerson[person] = 0;
+            }
+
+            baseMembers.forEach(ensurePerson);
 
             items.forEach(item => {
-                totalAmount += item.amount; const payer = item.payer ? item.payer.trim() : "我"; participants.add(payer);
-                paidByPerson[payer] = (paidByPerson[payer] || 0) + item.amount;
-                list.innerHTML += `<tr><td class="p-2 md:p-3 font-medium text-slate-700">${item.title}</td><td class="p-2 md:p-3"><span class="bg-blue-50 text-blue-700 font-bold px-1.5 py-0.5 rounded text-[10px] md:text-xs">${payer}</span></td><td class="p-2 md:p-3 text-right font-bold text-slate-900">$${item.amount.toLocaleString()}</td><td class="p-2 md:p-3 text-center whitespace-nowrap"><button onclick="editBudgetItem(${item.id})" class="text-slate-300 hover:text-amber-500 px-1" title="編輯"><i class="fa-solid fa-pen"></i></button><button onclick="deleteBudgetItem(${item.id})" class="text-slate-300 hover:text-red-500 px-1" title="刪除"><i class="fa-solid fa-trash-can"></i></button></td></tr>`;
+                const amount = Number(item.amount) || 0;
+                const payer = item.payer ? item.payer.trim() : '我';
+                let splitMembers = getBudgetSplitMembers(item, baseMembers);
+                if (splitMembers.length === 0) splitMembers = [payer];
+
+                ensurePerson(payer);
+                splitMembers.forEach(ensurePerson);
+
+                totalAmount += amount;
+                paidByPerson[payer] = (paidByPerson[payer] || 0) + amount;
+
+                const eachShare = splitMembers.length > 0 ? amount / splitMembers.length : 0;
+                splitMembers.forEach(member => {
+                    shareByPerson[member] = (shareByPerson[member] || 0) + eachShare;
+                });
+
+                const splitLabel = parseBudgetSplitWith(item.splitWith).length
+                    ? splitMembers.join(', ')
+                    : tr('splitWithDefault');
+
+                list.innerHTML += `<tr>
+                    <td class="p-2 md:p-3 font-medium text-slate-700">${escapeHTML(item.title)}</td>
+                    <td class="p-2 md:p-3"><span class="bg-blue-50 text-blue-700 font-bold px-1.5 py-0.5 rounded text-[10px] md:text-xs">${escapeHTML(payer)}</span></td>
+                    <td class="p-2 md:p-3 text-slate-500 text-xs md:text-sm max-w-[180px] whitespace-normal">${escapeHTML(splitLabel)}</td>
+                    <td class="p-2 md:p-3 text-right font-bold text-slate-900">$${amount.toLocaleString()}</td>
+                    <td class="p-2 md:p-3 text-center whitespace-nowrap">
+                        <button onclick="editBudgetItem(${item.id})" class="text-slate-300 hover:text-amber-500 px-1" title="編輯"><i class="fa-solid fa-pen"></i></button>
+                        <button onclick="deleteBudgetItem(${item.id})" class="text-slate-300 hover:text-red-500 px-1" title="刪除"><i class="fa-solid fa-trash-can"></i></button>
+                    </td>
+                </tr>`;
             });
 
-            const totalMembers = participants.size; const perPersonShare = totalMembers > 0 ? (totalAmount / totalMembers) : 0;
             document.getElementById('budget-total').innerText = '$' + Math.round(totalAmount).toLocaleString();
-            document.getElementById('budget-per-capita').innerText = tr('perPerson', Math.round(perPersonShare).toLocaleString());
+            document.getElementById('budget-per-capita').innerText = currentLang === 'zh' ? '依每筆分帳對象計算' : 'Calculated by each expense split group';
 
-            if (totalAmount === 0) { document.getElementById('budget-settlement').innerHTML = `<span class="text-blue-100 text-sm">${tr('noExpense')}</span>`; return; }
+            if (totalAmount === 0) {
+                document.getElementById('budget-settlement').innerHTML = `<span class="text-blue-100 text-sm">${tr('noExpense')}</span>`;
+                return;
+            }
+
             let balances = {};
-            participants.forEach(member => {
-                const paid = paidByPerson[member] || 0; const net = paid - perPersonShare; balances[member] = net;
-                let statusHTML = net > 0.01 ? `<span class="text-emerald-600 font-bold">${tr('receive', Math.round(net).toLocaleString())}</span>` : net < -0.01 ? `<span class="text-red-500 font-bold">${tr('pay', Math.round(Math.abs(net)).toLocaleString())}</span>` : `<span class="text-slate-400">${tr('settled')}</span>`;
-                summaryTable.innerHTML += `<tr><td class="p-2 md:p-3 font-semibold text-slate-700">${member}</td><td class="p-2 md:p-3 text-right text-slate-600">$${Math.round(paid).toLocaleString()}</td><td class="p-2 md:p-3 text-right text-slate-600">$${Math.round(perPersonShare).toLocaleString()}</td><td class="p-2 md:p-3 text-right">${statusHTML}</td></tr>`;
+            [...participants].forEach(member => {
+                const paid = paidByPerson[member] || 0;
+                const share = shareByPerson[member] || 0;
+                const net = paid - share;
+                balances[member] = net;
+                let statusHTML = net > 0.01
+                    ? `<span class="text-emerald-600 font-bold">${tr('receive', Math.round(net).toLocaleString())}</span>`
+                    : net < -0.01
+                        ? `<span class="text-red-500 font-bold">${tr('pay', Math.round(Math.abs(net)).toLocaleString())}</span>`
+                        : `<span class="text-slate-400">${tr('settled')}</span>`;
+                summaryTable.innerHTML += `<tr>
+                    <td class="p-2 md:p-3 font-semibold text-slate-700">${escapeHTML(member)}</td>
+                    <td class="p-2 md:p-3 text-right text-slate-600">$${Math.round(paid).toLocaleString()}</td>
+                    <td class="p-2 md:p-3 text-right text-slate-600">$${Math.round(share).toLocaleString()}</td>
+                    <td class="p-2 md:p-3 text-right">${statusHTML}</td>
+                </tr>`;
             });
 
             let debtors = [], creditors = [];
             for (const [person, netBalance] of Object.entries(balances)) {
-                if (netBalance < -0.01) debtors.push({ person, amount: Math.abs(netBalance) }); else if (netBalance > 0.01) creditors.push({ person, amount: netBalance });
+                if (netBalance < -0.01) debtors.push({ person, amount: Math.abs(netBalance) });
+                else if (netBalance > 0.01) creditors.push({ person, amount: netBalance });
             }
+
             let settlementText = '', i = 0, j = 0;
             while (i < debtors.length && j < creditors.length) {
                 let d = debtors[i], c = creditors[j], amountToPay = Math.min(d.amount, c.amount);
-                settlementText += `<div class="flex justify-between items-center bg-white/10 px-3 py-1.5 rounded border border-white/10 text-xs md:text-sm"><span><b>${d.person}</b> 給 <b>${c.person}</b></span><span class="font-black text-yellow-200">$${Math.round(amountToPay).toLocaleString()}</span></div>`;
-                d.amount -= amountToPay; c.amount -= amountToPay; if (d.amount < 0.01) i++; if (c.amount < 0.01) j++;
+                const payerText = currentLang === 'zh'
+                    ? `<b>${escapeHTML(d.person)}</b> 給 <b>${escapeHTML(c.person)}</b>`
+                    : `<b>${escapeHTML(d.person)}</b> pays <b>${escapeHTML(c.person)}</b>`;
+                settlementText += `<div class="flex justify-between items-center bg-white/10 px-3 py-1.5 rounded border border-white/10 text-xs md:text-sm"><span>${payerText}</span><span class="font-black text-yellow-200">$${Math.round(amountToPay).toLocaleString()}</span></div>`;
+                d.amount -= amountToPay;
+                c.amount -= amountToPay;
+                if (d.amount < 0.01) i++;
+                if (c.amount < 0.01) j++;
             }
             document.getElementById('budget-settlement').innerHTML = settlementText || tr('noDebt');
         }
@@ -1298,6 +1464,7 @@
             document.getElementById('budget-title').value = '';
             document.getElementById('budget-amount').value = '';
             document.getElementById('budget-payer').value = '';
+            document.getElementById('budget-split-with').value = '';
 
             const btn = document.getElementById('submit-budget-btn');
             if (btn) {
@@ -1322,6 +1489,7 @@
             document.getElementById('budget-title').value = item.title || '';
             document.getElementById('budget-amount').value = item.amount || '';
             document.getElementById('budget-payer').value = item.payer || '';
+            document.getElementById('budget-split-with').value = parseBudgetSplitWith(item.splitWith).join(', ');
 
             const btn = document.getElementById('submit-budget-btn');
             if (btn) {
@@ -1338,7 +1506,8 @@
             const title = document.getElementById('budget-title').value.trim();
             const amount = parseFloat(document.getElementById('budget-amount').value);
             const payer = document.getElementById('budget-payer').value.trim() || '我';
-            if (!title || isNaN(amount)) return alert('輸入不完整');
+            const splitWith = document.getElementById('budget-split-with').value.trim();
+            if (!title || isNaN(amount)) return alert(currentLang === 'zh' ? '輸入不完整' : 'Please complete the expense item and amount.');
 
             if (!budgets[currentTripKey]) budgets[currentTripKey] = [];
 
@@ -1348,10 +1517,11 @@
                     item.title = title;
                     item.amount = amount;
                     item.payer = payer;
+                    item.splitWith = splitWith;
                     item.updatedAt = Date.now();
                 }
             } else {
-                budgets[currentTripKey].push({ id: Date.now(), title, amount, payer, createdAt: Date.now(), updatedAt: Date.now() });
+                budgets[currentTripKey].push({ id: Date.now(), title, amount, payer, splitWith, createdAt: Date.now(), updatedAt: Date.now() });
             }
 
             localStorage.setItem('tripBudgetsV6', JSON.stringify(budgets));
@@ -1428,7 +1598,7 @@
             document.getElementById('tab-'+m).classList.add('text-blue-600', 'border-b-2', 'font-bold'); 
         }
 
-        renderSidebar(); initCurrentTripData();
+        applyLanguage(false); renderSidebar(); initCurrentTripData();
     </script>
 </body>
 </html>
