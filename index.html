@@ -89,7 +89,27 @@
             <button class="py-4 hover:text-blue-600 transition-colors">預算與分帳</button>
         </div>
 
-        <div class="flex-1 overflow-y-auto p-8">
+        <div class="flex-1 overflow-y-auto p-8 space-y-6">
+            
+            <div class="bg-white rounded-xl shadow-sm border border-slate-200 p-6 flex items-center justify-between">
+                <div>
+                    <h3 class="text-sm font-bold text-slate-500 uppercase tracking-wider mb-1">當地即時天氣 (峇里島)</h3>
+                    <div class="flex items-end space-x-2">
+                        <span id="temp-display" class="text-4xl font-extrabold text-slate-700">--°C</span>
+                        <span id="weather-desc" class="text-lg font-medium text-slate-500 mb-1">載入中...</span>
+                    </div>
+                </div>
+                <div class="text-5xl text-blue-400" id="weather-icon">
+                    <i class="fa-solid fa-cloud-arrow-down animate-bounce"></i>
+                </div>
+            </div>
+
+            <div class="bg-slate-50 rounded-xl border border-dashed border-slate-300 p-8 text-center text-slate-500">
+                <i class="fa-solid fa-map-location-dot text-3xl mb-3 text-slate-300"></i>
+                <h3 class="text-sm font-bold text-slate-600">地圖與路線規劃模組 (準備中)</h3>
+            </div>
+            
+        </div>
             <div class="bg-white rounded-xl shadow-sm border border-slate-200 p-8 text-center text-slate-500 mt-10 hover:shadow-md transition-shadow">
                 <i class="fa-solid fa-hammer text-4xl mb-4 text-slate-300"></i>
                 <h3 class="text-lg font-bold text-slate-700">準備打造核心模組</h3>
@@ -112,6 +132,41 @@
         function saveCompanion(value) {
             localStorage.setItem('currentTripCompanion', value);
         }
+        // --- 即時天氣 API 串接 ---
+        async function fetchWeather() {
+            try {
+                // 呼叫 Open-Meteo API (座標設定為峇里島)
+                const response = await fetch('https://api.open-meteo.com/v1/forecast?latitude=-8.4095&longitude=115.1889&current_weather=true');
+                const data = await response.json();
+                
+                const temp = data.current_weather.temperature;
+                const weatherCode = data.current_weather.weathercode;
+                
+                // 更新畫面上的溫度
+                document.getElementById('temp-display').innerText = `${temp}°C`;
+                
+                // 簡單的天氣代碼判斷 (0是晴天，1-3是多雲，其他視為下雨)
+                const descElement = document.getElementById('weather-desc');
+                const iconElement = document.getElementById('weather-icon');
+                
+                if (weatherCode === 0) {
+                    descElement.innerText = '晴朗無雲';
+                    iconElement.innerHTML = '<i class="fa-solid fa-sun text-yellow-400"></i>';
+                } else if (weatherCode <= 3) {
+                    descElement.innerText = '多雲時晴';
+                    iconElement.innerHTML = '<i class="fa-solid fa-cloud-sun text-slate-400"></i>';
+                } else {
+                    descElement.innerText = '有降雨機率';
+                    iconElement.innerHTML = '<i class="fa-solid fa-cloud-showers-heavy text-blue-400"></i>';
+                }
+            } catch (error) {
+                console.error("天氣抓取失敗", error);
+                document.getElementById('weather-desc').innerText = '天氣更新失敗';
+            }
+        }
+
+        // 網頁載入時自動抓取天氣
+        fetchWeather();
     </script>
 </body>
 </html>
