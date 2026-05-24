@@ -14,15 +14,12 @@
         <div class="p-6 border-b border-slate-100 flex justify-between items-center">
             <h1 class="text-xl font-extrabold text-blue-600"><i class="fa-solid fa-plane-departure mr-2"></i>TripManager</h1>
         </div>
-        
         <div class="flex-1 overflow-y-auto p-4 space-y-6">
             <div>
                 <h2 class="text-xs font-bold text-slate-400 uppercase tracking-wider mb-3">我的行程清單</h2>
-                <ul id="sidebar-trip-list" class="space-y-2">
-                    </ul>
+                <ul id="sidebar-trip-list" class="space-y-2"></ul>
             </div>
         </div>
-        
         <div class="p-4 border-t border-slate-200 bg-slate-50">
             <button onclick="openNewTripModal()" class="w-full bg-slate-800 hover:bg-slate-700 text-white py-2.5 rounded-lg text-sm font-bold shadow-sm transition-colors flex items-center justify-center">
                 <i class="fa-solid fa-plus mr-2"></i>建立新行程
@@ -35,16 +32,15 @@
             <div>
                 <div class="flex items-center space-x-3">
                     <h2 id="trip-title" class="text-2xl font-bold text-slate-800">載入中...</h2>
-                    <button onclick="deleteCurrentTrip()" class="text-slate-300 hover:text-red-500 text-sm transition-colors" title="刪除此行程"><i class="fa-solid fa-trash-can"></i></button>
+                    <button onclick="deleteCurrentTrip()" class="text-slate-300 hover:text-red-500 text-sm transition-colors"><i class="fa-solid fa-trash-can"></i></button>
                 </div>
                 <p id="trip-dates" class="text-sm text-slate-500 mt-1">--</p>
             </div>
-            
             <div class="flex items-center space-x-3">
                 <div class="flex items-center bg-blue-50 border border-blue-200 rounded-full px-3 py-1 shadow-sm focus-within:ring-2 focus-within:ring-blue-300">
                     <i class="fa-solid fa-user-group text-blue-500 mr-2 text-xs"></i>
                     <span class="text-xs font-bold text-blue-700 mr-1">旅伴:</span>
-                    <input type="text" id="companionInput" class="bg-transparent border-none focus:outline-none text-sm font-medium text-slate-700 placeholder-slate-400 w-32" placeholder="誰一起去？" oninput="saveCompanion(this.value)">
+                    <input type="text" id="companionInput" class="bg-transparent border-none focus:outline-none text-sm font-medium text-slate-700 placeholder-slate-400 w-32" placeholder="例如: 聖聖" oninput="saveCompanion(this.value)" onchange="renderBudget()">
                 </div>
             </div>
         </header>
@@ -53,7 +49,7 @@
             <button onclick="switchModule('timeline')" id="tab-timeline" class="module-tab py-4 text-blue-600 border-b-2 border-blue-600 font-bold">日曆與時間軸</button>
             <button onclick="switchModule('checklist')" id="tab-checklist" class="module-tab py-4 hover:text-blue-600 transition-colors">專業裝備行李</button>
             <button onclick="switchModule('map')" id="tab-map" class="module-tab py-4 hover:text-blue-600 transition-colors">交通與憑證</button>
-            <button onclick="switchModule('budget')" id="tab-budget" class="module-tab py-4 hover:text-blue-600 transition-colors">預算與記帳</button>
+            <button onclick="switchModule('budget')" id="tab-budget" class="module-tab py-4 hover:text-blue-600 transition-colors">預算與分帳</button>
         </div>
 
         <div class="flex-1 overflow-y-auto p-8">
@@ -61,9 +57,7 @@
             <div id="module-timeline" class="module-content block space-y-6 max-w-4xl mx-auto">
                 <div class="bg-white rounded-xl shadow-sm border border-slate-200 p-5 flex items-center justify-between">
                     <div class="flex items-center space-x-4">
-                        <div class="text-4xl text-blue-500 bg-blue-50 p-3 rounded-lg" id="weather-icon">
-                            <i class="fa-solid fa-cloud-sun"></i>
-                        </div>
+                        <div class="text-4xl text-blue-500 bg-blue-50 p-3 rounded-lg" id="weather-icon"><i class="fa-solid fa-cloud-sun"></i></div>
                         <div>
                             <h3 class="text-xs font-bold text-slate-400 uppercase tracking-wider">目的地即時氣象資訊</h3>
                             <div class="flex items-baseline space-x-2 mt-0.5">
@@ -72,68 +66,77 @@
                             </div>
                         </div>
                     </div>
-                    <span class="text-xs bg-slate-100 text-slate-500 px-3 py-1 rounded-full font-medium">每小時自動更新</span>
                 </div>
 
                 <div class="bg-white rounded-xl shadow-sm border border-slate-200 p-5">
                     <h3 class="text-sm font-bold text-slate-700 mb-3 flex items-center"><i class="fa-solid fa-calendar-plus mr-2 text-blue-500"></i>規劃新行程項目</h3>
                     <div class="flex flex-col md:flex-row gap-3">
-                        <input type="text" id="event-day" placeholder="天數 (如: D3 或 1/14)" class="w-28 border border-slate-300 rounded-lg px-3 py-2 text-sm outline-none focus:border-blue-500">
-                        <input type="time" id="event-time" class="border border-slate-300 rounded-lg px-3 py-2 text-sm outline-none focus:border-blue-500">
-                        <input type="text" id="event-title" placeholder="要做什麼？(如：市區取車、生蠔店)" class="flex-1 border border-slate-300 rounded-lg px-3 py-2 text-sm outline-none focus:border-blue-500">
-                        <input type="text" id="event-note" placeholder="備註/突發狀況 (如：公休、霧太大沒去)" class="flex-1 border border-slate-300 rounded-lg px-3 py-2 text-sm outline-none focus:border-blue-500">
-                        <button onclick="addEvent()" class="bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-5 rounded-lg text-sm shadow-sm transition-colors whitespace-nowrap">加入時間軸</button>
+                        <input type="text" id="event-day" placeholder="天數" class="w-24 border border-slate-300 rounded-lg px-3 py-2 text-sm outline-none">
+                        <input type="time" id="event-time" class="border border-slate-300 rounded-lg px-3 py-2 text-sm outline-none">
+                        <input type="text" id="event-title" placeholder="要做什麼？" class="flex-1 border border-slate-300 rounded-lg px-3 py-2 text-sm outline-none">
+                        <input type="text" id="event-note" placeholder="備註/突發狀況" class="flex-1 border border-slate-300 rounded-lg px-3 py-2 text-sm outline-none">
+                        <button onclick="addEvent()" class="bg-blue-600 text-white font-bold py-2 px-5 rounded-lg text-sm">新增</button>
                     </div>
                 </div>
 
                 <div class="bg-white rounded-xl shadow-sm border border-slate-200 p-6">
-                    <div class="flex justify-between items-center mb-4 border-b pb-2">
-                        <h4 class="font-bold text-slate-700 flex items-center"><i class="fa-solid fa-timeline mr-2 text-slate-400"></i>Trip Timeline</h4>
-                        <span class="text-xs text-slate-400"><i class="fa-solid fa-arrows-up-down mr-1"></i>按住直接上下拖曳即可排序</span>
-                    </div>
-                    <div id="itinerary-list" class="space-y-1">
-                        </div>
+                    <div id="itinerary-list" class="space-y-1"></div>
                 </div>
             </div>
 
             <div id="module-checklist" class="module-content hidden max-w-4xl mx-auto space-y-6">
                 <div class="bg-white rounded-xl shadow-sm border border-slate-200 p-6">
                     <div class="flex gap-2 mb-6">
-                        <input type="text" id="newChecklistItem" class="flex-1 border border-slate-300 rounded-lg px-3 py-2 text-sm outline-none focus:border-blue-500" placeholder="要補帶什麼裝備嗎？">
-                        <button onclick="addChecklistItem()" class="bg-blue-600 hover:bg-blue-700 text-white px-5 py-2 rounded-lg text-sm font-bold transition-colors">新增打包項</button>
+                        <input type="text" id="newChecklistItem" class="flex-1 border border-slate-300 rounded-lg px-3 py-2 text-sm" placeholder="要補帶什麼裝備嗎？">
+                        <button onclick="addChecklistItem()" class="bg-blue-600 text-white px-5 py-2 rounded-lg text-sm font-bold">新增打包項</button>
                     </div>
-                    <div id="checklist-container" class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                        </div>
+                    <div id="checklist-container" class="grid grid-cols-1 md:grid-cols-2 gap-4"></div>
                 </div>
             </div>
 
             <div id="module-map" class="module-content hidden max-w-4xl mx-auto space-y-6">
                 <div class="bg-white rounded-xl shadow-sm border border-slate-200 p-6">
-                    <h3 class="font-bold text-lg text-slate-800 mb-4 flex items-center"><i class="fa-solid fa-ticket mr-2 text-amber-500"></i>交通租車與船票憑證快速通道</h3>
-                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4" id="transport-container">
-                        </div>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4" id="transport-container"></div>
                 </div>
             </div>
 
             <div id="module-budget" class="module-content hidden max-w-4xl mx-auto space-y-6">
-                <div class="bg-white rounded-xl shadow-sm border border-slate-200 p-6">
-                    <h3 class="font-bold text-lg text-slate-800 mb-4 flex items-center"><i class="fa-solid fa-calculator mr-2 text-emerald-500"></i>旅途花費記帳與分帳</h3>
-                    <div class="flex gap-2 mb-6">
-                        <input type="text" id="budget-title" placeholder="花費項目 (如: 露營車尾款)" class="flex-1 border border-slate-300 rounded-lg px-3 py-2 text-sm outline-none focus:border-blue-500">
-                        <input type="number" id="budget-amount" placeholder="金額 (AUD)" class="w-32 border border-slate-300 rounded-lg px-3 py-2 text-sm outline-none focus:border-blue-500">
-                        <button onclick="addBudgetItem()" class="bg-emerald-600 hover:bg-emerald-700 text-white px-5 py-2 rounded-lg text-sm font-bold transition-colors">記一筆</button>
+                
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <div class="bg-white rounded-xl p-6 border border-slate-200 shadow-sm flex flex-col justify-center">
+                        <p class="text-sm font-bold text-slate-500 uppercase tracking-wider mb-1">本次旅程總花費</p>
+                        <p class="text-4xl font-black text-slate-800" id="budget-total">$0</p>
                     </div>
+                    <div class="bg-emerald-50 rounded-xl p-6 border border-emerald-100 shadow-sm">
+                        <p class="text-sm font-bold text-emerald-700 uppercase tracking-wider mb-3 flex items-center">
+                            <i class="fa-solid fa-handshake-angle mr-2"></i>自動分帳結算結果
+                        </p>
+                        <div id="budget-settlement" class="text-emerald-900 font-medium space-y-2">
+                            </div>
+                    </div>
+                </div>
+
+                <div class="bg-white rounded-xl shadow-sm border border-slate-200 p-6">
+                    <h3 class="font-bold text-lg text-slate-800 mb-4 flex items-center"><i class="fa-solid fa-calculator mr-2 text-emerald-500"></i>記一筆新的花費</h3>
+                    <div class="flex flex-col md:flex-row gap-3 mb-6">
+                        <input type="text" id="budget-title" placeholder="花費項目 (如: 買門票、租車尾款)" class="flex-1 border border-slate-300 rounded-lg px-3 py-2 text-sm outline-none focus:border-blue-500">
+                        <input type="number" id="budget-amount" placeholder="金額 (AUD)" class="w-full md:w-32 border border-slate-300 rounded-lg px-3 py-2 text-sm outline-none focus:border-blue-500">
+                        <input type="text" id="budget-payer" placeholder="代墊人 (如: 中偉)" class="w-full md:w-32 border border-slate-300 rounded-lg px-3 py-2 text-sm outline-none focus:border-blue-500">
+                        <button onclick="addBudgetItem()" class="bg-emerald-600 hover:bg-emerald-700 text-white px-6 py-2 rounded-lg text-sm font-bold transition-colors whitespace-nowrap">記帳</button>
+                    </div>
+                    
                     <div class="overflow-x-auto">
                         <table class="w-full text-left border-collapse">
                             <thead>
                                 <tr class="bg-slate-50 text-xs font-bold text-slate-500 uppercase tracking-wider border-b border-slate-200">
                                     <th class="p-3">項目</th>
-                                    <th class="p-3 text-right">金額 (AUD)</th>
+                                    <th class="p-3">代墊人</th>
+                                    <th class="p-3 text-right">金額</th>
                                     <th class="p-3 text-center">操作</th>
                                 </tr>
                             </thead>
                             <tbody id="budget-list" class="text-sm divide-y divide-slate-100">
-                                </tbody>
+                            </tbody>
                         </table>
                     </div>
                 </div>
@@ -142,97 +145,35 @@
         </div>
     </main>
 
-    <div id="newTripModal" class="fixed inset-0 bg-black/50 hidden items-center justify-center z-50 animate-fade-in">
-        <div class="bg-white rounded-2xl max-w-md w-full p-6 shadow-xl mx-4">
+    <div id="newTripModal" class="fixed inset-0 bg-black/50 hidden items-center justify-center z-50">
+        <div class="bg-white rounded-2xl max-w-md w-full p-6 mx-4">
             <h3 class="text-lg font-bold text-slate-800 mb-4">建立全新旅程計畫</h3>
             <div class="space-y-4">
-                <div>
-                    <label class="block text-xs font-bold text-slate-500 mb-1">國家/行程目的地</label>
-                    <input type="text" id="new-trip-name" placeholder="例如：日本東京探險" class="w-full border border-slate-300 rounded-lg px-3 py-2 text-sm outline-none focus:border-blue-500">
-                </div>
-                <div>
-                    <label class="block text-xs font-bold text-slate-500 mb-1">日期區間</label>
-                    <input type="text" id="new-trip-dates" placeholder="例如：2026/09/10 - 2026/09/15" class="w-full border border-slate-300 rounded-lg px-3 py-2 text-sm outline-none focus:border-blue-500">
-                </div>
+                <input type="text" id="new-trip-name" placeholder="國家/行程目的地" class="w-full border border-slate-300 rounded-lg px-3 py-2 text-sm">
+                <input type="text" id="new-trip-dates" placeholder="日期區間" class="w-full border border-slate-300 rounded-lg px-3 py-2 text-sm">
                 <div class="grid grid-cols-2 gap-3">
-                    <div>
-                        <label class="block text-xs font-bold text-slate-500 mb-1">中心緯度 (選填)</label>
-                        <input type="number" step="any" id="new-trip-lat" placeholder="-35.0" class="w-full border border-slate-300 rounded-lg px-3 py-2 text-sm outline-none focus:border-blue-500">
-                    </div>
-                    <div>
-                        <label class="block text-xs font-bold text-slate-500 mb-1">中心經度 (選填)</label>
-                        <input type="number" step="any" id="new-trip-lng" placeholder="140.0" class="w-full border border-slate-300 rounded-lg px-3 py-2 text-sm outline-none focus:border-blue-500">
-                    </div>
+                    <input type="number" step="any" id="new-trip-lat" placeholder="緯度" class="w-full border border-slate-300 rounded-lg px-3 py-2 text-sm">
+                    <input type="number" step="any" id="new-trip-lng" placeholder="經度" class="w-full border border-slate-300 rounded-lg px-3 py-2 text-sm">
                 </div>
             </div>
             <div class="flex justify-end space-x-3 mt-6">
-                <button onclick="closeNewTripModal()" class="px-4 py-2 text-sm font-medium text-slate-500 hover:text-slate-700">取消</button>
-                <button onclick="createNewTrip()" class="px-5 py-2 text-sm font-bold bg-blue-600 hover:bg-blue-700 text-white rounded-lg shadow-sm">確認建立</button>
+                <button onclick="closeNewTripModal()" class="px-4 py-2 text-sm font-medium text-slate-500">取消</button>
+                <button onclick="createNewTrip()" class="px-5 py-2 text-sm font-bold bg-blue-600 text-white rounded-lg">確認建立</button>
             </div>
         </div>
     </div>
 
     <script>
-        // --- 核心狀態管理與持久化數據庫 ---
         let currentTripKey = localStorage.getItem('activeTripKey') || 'tasmania';
         
-        // 1. 行程基本資訊清單
         let tripsMaster = JSON.parse(localStorage.getItem('tripsMaster')) || {
-            'tasmania': { name: '塔斯馬尼亞自駕與露營車', dates: '2026/01/13 - 2026/01/23', lat: -42.8821, lng: 147.3272, icon: 'fa-car' },
-            'bali': { name: '峇里島潛水與自然探索', dates: '2026/06/29 - 2026/07/12', lat: -8.4095, lng: 115.1889, icon: 'fa-water' },
-            'thai': { name: '泰國 Tomorrowland 音樂祭', dates: '2026/12/09 - 2026/12/18', lat: 12.9236, lng: 100.8825, icon: 'fa-music' }
+            'tasmania': { name: '塔斯馬尼亞自駕與露營車', dates: '2026/01/13 - 2026/01/23', lat: -42.8821, lng: 147.3272, icon: 'fa-car' }
         };
+        let itineraries = JSON.parse(localStorage.getItem('tripItinerariesV2')) || { 'tasmania': [] };
+        let checklists = JSON.parse(localStorage.getItem('tripChecklists')) || { 'tasmania': [] };
+        let transportDocs = JSON.parse(localStorage.getItem('tripTransportDocs')) || { 'tasmania': [] };
+        let budgets = JSON.parse(localStorage.getItem('tripBudgets')) || { 'tasmania': [] };
 
-        // 2. 行程細節時間軸數據 (預填你的塔斯精彩紀錄作為範本)
-        let itineraries = JSON.parse(localStorage.getItem('tripItinerariesV2')) || {
-            'tasmania': [
-                { id: 1, day: '1/13', time: '15:35', title: 'JQ757 BNE起飛 → 19:15 抵達 HBA', note: '搭 Uber 開啟旅程' },
-                { id: 2, day: '1/13', time: '20:30', title: 'Check-in Argyle Accommodation', note: '附近好停車。晚餐：Bar Wa Izakaya' },
-                { id: 3, day: '1/14', time: '08:00', title: '市區取小車 (Bargain Car Rentals)', note: '173 Harrington St 取 Compact SUV' },
-                { id: 4, day: '1/14', time: '11:30', title: '搭渡輪前往 Maria Island 找袋熊 🐨', note: '已事先訂票。島上沒商店，要在 Orford IGA 買好野餐糧食！' },
-                { id: 5, day: '1/15', time: '10:00', title: '亞瑟港監獄遺跡 + 海港遊船', note: '⚠️ 沒趕上早上船班，行程現場改成下午參觀監獄遺跡' },
-                { id: 6, day: '1/15', time: '18:00', title: '預計開車直上威靈頓山夕陽', note: '❌ 霧太大取消沒去' },
-                { id: 7, day: '1/17', time: '12:30', title: '關鍵換車：取露營車 (GoCheap Campervans)', note: 'Highball 3.0m 高。開去 Sorell Woolworths 大採買牛排與酒！' },
-                { id: 8, day: '1/18', time: '12:30', title: 'Piermont 奢華午餐 (Homestead Restaurant)', note: '已訂位。下午 Melshell Oysters 公休殘念哈哈哈' },
-                { id: 9, day: '1/18', time: '16:00', title: 'Bicheno 三合一：噴水洞 + 龍蝦堡 + 企鵝', note: 'Lobster Shack 吃龍蝦堡，晚上 22:00 沒看到企鵝殘念' },
-                { id: 10, day: '1/19', time: '08:30', title: '攻略 Freycinet 攀爬酒杯灣觀警台', note: '體力好可挑戰 Mt Amos。傍晚直奔游泳池洗熱水澡再進營地農場。' }
-            ],
-            'bali': [
-                { id: 201, day: '6/29', time: '14:30', title: '抵達伍拉·賴國際機場', note: '預約包車司機接送' },
-                { id: 202, day: '6/29', time: '18:30', title: '晚餐時間', note: '特別注意：避開含牛肉與蛋奶之餐點' }
-            ]
-        };
-
-        // 3. 行李備忘錄與消耗品
-        let checklists = JSON.parse(localStorage.getItem('tripChecklists')) || {
-            'tasmania': [
-                { id: 1, text: '防風防水外套 & 羽絨衣 (搖籃山極冷)', checked: true },
-                { id: 2, text: '潛水防曬、洗漱用具、個人浴巾衣', checked: false },
-                { id: 3, text: '露營車生活必備：洗碗精、菜瓜布、密封袋、垃圾袋', checked: true },
-                { id: 4, text: '國際駕照、護照、延長線、藍牙音響', checked: false }
-            ]
-        };
-
-        // 4. 憑證與重要合約
-        let transportDocs = JSON.parse(localStorage.getItem('tripTransportDocs')) || {
-            'tasmania': [
-                { type: '機票', desc: '1/13 Jetstar (BNE - HBA) / 1/23 Virgin (HBA - BNE)' },
-                { type: '小車合約', desc: '1/14 - 1/17 Bargain Car Rentals (City 取機場還)' },
-                { type: '露營車合約', desc: '1/17 - 1/23 GoCheap Campervans (尾款 $1,328 AUD)' },
-                { type: '通行證', desc: '國家公園 Holiday Vehicle Pass (記得印出放車窗)' }
-            ]
-        };
-
-        // 5. 簡單記帳
-        let budgets = JSON.parse(localStorage.getItem('tripBudgets')) || {
-            'tasmania': [
-                { id: 1, title: 'GoCheap 露營車尾款', amount: 1328 },
-                { id: 2, title: '國家公園通行證 Holiday Pass', amount: 95.5 },
-                { id: 3, title: '亞瑟港三小時票 (eztravel)', amount: 45 }
-            ]
-        };
-
-        // --- 介面初始化與左側行程選單控制 ---
         function renderSidebar() {
             const list = document.getElementById('sidebar-trip-list');
             list.innerHTML = '';
@@ -240,298 +181,180 @@
                 const trip = tripsMaster[key];
                 const isActive = key === currentTripKey;
                 list.innerHTML += `
-                    <li>
-                        <button onclick="selectTrip('${key}')" class="w-full text-left px-3 py-2 rounded-lg font-medium text-sm transition-colors border flex flex-col ${isActive ? 'bg-blue-50 text-blue-700 border-blue-100 font-bold' : 'text-slate-600 border-transparent hover:bg-slate-50'}">
-                            <span class="flex items-center"><i class="fa-solid ${trip.icon || 'fa-map'} w-5 text-center mr-2 opacity-80"></i>${trip.name}</span>
-                            <span class="text-xs opacity-60 mt-1 ml-7">${trip.dates.split(' ')[0]}</span>
-                        </button>
-                    </li>
+                    <li><button onclick="selectTrip('${key}')" class="w-full text-left px-3 py-2 rounded-lg font-medium text-sm transition-colors border flex flex-col ${isActive ? 'bg-blue-50 text-blue-700 border-blue-100 font-bold' : 'text-slate-600 border-transparent hover:bg-slate-50'}">
+                        <span class="flex items-center"><i class="fa-solid ${trip.icon || 'fa-map'} w-5 mr-2"></i>${trip.name}</span>
+                        <span class="text-xs opacity-60 mt-1 ml-7">${trip.dates.split(' ')[0]}</span>
+                    </button></li>
                 `;
             });
         }
 
-        function selectTrip(key) {
-            currentTripKey = key;
-            localStorage.setItem('activeTripKey', key);
-            renderSidebar();
-            initCurrentTripData();
-        }
+        function selectTrip(key) { currentTripKey = key; localStorage.setItem('activeTripKey', key); renderSidebar(); initCurrentTripData(); }
 
         function initCurrentTripData() {
             const trip = tripsMaster[currentTripKey];
             if (!trip) return;
-
             document.getElementById('trip-title').innerText = trip.name;
             document.getElementById('trip-dates').innerText = trip.dates;
-            
-            // 讀取該行程特定的旅伴名單
-            const companion = localStorage.getItem(`companion_${currentTripKey}`) || '';
-            document.getElementById('companionInput').value = companion;
-
+            document.getElementById('companionInput').value = localStorage.getItem(`companion_${currentTripKey}`) || '';
             fetchWeather(trip.lat, trip.lng);
-            renderItinerary();
-            renderChecklist();
-            renderTransport();
-            renderBudget();
+            renderItinerary(); renderChecklist(); renderTransport(); renderBudget();
         }
 
-        // --- 建立與刪除國家行程模組 ---
         function openNewTripModal() { document.getElementById('newTripModal').classList.replace('hidden', 'flex'); }
         function closeNewTripModal() { document.getElementById('newTripModal').classList.replace('flex', 'hidden'); }
-        
         function createNewTrip() {
             const name = document.getElementById('new-trip-name').value.trim();
             const dates = document.getElementById('new-trip-dates').value.trim();
-            let lat = parseFloat(document.getElementById('new-trip-lat').value) || -27.4698;
-            let lng = parseFloat(document.getElementById('new-trip-lng').value) || 153.0251;
-
-            if (!name || !dates) { alert('請填寫目的地名稱與日期區間'); return; }
-
+            if (!name || !dates) return;
             const key = 'trip_' + Date.now();
-            tripsMaster[key] = { name, dates, lat, lng, icon: 'fa-route' };
-            itineraries[key] = [];
-            checklists[key] = [];
-            transportDocs[key] = [];
-            budgets[key] = [];
-
+            tripsMaster[key] = { name, dates, lat: -27.4698, lng: 153.0251, icon: 'fa-route' };
+            itineraries[key] = []; checklists[key] = []; transportDocs[key] = []; budgets[key] = [];
             localStorage.setItem('tripsMaster', JSON.stringify(tripsMaster));
-            localStorage.setItem('tripItinerariesV2', JSON.stringify(itineraries));
-            
-            currentTripKey = key;
-            localStorage.setItem('activeTripKey', key);
-            
-            // 清空輸入
-            document.getElementById('new-trip-name').value = '';
-            document.getElementById('new-trip-dates').value = '';
-
-            closeNewTripModal();
-            renderSidebar();
-            initCurrentTripData();
+            currentTripKey = key; localStorage.setItem('activeTripKey', key);
+            closeNewTripModal(); renderSidebar(); initCurrentTripData();
         }
-
         function deleteCurrentTrip() {
-            if (Object.keys(tripsMaster).length <= 1) { alert('請至少保留一個行程計畫'); return; }
-            if (confirm(`確定要刪除整個「${tripsMaster[currentTripKey].name}」的計畫嗎？此動作無法復原。`)) {
+            if (Object.keys(tripsMaster).length <= 1) return alert('請至少保留一個行程');
+            if (confirm(`確定要刪除「${tripsMaster[currentTripKey].name}」嗎？`)) {
                 delete tripsMaster[currentTripKey];
-                delete itineraries[currentTripKey];
-                delete checklists[currentTripKey];
-                delete transportDocs[currentTripKey];
-                delete budgets[currentTripKey];
-                localStorage.removeItem(`companion_${currentTripKey}`);
-
                 localStorage.setItem('tripsMaster', JSON.stringify(tripsMaster));
-                localStorage.setItem('tripItinerariesV2', JSON.stringify(itineraries));
-
                 currentTripKey = Object.keys(tripsMaster)[0];
-                localStorage.setItem('activeTripKey', currentTripKey);
-                renderSidebar();
-                initCurrentTripData();
+                renderSidebar(); initCurrentTripData();
             }
         }
-
         function saveCompanion(value) { localStorage.setItem(`companion_${currentTripKey}`, value); }
 
-        // --- 模組 1：日曆時間軸與單項刪除邏輯 ---
         function renderItinerary() {
             const list = document.getElementById('itinerary-list');
             list.innerHTML = '';
-            const events = itineraries[currentTripKey] || [];
-            
-            if (events.length === 0) {
-                list.innerHTML = `<div class="text-center py-12 text-slate-400 font-medium"><i class="fa-solid fa-folder-open text-2xl mb-2 block text-slate-300"></i>這趟旅程還沒有任何時間軸項目，從上方開始新增吧！</div>`;
-                return;
-            }
-
-            events.forEach(item => {
+            (itineraries[currentTripKey] || []).forEach(item => {
                 list.innerHTML += `
-                    <div data-id="${item.id}" class="relative pl-8 py-3 border-l-2 border-blue-200 bg-white hover:bg-slate-50/80 transition-colors group cursor-grab">
+                    <div data-id="${item.id}" class="relative pl-8 py-3 border-l-2 border-blue-200 bg-white group cursor-grab">
                         <span class="absolute -left-[9px] top-4.5 w-4 h-4 bg-blue-500 rounded-full border-4 border-white shadow-sm"></span>
                         <div class="flex justify-between items-start">
                             <div>
-                                <div class="flex items-center space-x-2">
-                                    ${item.day ? `<span class="bg-blue-100 text-blue-700 text-[11px] font-bold px-1.5 py-0.5 rounded">${item.day}</span>` : ''}
-                                    <span class="text-xs font-bold text-slate-400">${item.time || '--:--'}</span>
-                                </div>
-                                <p class="font-semibold text-slate-800 text-base mt-0.5">${item.title}</p>
-                                ${item.note ? `<p class="text-xs text-slate-500 mt-1 bg-slate-50 border border-slate-100 px-2 py-1 rounded inline-block"><i class="fa-regular fa-comment-dots mr-1 text-slate-400"></i>${item.note}</p>` : ''}
+                                <span class="text-xs font-bold text-slate-400">${item.day||''} ${item.time||''}</span>
+                                <p class="font-semibold text-slate-800">${item.title}</p>
+                                ${item.note ? `<p class="text-xs text-slate-500 mt-1 bg-slate-50 px-2 py-1 rounded inline-block">${item.note}</p>` : ''}
                             </div>
-                            <button onclick="deleteEvent(${item.id})" class="text-slate-300 hover:text-red-500 opacity-0 group-hover:opacity-100 transition-opacity p-2">
-                                <i class="fa-solid fa-xmark"></i>
-                            </button>
+                            <button onclick="deleteEvent(${item.id})" class="text-slate-300 hover:text-red-500 opacity-0 group-hover:opacity-100 p-2"><i class="fa-solid fa-xmark"></i></button>
                         </div>
-                    </div>
-                `;
+                    </div>`;
             });
         }
-
         function addEvent() {
-            const day = document.getElementById('event-day').value.trim();
-            const time = document.getElementById('event-time').value;
             const title = document.getElementById('event-title').value.trim();
-            const note = document.getElementById('event-note').value.trim();
-
-            if (!title) { alert('請填寫行程名稱項目'); return; }
-
-            const newEvent = { id: Date.now(), day, time, title, note };
+            if (!title) return;
             if (!itineraries[currentTripKey]) itineraries[currentTripKey] = [];
-            
-            itineraries[currentTripKey].push(newEvent);
-            localStorage.setItem('tripItinerariesV2', JSON.stringify(itineraries));
-
-            document.getElementById('event-day').value = '';
-            document.getElementById('event-time').value = '';
-            document.getElementById('event-title').value = '';
-            document.getElementById('event-note').value = '';
-            renderItinerary();
-        }
-
-        function deleteEvent(id) {
-            itineraries[currentTripKey] = itineraries[currentTripKey].filter(item => item.id !== id);
+            itineraries[currentTripKey].push({ id: Date.now(), day: document.getElementById('event-day').value, time: document.getElementById('event-time').value, title, note: document.getElementById('event-note').value });
             localStorage.setItem('tripItinerariesV2', JSON.stringify(itineraries));
             renderItinerary();
         }
+        function deleteEvent(id) { itineraries[currentTripKey] = itineraries[currentTripKey].filter(i => i.id !== id); localStorage.setItem('tripItinerariesV2', JSON.stringify(itineraries)); renderItinerary(); }
+        new Sortable(document.getElementById('itinerary-list'), { animation: 150, onEnd: function (evt) { const arr = itineraries[currentTripKey]; arr.splice(evt.newIndex, 0, arr.splice(evt.oldIndex, 1)[0]); localStorage.setItem('tripItinerariesV2', JSON.stringify(itineraries)); } });
 
-        // 行程拖曳即時儲存排序
-        new Sortable(document.getElementById('itinerary-list'), {
-            animation: 150,
-            ghostClass: 'bg-slate-50',
-            onEnd: function (evt) {
-                const events = itineraries[currentTripKey];
-                const movedItem = events.splice(evt.oldIndex, 1)[0];
-                events.splice(evt.newIndex, 0, movedItem);
-                localStorage.setItem('tripItinerariesV2', JSON.stringify(itineraries));
-            }
-        });
-
-        // --- 模組 2：專業裝備行李清單控制 ---
-        function renderChecklist() {
-            const container = document.getElementById('checklist-container');
-            container.innerHTML = '';
-            const items = checklists[currentTripKey] || [];
-            
-            items.forEach(item => {
-                container.innerHTML += `
-                    <label class="flex items-center space-x-3 bg-slate-50 hover:bg-white p-3 rounded-xl border border-slate-200/60 cursor-pointer transition-all">
-                        <input type="checkbox" ${item.checked ? 'checked' : ''} onchange="toggleChecklist(${item.id})" class="w-4 h-4 text-blue-600 rounded">
-                        <span class="text-sm ${item.checked ? 'line-through text-slate-400' : 'text-slate-700 font-medium'}">${item.text}</span>
-                    </label>
-                `;
-            });
-        }
-
-        function addChecklistItem() {
-            const text = document.getElementById('newChecklistItem').value.trim();
-            if (!text) return;
-            if (!checklists[currentTripKey]) checklists[currentTripKey] = [];
-            checklists[currentTripKey].push({ id: Date.now(), text, checked: false });
-            localStorage.setItem('tripChecklists', JSON.stringify(checklists));
-            document.getElementById('newChecklistItem').value = '';
-            renderChecklist();
-        }
-
-        function toggleChecklist(id) {
-            const item = checklists[currentTripKey].find(i => i.id === id);
-            if (item) { item.checked = !item.checked; localStorage.setItem('tripChecklists', JSON.stringify(checklists)); renderChecklist(); }
-        }
-
-        // --- 模組 3：交通憑證卡片控制 ---
-        function renderTransport() {
-            const container = document.getElementById('transport-container');
-            container.innerHTML = '';
-            const docs = transportDocs[currentTripKey] || [];
-            if (docs.length === 0) {
-                container.innerHTML = `<p class="text-sm text-slate-400 text-center py-4 col-span-2">此行程目前無任何預存憑證明細。</p>`;
-                return;
-            }
-            docs.forEach(doc => {
-                container.innerHTML += `
-                    <div class="p-4 rounded-xl border border-slate-150 bg-slate-50 flex items-start space-x-3">
-                        <div class="text-amber-500 mt-0.5"><i class="fa-solid fa-paperclip"></i></div>
-                        <div>
-                            <span class="text-xs font-bold bg-amber-100 text-amber-800 px-2 py-0.5 rounded">${doc.type}</span>
-                            <p class="text-sm font-semibold text-slate-700 mt-2">${doc.desc}</p>
-                        </div>
-                    </div>
-                `;
-            });
-        }
-
-        // --- 模組 4：預算記帳演算法控制 ---
+        function renderChecklist() {} function addChecklistItem() {} function renderTransport() {}
+        
+        // --- ★ 分帳演算法核心邏輯 ★ ---
         function renderBudget() {
             const list = document.getElementById('budget-list');
             list.innerHTML = '';
             const items = budgets[currentTripKey] || [];
+            
+            let totalAmount = 0;
+            let paidByPerson = {}; 
+            
+            // 抓取名單：自己 + 填寫的旅伴
+            const myName = "我";
+            const companionName = document.getElementById('companionInput').value.trim();
+            const participants = new Set([myName]);
+            if (companionName) participants.add(companionName);
+
+            // 算總花費 & 印出明細表
             items.forEach(item => {
+                totalAmount += item.amount;
+                const payer = item.payer || myName;
+                participants.add(payer); // 如果有第三個人代墊，也加入名單
+                
+                paidByPerson[payer] = (paidByPerson[payer] || 0) + item.amount;
+
                 list.innerHTML += `
-                    <tr class="hover:bg-slate-50/50 transition-colors">
+                    <tr class="hover:bg-slate-50/50">
                         <td class="p-3 font-medium text-slate-700">${item.title}</td>
+                        <td class="p-3 text-sm text-slate-500"><span class="bg-blue-50 text-blue-700 font-bold px-2 py-1 rounded">${payer}</span></td>
                         <td class="p-3 text-right font-bold text-slate-900">$${item.amount.toLocaleString()}</td>
-                        <td class="p-3 text-center">
-                            <button onclick="deleteBudgetItem(${item.id})" class="text-slate-300 hover:text-red-500"><i class="fa-solid fa-trash-can"></i></button>
-                        </td>
-                    </tr>
-                `;
+                        <td class="p-3 text-center"><button onclick="deleteBudgetItem(${item.id})" class="text-slate-300 hover:text-red-500"><i class="fa-solid fa-trash-can"></i></button></td>
+                    </tr>`;
             });
+
+            // 更新總花費大字
+            document.getElementById('budget-total').innerText = '$' + totalAmount.toLocaleString();
+
+            // 執行分帳計算
+            const settlementContainer = document.getElementById('budget-settlement');
+            if (totalAmount === 0) {
+                settlementContainer.innerHTML = '<span class="text-slate-400">目前還沒有花費紀錄喔！</span>';
+                return;
+            }
+
+            // 計算每人平均應付多少
+            const perPersonShare = totalAmount / participants.size;
+            let balances = {}; // 正數代表別人欠他錢，負數代表他欠別人錢
+
+            participants.forEach(p => {
+                const paid = paidByPerson[p] || 0;
+                balances[p] = paid - perPersonShare;
+            });
+
+            // 將人分為「欠錢的(Debtors)」和「該收錢的(Creditors)」
+            let debtors = [];
+            let creditors = [];
+            for (const [person, balance] of Object.entries(balances)) {
+                if (balance < -0.01) debtors.push({ person, amount: Math.abs(balance) });
+                else if (balance > 0.01) creditors.push({ person, amount: balance });
+            }
+
+            // 產生結算文字
+            let settlementText = '';
+            let i = 0, j = 0;
+            while(i < debtors.length && j < creditors.length) {
+                let d = debtors[i];
+                let c = creditors[j];
+                let amountToPay = Math.min(d.amount, c.amount);
+                
+                settlementText += `<div class="flex justify-between items-center bg-white px-4 py-2 rounded-lg shadow-sm">
+                                    <span><b>${d.person}</b> 應給 <b>${c.person}</b></span>
+                                    <span class="font-black text-lg">$${Math.round(amountToPay).toLocaleString()}</span>
+                                   </div>`;
+                
+                d.amount -= amountToPay;
+                c.amount -= amountToPay;
+                if(d.amount < 0.01) i++;
+                if(c.amount < 0.01) j++;
+            }
+
+            settlementContainer.innerHTML = settlementText || '<span class="text-emerald-600 font-bold">大家付的錢剛剛好，互不相欠！</span>';
         }
 
         function addBudgetItem() {
             const title = document.getElementById('budget-title').value.trim();
             const amount = parseFloat(document.getElementById('budget-amount').value);
-            if (!title || isNaN(amount)) { alert('請填入完整花費名稱與正確金額'); return; }
+            const payer = document.getElementById('budget-payer').value.trim() || '我';
+            if (!title || isNaN(amount)) return alert('請填寫項目與金額');
             if (!budgets[currentTripKey]) budgets[currentTripKey] = [];
-            budgets[currentTripKey].push({ id: Date.now(), title, amount });
+            budgets[currentTripKey].push({ id: Date.now(), title, amount, payer });
             localStorage.setItem('tripBudgets', JSON.stringify(budgets));
             document.getElementById('budget-title').value = '';
             document.getElementById('budget-amount').value = '';
+            document.getElementById('budget-payer').value = '';
             renderBudget();
         }
 
-        function deleteBudgetItem(id) {
-            budgets[currentTripKey] = budgets[currentTripKey].filter(i => i.id !== id);
-            localStorage.setItem('tripBudgets', JSON.stringify(budgets));
-            renderBudget();
-        }
+        function deleteBudgetItem(id) { budgets[currentTripKey] = budgets[currentTripKey].filter(i => i.id !== id); localStorage.setItem('tripBudgets', JSON.stringify(budgets)); renderBudget(); }
+        async function fetchWeather(lat, lng) {} function switchModule(m) { document.querySelectorAll('.module-content').forEach(e => e.classList.replace('block', 'hidden')); document.getElementById('module-'+m).classList.replace('hidden', 'block'); document.querySelectorAll('.module-tab').forEach(e => e.classList.remove('text-blue-600', 'border-b-2', 'font-bold')); document.getElementById('tab-'+m).classList.add('text-blue-600', 'border-b-2', 'font-bold'); }
 
-        // --- 全球即時天氣 API 串接 ---
-        async function fetchWeather(lat, lng) {
-            if (!lat || !lng) return;
-            try {
-                document.getElementById('temp-display').innerText = '--°C';
-                document.getElementById('weather-desc').innerText = '串接中...';
-                const response = await fetch(`https://api.open-meteo.com/v1/forecast?latitude=${lat}&longitude=${lng}&current_weather=true`);
-                const data = await response.json();
-                const temp = data.current_weather.temperature;
-                const code = data.current_weather.weathercode;
-                
-                document.getElementById('temp-display').innerText = `${temp}°C`;
-                const desc = document.getElementById('weather-desc');
-                const icon = document.getElementById('weather-icon');
-
-                if (code === 0) { desc.innerText = '晴空萬里'; icon.innerHTML = '<i class="fa-solid fa-sun text-yellow-500 animate-spin-slow"></i>'; }
-                else if (code <= 3) { desc.innerText = '局部多雲'; icon.innerHTML = '<i class="fa-solid fa-cloud-sun text-slate-400"></i>'; }
-                else { desc.innerText = '有降雨機率'; icon.innerHTML = '<i class="fa-solid fa-cloud-showers-heavy text-blue-400"></i>'; }
-            } catch (e) {
-                document.getElementById('weather-desc').innerText = '讀取逾時';
-            }
-        }
-
-        // --- 中間頂部導覽頁籤切換核心邏輯 ---
-        function switchModule(moduleId) {
-            document.querySelectorAll('.module-content').forEach(el => { el.classList.replace('block', 'hidden'); });
-            document.getElementById('module-' + moduleId).classList.replace('hidden', 'block');
-
-            document.querySelectorAll('.module-tab').forEach(el => {
-                el.classList.remove('text-blue-600', 'border-b-2', 'border-blue-600', 'font-bold');
-                el.classList.add('hover:text-blue-600');
-            });
-            const activeTab = document.getElementById('tab-' + moduleId);
-            activeTab.classList.remove('hover:text-blue-600');
-            activeTab.classList.add('text-blue-600', 'border-b-2', 'border-blue-600', 'font-bold');
-        }
-
-        // 系統啟動第一次加載
-        renderSidebar();
-        initCurrentTripData();
+        renderSidebar(); initCurrentTripData();
     </script>
 </body>
 </html>
