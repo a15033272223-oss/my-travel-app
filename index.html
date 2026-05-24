@@ -144,41 +144,70 @@
         .shadow-sm { box-shadow: 0 14px 34px rgba(15, 23, 42, 0.055) !important; }
     
 
-        /* --- Outdoor Cream Orange Theme Override --- */
+        /* --- Soft Coastal Pastel Theme Override: pale blue × blush peach × light sand --- */
         :root {
-            --apple-bg: #fff7ed;
-            --apple-card: rgba(255, 255, 255, 0.88);
-            --apple-card-strong: rgba(255, 255, 255, 0.96);
-            --apple-line: rgba(154, 92, 38, 0.14);
-            --apple-text: #2b2118;
-            --apple-subtext: #8a7463;
-            --apple-blue: #ea8a3a;
-            --apple-dark: #7c4a21;
-            --trip-accent: #f59e5b;
-            --trip-accent-soft: #ffedd5;
-            --trip-accent-strong: #c9681a;
+            --apple-bg: #f7f3ea;
+            --apple-card: rgba(255, 255, 255, 0.90);
+            --apple-card-strong: rgba(255, 255, 255, 0.97);
+            --apple-line: rgba(123, 149, 165, 0.18);
+            --apple-text: #27313a;
+            --apple-subtext: #7b838a;
+            --apple-blue: #8fbbd9;
+            --apple-dark: #5f8fb0;
+            --trip-accent: #8fbbd9;
+            --trip-accent-soft: #eaf4fb;
+            --trip-accent-strong: #5f8fb0;
+            --trip-pink: #f3c6bd;
+            --trip-peach: #f6d3bd;
+            --trip-sand: #f7f3ea;
+            --trip-sand-strong: #eadfce;
         }
 
         html, body {
-            background: #fff7ed !important;
+            background: #f7f3ea !important;
             color: var(--apple-text) !important;
         }
 
+        aside,
+        header,
+        #newTripModal > div,
+        .module-content > .bg-white,
+        .module-content .bg-white.rounded-xl,
+        #event-form-container {
+            background: rgba(255, 255, 255, 0.90) !important;
+            border-color: rgba(123, 149, 165, 0.18) !important;
+            box-shadow: 0 18px 45px rgba(75, 99, 116, 0.08) !important;
+        }
+
+        header,
+        aside {
+            background: rgba(255, 255, 255, 0.92) !important;
+        }
+
+        input, select {
+            background: rgba(255, 255, 255, 0.86) !important;
+            border-color: rgba(123, 149, 165, 0.20) !important;
+        }
+
         input:focus, select:focus {
-            border-color: rgba(234, 138, 58, 0.65) !important;
-            box-shadow: 0 0 0 4px rgba(234, 138, 58, 0.14) !important;
+            border-color: rgba(143, 187, 217, 0.85) !important;
+            box-shadow: 0 0 0 4px rgba(143, 187, 217, 0.20) !important;
         }
 
         .module-tab.text-blue-600 {
-            background: #ea8a3a !important;
-            color: white !important;
-            box-shadow: 0 10px 24px rgba(234, 138, 58, 0.18) !important;
+            background: #8fbbd9 !important;
+            color: #ffffff !important;
+            box-shadow: 0 10px 24px rgba(95, 143, 176, 0.16) !important;
+        }
+
+        .module-tab:hover {
+            background: rgba(143, 187, 217, 0.16) !important;
         }
 
         #sidebar-trip-list button.bg-blue-50 {
-            background: #ffedd5 !important;
-            color: #9a4b12 !important;
-            border-color: rgba(234, 138, 58, 0.20) !important;
+            background: #eaf4fb !important;
+            color: #4f7f9f !important;
+            border-color: rgba(143, 187, 217, 0.35) !important;
         }
 
         #mobile-create-trip-fab,
@@ -188,23 +217,264 @@
         button.bg-blue-600,
         button.bg-slate-800,
         button.bg-emerald-600 {
-            background: #ea8a3a !important;
-            box-shadow: 0 12px 28px rgba(234, 138, 58, 0.18) !important;
+            background: #8fbbd9 !important;
+            color: #ffffff !important;
+            box-shadow: 0 12px 28px rgba(95, 143, 176, 0.16) !important;
         }
 
         button.hover\:bg-blue-700:hover,
         button.hover\:bg-slate-700:hover,
         button.hover\:bg-emerald-700:hover {
-            background: #c9681a !important;
+            background: #6fa6c8 !important;
         }
 
-        .text-blue-500, .text-blue-600, .text-blue-700 { color: #c9681a !important; }
-        .bg-blue-50, .bg-blue-100 { background-color: #ffedd5 !important; }
-        .border-blue-100, .border-blue-200 { border-color: rgba(234, 138, 58, 0.22) !important; }
-        .border-blue-200, .border-l-2.border-blue-200 { border-color: rgba(234, 138, 58, 0.35) !important; }
-        .bg-blue-500 { background-color: #ea8a3a !important; }
-        .bg-blue-600 { background-color: #ea8a3a !important; }
-    </style>
+        .text-blue-500, .text-blue-600, .text-blue-700 { color: #5f8fb0 !important; }
+        .bg-blue-50, .bg-blue-100 { background-color: #eaf4fb !important; }
+        .border-blue-100, .border-blue-200 { border-color: rgba(143, 187, 217, 0.32) !important; }
+        .border-l-2.border-blue-200 { border-color: rgba(143, 187, 217, 0.48) !important; }
+        .bg-blue-500, .bg-blue-600 { background-color: #8fbbd9 !important; }
+
+        .bg-amber-50, .bg-amber-100 { background-color: #fff0e8 !important; }
+        .text-amber-600, .text-amber-700, .text-amber-800 { color: #ba705c !important; }
+        .border-amber-100, .border-amber-200 { border-color: rgba(243, 198, 189, 0.42) !important; }
+
+        .bg-green-100, .bg-emerald-50 { background-color: #eef7f1 !important; }
+        .text-green-700, .text-emerald-600 { color: #6d9274 !important; }
+
+        .bg-red-100, .bg-red-50 { background-color: #fff0f0 !important; }
+        .text-red-500, .text-red-600, .text-red-700 { color: #c66f75 !important; }
+
+        table thead tr { background: #fbf8f2 !important; }
+        table tbody tr:hover { background: rgba(143, 187, 217, 0.08) !important; }
+
+        #itinerary-list > div,
+        #checklist-container > div,
+        #checklist-container label {
+            background: rgba(255, 255, 255, 0.96) !important;
+            border-color: rgba(123, 149, 165, 0.16) !important;
+            box-shadow: 0 12px 30px rgba(75, 99, 116, 0.06) !important;
+        }
+
+
+        /* --- FINAL COLOR OVERRIDE: soft blue × blush peach × light sand, NO dark green, NO gradients --- */
+        :root {
+            --tm-bg: #f8f3ea;
+            --tm-card: #ffffff;
+            --tm-card-soft: #fffaf5;
+            --tm-line: #eadfd4;
+            --tm-text: #2f3742;
+            --tm-muted: #7d8793;
+            --tm-blue: #9ed3ee;
+            --tm-blue-strong: #6fb6dd;
+            --tm-blue-soft: #edf8fd;
+            --tm-peach: #ffd8c2;
+            --tm-peach-strong: #ee9f86;
+            --tm-peach-soft: #fff1e9;
+            --tm-pink: #f7c8cf;
+            --tm-pink-soft: #fff0f3;
+            --tm-sand: #f8f3ea;
+            --tm-sand-strong: #e8d9c6;
+        }
+
+        html, body {
+            background: var(--tm-bg) !important;
+            color: var(--tm-text) !important;
+        }
+
+        body,
+        main,
+        header,
+        aside,
+        #newTripModal > div,
+        .module-content > .bg-white,
+        .module-content .bg-white.rounded-xl,
+        #event-form-container,
+        .bg-white,
+        .bg-slate-50,
+        .bg-slate-100 {
+            background-image: none !important;
+        }
+
+        main,
+        body.bg-slate-100,
+        .bg-slate-50,
+        .bg-slate-100 {
+            background-color: var(--tm-bg) !important;
+        }
+
+        aside,
+        header,
+        #newTripModal > div,
+        .module-content > .bg-white,
+        .module-content .bg-white.rounded-xl,
+        #event-form-container,
+        #itinerary-list > div,
+        #checklist-container > div,
+        #checklist-container label {
+            background: var(--tm-card) !important;
+            border-color: var(--tm-line) !important;
+            box-shadow: 0 16px 38px rgba(116, 91, 66, 0.07) !important;
+        }
+
+        header,
+        aside,
+        .border-slate-100,
+        .border-slate-200,
+        .border-blue-100,
+        .border-blue-200,
+        .border-amber-100,
+        .border-amber-200 {
+            border-color: var(--tm-line) !important;
+        }
+
+        input,
+        select,
+        textarea {
+            background: #ffffff !important;
+            border-color: var(--tm-line) !important;
+            color: var(--tm-text) !important;
+        }
+
+        input:focus,
+        select:focus,
+        textarea:focus {
+            border-color: var(--tm-blue-strong) !important;
+            box-shadow: 0 0 0 4px rgba(158, 211, 238, 0.26) !important;
+        }
+
+        /* Primary actions: pastel blue, not green */
+        #mobile-create-trip-fab,
+        #submit-event-btn,
+        #submit-checklist-btn,
+        #submit-budget-btn,
+        #sidebar-create-trip-btn,
+        button.bg-blue-600,
+        button.bg-slate-800,
+        button.bg-emerald-600,
+        button.bg-amber-500 {
+            background: var(--tm-blue-strong) !important;
+            color: #ffffff !important;
+            box-shadow: 0 12px 26px rgba(111, 182, 221, 0.20) !important;
+        }
+
+        #mobile-create-trip-fab {
+            background: var(--tm-blue-strong) !important;
+            background-image: none !important;
+        }
+
+        button.hover\:bg-blue-700:hover,
+        button.hover\:bg-slate-700:hover,
+        button.hover\:bg-emerald-700:hover,
+        button.hover\:bg-amber-600:hover {
+            background: #5aa9d4 !important;
+        }
+
+        /* Active tabs */
+        .module-tab.text-blue-600,
+        .module-tab.border-b-2 {
+            background: var(--tm-blue-strong) !important;
+            color: #ffffff !important;
+            box-shadow: 0 10px 24px rgba(111, 182, 221, 0.18) !important;
+            border-color: transparent !important;
+        }
+
+        .module-tab:hover {
+            background: var(--tm-blue-soft) !important;
+            color: var(--tm-text) !important;
+        }
+
+        /* Blue accents */
+        .text-blue-500,
+        .text-blue-600,
+        .text-blue-700 {
+            color: var(--tm-blue-strong) !important;
+        }
+
+        .bg-blue-50,
+        .bg-blue-100 {
+            background-color: var(--tm-blue-soft) !important;
+        }
+
+        .bg-blue-500,
+        .bg-blue-600 {
+            background-color: var(--tm-blue-strong) !important;
+        }
+
+        /* Remove green feeling entirely: replace green/emerald with soft blue */
+        .bg-green-100,
+        .bg-emerald-50,
+        .bg-emerald-100,
+        .bg-emerald-600,
+        .bg-emerald-700 {
+            background-color: var(--tm-blue-soft) !important;
+        }
+
+        .text-green-700,
+        .text-emerald-500,
+        .text-emerald-600,
+        .text-emerald-700 {
+            color: var(--tm-blue-strong) !important;
+        }
+
+        /* Peach / pink supporting accents */
+        .bg-amber-50,
+        .bg-amber-100 {
+            background-color: var(--tm-peach-soft) !important;
+        }
+
+        .text-amber-500,
+        .text-amber-600,
+        .text-amber-700,
+        .text-amber-800 {
+            color: var(--tm-peach-strong) !important;
+        }
+
+        .bg-red-50,
+        .bg-red-100 {
+            background-color: var(--tm-pink-soft) !important;
+        }
+
+        .text-red-500,
+        .text-red-600,
+        .text-red-700 {
+            color: #d86d7b !important;
+        }
+
+        /* Sidebar selected trip */
+        #sidebar-trip-list button.bg-blue-50 {
+            background: var(--tm-blue-soft) !important;
+            color: #4f95bc !important;
+            border-color: rgba(111, 182, 221, 0.32) !important;
+        }
+
+        /* Budget settlement card: soft blue instead of dark green */
+        #module-budget .bg-blue-600,
+        #module-budget .md\:col-span-2.bg-blue-600,
+        #module-budget div.bg-blue-600.text-white {
+            background: var(--tm-blue-strong) !important;
+            color: #ffffff !important;
+        }
+
+        table thead tr {
+            background: var(--tm-card-soft) !important;
+        }
+
+        table tbody tr:hover {
+            background: var(--tm-blue-soft) !important;
+        }
+
+        .text-slate-400,
+        .text-slate-500,
+        .text-slate-600 {
+            color: var(--tm-muted) !important;
+        }
+
+        .text-slate-700,
+        .text-slate-800,
+        .text-slate-900 {
+            color: var(--tm-text) !important;
+        }
+</style>
 </head>
 <body class="bg-slate-100 text-slate-800 flex h-[100dvh] overflow-hidden relative">
 
