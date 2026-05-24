@@ -778,6 +778,70 @@
       border-color: #374151 !important;
     }
 
+  
+    /* === ACCESS CONTROL UI === */
+    .access-panel {
+      background: #ffffff;
+      border: 1px solid #eeeeee;
+      border-radius: 18px;
+      padding: .75rem;
+      color: #111827;
+    }
+
+    .trip-access-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: .5rem;
+      padding: .45rem .55rem;
+      border: 1px solid #eeeeee;
+      border-radius: 14px;
+      background: #f7f7f8;
+      font-size: 12px;
+      font-weight: 800;
+      color: #111827;
+    }
+
+    .trip-access-row input {
+      width: 1rem;
+      height: 1rem;
+    }
+
+    .trip-access-name {
+      min-width: 0;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+
+    .trip-visibility-chip {
+      display: inline-flex;
+      align-items: center;
+      border-radius: 999px;
+      padding: .12rem .45rem;
+      font-size: 10px;
+      font-weight: 900;
+      border: 1px solid #e5e7eb;
+      background: #ffffff;
+      color: #111827;
+      margin-top: .25rem;
+      width: fit-content;
+    }
+
+    body.dark-mode .access-panel,
+    body.dark-mode .trip-access-row,
+    body.dark-mode .trip-visibility-chip {
+      background: #1f2937 !important;
+      border-color: #374151 !important;
+      color: #f9fafb !important;
+    }
+
+    body.dark-mode .access-panel input {
+      background: #0b1220 !important;
+      color: #f9fafb !important;
+      border-color: #374151 !important;
+    }
+
   </style>
 </head>
 <body class="flex h-[100dvh] overflow-hidden relative">
@@ -785,13 +849,32 @@
 
   <aside id="mobile-sidebar" class="absolute z-50 h-full w-72 transform -translate-x-full transition-transform duration-300 md:relative md:translate-x-0 bg-white border-r border-[#f1d7ce] flex flex-col shadow-xl md:shadow-none">
     <div class="p-6 border-b border-[#f1d7ce] flex justify-between items-center">
-      <h1 class="text-xl font-black tracking-tight">🧭 TripManager</h1>
+      <h1 class="text-xl font-black tracking-tight">🧳 TripManager</h1>
       <button onclick="toggleSidebar()" class="md:hidden text-stone-400 hover:text-stone-700 text-xl"><i class="fa-solid fa-xmark"></i></button>
     </div>
     <div class="p-4 border-b border-[#f1d7ce] bg-white">
       <button id="sidebar-create-trip-btn" onclick="openNewTripModal()" class="touch-safe w-full primary-btn py-3 rounded-2xl text-sm font-black flex items-center justify-center">
         <i class="fa-solid fa-plus mr-2"></i>建立新旅程
       </button>
+
+      <div id="access-panel" class="access-panel mt-3">
+        <div id="admin-login-box" class="space-y-2">
+          <p class="text-[11px] font-black text-stone-500">🔐 管理旅行清單</p>
+          <div class="flex gap-2">
+            <input id="admin-password-input" type="password" inputmode="numeric" placeholder="輸入管理密碼" class="flex-1 px-3 py-2 text-xs">
+            <button onclick="unlockAdmin()" class="secondary-btn px-3 py-2 rounded-xl text-xs font-black">解鎖</button>
+          </div>
+        </div>
+
+        <div id="admin-controls" class="hidden space-y-2">
+          <div class="flex items-center justify-between gap-2">
+            <p class="text-[11px] font-black text-stone-500">公開行程設定</p>
+            <button onclick="lockAdmin()" class="bg-white border border-[#eeeeee] px-2 py-1 rounded-full text-[11px] font-black text-stone-700">鎖定</button>
+          </div>
+          <div id="trip-access-list" class="space-y-1"></div>
+          <p class="text-[10px] text-stone-500 leading-snug">勾選後，沒有密碼的人才看得到，並可參與編輯該行程。</p>
+        </div>
+      </div>
     </div>
     <div class="flex-1 overflow-y-auto p-4 no-scrollbar">
       <h2 id="trip-list-label" class="text-xs font-black text-stone-400 uppercase tracking-wider mb-3">我的行程清單</h2>
@@ -995,7 +1078,7 @@
         <div>
           <label id="new-trip-icon-label" class="block text-xs font-black text-stone-400 uppercase tracking-wider mb-2">代表圖示</label>
           <select id="new-trip-emoji" class="w-full px-3 py-2 text-sm bg-white">
-            <option value="🧭">🧭 Adventure</option>
+            <option value="🧳">🧳 Travel</option>
             <option value="🏝️">🏝️ Island</option>
             <option value="🌊">🌊 Ocean</option>
             <option value="🤿">🤿 Diving</option>
@@ -1030,6 +1113,9 @@
     let dailyWeatherMap = {};
     let currentLang = localStorage.getItem('tripManagerLang') || 'zh';
     let currentTheme = localStorage.getItem('tripManagerTheme') || 'light';
+    const ADMIN_PASSWORD = '840903';
+    let isAdminMode = sessionStorage.getItem('tripManagerAdminUnlocked') === 'true';
+    let tripAccess = JSON.parse(localStorage.getItem('tripAccessV1')) || {};
     let editingEventId = null;
     let editingChecklistId = null;
     let editingBudgetId = null;
@@ -1103,7 +1189,7 @@
     };
 
     function escapeHTML(v) { return String(v ?? '').replace(/[&<>'"]/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;',"'":'&#39;','"':'&quot;'}[c])); }
-    function saveAll() { localStorage.setItem('tripsMasterV6', JSON.stringify(tripsMaster)); localStorage.setItem('tripItinerariesV6', JSON.stringify(itineraries)); localStorage.setItem('tripChecklistsV6', JSON.stringify(checklists)); localStorage.setItem('tripBudgetsV6', JSON.stringify(budgets)); localStorage.setItem('tripJournalsV1', JSON.stringify(journals)); }
+    function saveAll() { localStorage.setItem('tripsMasterV6', JSON.stringify(tripsMaster)); localStorage.setItem('tripItinerariesV6', JSON.stringify(itineraries)); localStorage.setItem('tripChecklistsV6', JSON.stringify(checklists)); localStorage.setItem('tripBudgetsV6', JSON.stringify(budgets)); localStorage.setItem('tripJournalsV1', JSON.stringify(journals)); localStorage.setItem('tripAccessV1', JSON.stringify(tripAccess)); }
     function setText(id, text) { const el = document.getElementById(id); if (el) el.textContent = text; }
     function setHTML(id, html) { const el = document.getElementById(id); if (el) el.innerHTML = html; }
     function setPH(id, ph) { const el = document.getElementById(id); if (el) el.placeholder = ph; }
@@ -1149,15 +1235,165 @@
     }
     function saveCompanion(value) { localStorage.setItem(`companion_${currentTripKey}`, value); renderBudgetSplitOptions(); renderBudget(); }
 
-    function renderSidebar() {
-      const list = document.getElementById('sidebar-trip-list'); list.innerHTML='';
-      Object.keys(tripsMaster).forEach(key => {
-        const trip = tripsMaster[key]; const active = key === currentTripKey; const mark = trip.emoji || '🧭';
-        list.innerHTML += `<li><button onclick="selectTrip('${key}')" class="w-full text-left px-3 py-3 rounded-2xl font-bold text-sm border flex flex-col ${active ? 'bg-[#eefaff] text-stone-900 border-[#cfefff]' : 'text-stone-600 border-transparent hover:bg-[#fff2ea]'}"><span class="flex items-center"><span class="w-6 mr-2 text-base">${mark}</span>${escapeHTML(trip.name)}</span><span class="text-xs opacity-60 mt-1 ml-8">${escapeHTML(trip.dates.split(' ')[0])}</span></button></li>`;
-      });
+
+    function saveTripAccess() {
+      localStorage.setItem('tripAccessV1', JSON.stringify(tripAccess));
     }
-    function selectTrip(key) { currentTripKey=key; localStorage.setItem('activeTripKey', key); renderSidebar(); initCurrentTripData(); cancelEdit(); if (window.innerWidth<768 && isSidebarOpen) toggleSidebar(); }
-    function initCurrentTripData() { const trip=tripsMaster[currentTripKey]; if (!trip) return; setHTML('trip-title', `<span class="trip-title-emoji">${escapeHTML(trip.emoji || '🧭')}</span>${escapeHTML(trip.name)}`); setText('trip-dates', trip.dates); if (currentTripKey==='cairns' && !localStorage.getItem(`companion_${currentTripKey}`)) localStorage.setItem(`companion_${currentTripKey}`, '中偉, 聖聖, Ryan'); document.getElementById('companionInput').value = localStorage.getItem(`companion_${currentTripKey}`) || '我'; renderBudgetSplitOptions(); fetchWeather(trip.lat, trip.lng); renderItinerary(); renderChecklist(); renderBudget(); }
+
+    function ensureTripAccessDefaults() {
+      Object.keys(tripsMaster).forEach(key => {
+        if (!Object.prototype.hasOwnProperty.call(tripAccess, key)) {
+          tripAccess[key] = false;
+        }
+      });
+      Object.keys(tripAccess).forEach(key => {
+        if (!tripsMaster[key]) delete tripAccess[key];
+      });
+      saveTripAccess();
+    }
+
+    function getVisibleTripKeys() {
+      ensureTripAccessDefaults();
+      const keys = Object.keys(tripsMaster);
+      return isAdminMode ? keys : keys.filter(key => tripAccess[key]);
+    }
+
+    function syncActiveTripAccess() {
+      ensureTripAccessDefaults();
+      const visible = getVisibleTripKeys();
+      if (isAdminMode) {
+        if (!currentTripKey || !tripsMaster[currentTripKey]) currentTripKey = Object.keys(tripsMaster)[0] || null;
+      } else {
+        if (!currentTripKey || !tripAccess[currentTripKey]) currentTripKey = visible[0] || null;
+      }
+      if (currentTripKey) localStorage.setItem('activeTripKey', currentTripKey);
+    }
+
+    function unlockAdmin() {
+      const input = document.getElementById('admin-password-input');
+      const value = input ? input.value.trim() : '';
+      if (value !== ADMIN_PASSWORD) {
+        alert(currentLang === 'zh' ? '密碼錯誤。' : 'Incorrect password.');
+        if (input) input.value = '';
+        return;
+      }
+      isAdminMode = true;
+      sessionStorage.setItem('tripManagerAdminUnlocked', 'true');
+      if (input) input.value = '';
+      syncActiveTripAccess();
+      renderSidebar();
+      initCurrentTripData();
+      showToast(currentLang === 'zh' ? '已解鎖管理模式。' : 'Admin mode unlocked.');
+    }
+
+    function lockAdmin() {
+      isAdminMode = false;
+      sessionStorage.removeItem('tripManagerAdminUnlocked');
+      syncActiveTripAccess();
+      renderSidebar();
+      initCurrentTripData();
+      showToast(currentLang === 'zh' ? '已鎖定管理模式。' : 'Admin mode locked.');
+    }
+
+    function toggleTripAccess(key, checked) {
+      tripAccess[key] = !!checked;
+      saveTripAccess();
+      renderSidebar();
+      if (!isAdminMode) {
+        syncActiveTripAccess();
+        initCurrentTripData();
+      }
+    }
+
+    function renderAccessPanel() {
+      const loginBox = document.getElementById('admin-login-box');
+      const controls = document.getElementById('admin-controls');
+      const list = document.getElementById('trip-access-list');
+      if (!loginBox || !controls || !list) return;
+
+      loginBox.classList.toggle('hidden', isAdminMode);
+      controls.classList.toggle('hidden', !isAdminMode);
+
+      if (!isAdminMode) return;
+      ensureTripAccessDefaults();
+
+      list.innerHTML = Object.keys(tripsMaster).map(key => {
+        const trip = tripsMaster[key];
+        return `
+          <label class="trip-access-row">
+            <span class="trip-access-name">${escapeHTML(trip.emoji || '🧳')} ${escapeHTML(trip.name)}</span>
+            <input type="checkbox" ${tripAccess[key] ? 'checked' : ''} onchange="toggleTripAccess('${key}', this.checked)">
+          </label>`;
+      }).join('');
+    }
+
+    function renderNoPublicTrips() {
+      setHTML('trip-title', `<span class="trip-title-emoji">🧳</span>${currentLang === 'zh' ? '尚未開放行程' : 'No public trips yet'}`);
+      setText('trip-dates', currentLang === 'zh' ? '請輸入管理密碼解鎖，或請管理者開放行程。' : 'Enter the admin password or ask the owner to open a trip.');
+      ['itinerary-list','checklist-container','budget-list','member-summary-list','journal-list'].forEach(id => {
+        const el = document.getElementById(id);
+        if (el) el.innerHTML = `<div class="soft-card p-4 text-sm font-bold text-stone-500">${currentLang === 'zh' ? '目前沒有可查看的公開行程。' : 'No public trip is available.'}</div>`;
+      });
+      const summary = document.getElementById('budget-settlement');
+      if (summary) summary.innerHTML = '';
+      renderAccessPanel();
+    }
+
+
+    function renderSidebar() {
+      syncActiveTripAccess();
+      const list = document.getElementById('sidebar-trip-list');
+      list.innerHTML = '';
+      const visibleKeys = getVisibleTripKeys();
+
+      if (!visibleKeys.length) {
+        list.innerHTML = `<li class="soft-card p-3 text-xs font-bold text-stone-500">${currentLang === 'zh' ? '目前沒有公開行程。請輸入密碼管理。' : 'No public trips. Enter password to manage.'}</li>`;
+        renderAccessPanel();
+        return;
+      }
+
+      visibleKeys.forEach(key => {
+        const trip = tripsMaster[key];
+        const active = key === currentTripKey;
+        const mark = trip.emoji || '🧳';
+        const chip = isAdminMode ? `<span class="trip-visibility-chip">${tripAccess[key] ? (currentLang==='zh'?'公開':'Public') : (currentLang==='zh'?'私人':'Private')}</span>` : '';
+        list.innerHTML += `<li><button onclick="selectTrip('${key}')" class="w-full text-left px-3 py-3 rounded-2xl font-bold text-sm border flex flex-col ${active ? 'bg-[#eefaff] text-stone-900 border-[#cfefff]' : 'text-stone-600 border-transparent hover:bg-[#fff2ea]'}"><span class="flex items-center"><span class="w-6 mr-2 text-base">${mark}</span>${escapeHTML(trip.name)}</span><span class="text-xs opacity-60 mt-1 ml-8">${escapeHTML(trip.dates.split(' ')[0])}</span>${chip}</button></li>`;
+      });
+      renderAccessPanel();
+    }
+
+    function selectTrip(key) {
+      if (!isAdminMode && !tripAccess[key]) {
+        alert(currentLang === 'zh' ? '這個行程尚未開放。' : 'This trip is not public yet.');
+        return;
+      }
+      currentTripKey=key;
+      localStorage.setItem('activeTripKey', key);
+      renderSidebar();
+      initCurrentTripData();
+      cancelEdit();
+      if (window.innerWidth<768 && isSidebarOpen) toggleSidebar();
+    }
+
+    function initCurrentTripData() {
+      syncActiveTripAccess();
+      const trip=currentTripKey ? tripsMaster[currentTripKey] : null;
+      if (!trip) {
+        renderNoPublicTrips();
+        return;
+      }
+      setHTML('trip-title', `<span class="trip-title-emoji">${escapeHTML(trip.emoji || '🧳')}</span>${escapeHTML(trip.name)}`);
+      setText('trip-dates', trip.dates);
+      if (currentTripKey==='cairns' && !localStorage.getItem(`companion_${currentTripKey}`)) localStorage.setItem(`companion_${currentTripKey}`, '中偉, 聖聖, Ryan');
+      document.getElementById('companionInput').value = localStorage.getItem(`companion_${currentTripKey}`) || '我';
+      renderBudgetSplitOptions();
+      fetchWeather(trip.lat, trip.lng);
+      renderItinerary();
+      renderChecklist();
+      renderBudget();
+      renderJournal();
+      renderAccessPanel();
+    }
 
 
     function weatherCodeToIcon(code) {
@@ -1615,10 +1851,10 @@
     function submitBudgetItem(){const title=document.getElementById('budget-title').value.trim(), amount=parseFloat(document.getElementById('budget-amount').value), payer=document.getElementById('budget-payer').value.trim()||'我', splitWith=getSelectedSplitMembers().join(', '); if(!title||isNaN(amount))return alert(currentLang==='zh'?'輸入不完整':'Please complete the expense item and amount.'); if(!budgets[currentTripKey])budgets[currentTripKey]=[]; if(editingBudgetId){const item=budgets[currentTripKey].find(x=>x.id===editingBudgetId); Object.assign(item,{title,amount,payer,splitWith,updatedAt:Date.now()});} else budgets[currentTripKey].push({id:Date.now(),title,amount,payer,splitWith,createdAt:Date.now(),updatedAt:Date.now()}); saveAll(); resetBudgetForm(); renderBudget();}
     function deleteBudgetItem(id){budgets[currentTripKey]=budgets[currentTripKey].filter(x=>x.id!==id); saveAll(); renderBudget();}
 
-    function openNewTripModal(){document.getElementById('newTripModal').classList.replace('hidden','flex'); applyLanguage();} function closeNewTripModal(){document.getElementById('newTripModal').classList.replace('flex','hidden');}
+    function openNewTripModal(){ if(!isAdminMode){ alert(currentLang==='zh'?'請先輸入管理密碼，才能建立新旅程。':'Please enter the admin password before creating a new trip.'); const input=document.getElementById('admin-password-input'); if(input) input.focus(); return; } document.getElementById('newTripModal').classList.replace('hidden','flex'); applyLanguage();} function closeNewTripModal(){document.getElementById('newTripModal').classList.replace('flex','hidden');}
     function formatTripDate(v){return v.replace(/-/g,'/');}
-    function createNewTrip(){const name=document.getElementById('new-trip-name').value.trim(), start=document.getElementById('new-trip-start').value, end=document.getElementById('new-trip-end').value, emoji=document.getElementById('new-trip-emoji').value||'🧭'; if(!name||!start||!end)return alert(currentLang==='zh'?'請填寫旅程名稱、開始日期與結束日期':'Please enter destination, start date, and end date.'); if(new Date(end)<new Date(start))return alert(currentLang==='zh'?'結束日期不能早於開始日期':'End date cannot be earlier than start date.'); const key='trip_'+Date.now(); tripsMaster[key]={name,dates:`${formatTripDate(start)} - ${formatTripDate(end)}`,lat:-16.9203,lng:145.7710,emoji,icon:'fa-route'}; itineraries[key]=[]; checklists[key]=[]; budgets[key]=[]; journals[key]=[]; currentTripKey=key; localStorage.setItem('activeTripKey',key); saveAll(); closeNewTripModal(); ['new-trip-name','new-trip-start','new-trip-end'].forEach(id=>document.getElementById(id).value=''); document.getElementById('new-trip-emoji').value='🧭'; renderSidebar(); initCurrentTripData();}
-    function deleteCurrentTrip(){if(Object.keys(tripsMaster).length<=1)return alert(currentLang==='zh'?'至少保留一個旅程':'Keep at least one trip.'); if(confirm(currentLang==='zh'?'確定刪除這個旅程？':'Delete this trip?')){delete tripsMaster[currentTripKey]; delete itineraries[currentTripKey]; delete checklists[currentTripKey]; delete budgets[currentTripKey]; delete journals[currentTripKey]; currentTripKey=Object.keys(tripsMaster)[0]; localStorage.setItem('activeTripKey',currentTripKey); saveAll(); renderSidebar(); initCurrentTripData();}}
+    function createNewTrip(){const name=document.getElementById('new-trip-name').value.trim(), start=document.getElementById('new-trip-start').value, end=document.getElementById('new-trip-end').value, emoji=document.getElementById('new-trip-emoji').value||'🧳'; if(!name||!start||!end)return alert(currentLang==='zh'?'請填寫旅程名稱、開始日期與結束日期':'Please enter destination, start date, and end date.'); if(new Date(end)<new Date(start))return alert(currentLang==='zh'?'結束日期不能早於開始日期':'End date cannot be earlier than start date.'); const key='trip_'+Date.now(); tripsMaster[key]={name,dates:`${formatTripDate(start)} - ${formatTripDate(end)}`,lat:-16.9203,lng:145.7710,emoji,icon:'fa-route'}; itineraries[key]=[]; checklists[key]=[]; budgets[key]=[]; journals[key]=[]; tripAccess[key]=false; currentTripKey=key; localStorage.setItem('activeTripKey',key); saveAll(); closeNewTripModal(); ['new-trip-name','new-trip-start','new-trip-end'].forEach(id=>document.getElementById(id).value=''); document.getElementById('new-trip-emoji').value='🧳'; renderSidebar(); initCurrentTripData();}
+    function deleteCurrentTrip(){if(!isAdminMode)return alert(currentLang==='zh'?'請先輸入管理密碼，才能刪除旅程。':'Please enter the admin password before deleting a trip.'); if(Object.keys(tripsMaster).length<=1)return alert(currentLang==='zh'?'至少保留一個旅程':'Keep at least one trip.'); if(confirm(currentLang==='zh'?'確定刪除這個旅程？':'Delete this trip?')){delete tripsMaster[currentTripKey]; delete itineraries[currentTripKey]; delete checklists[currentTripKey]; delete budgets[currentTripKey]; delete journals[currentTripKey]; delete tripAccess[currentTripKey]; currentTripKey=Object.keys(tripsMaster)[0]; localStorage.setItem('activeTripKey',currentTripKey); saveAll(); renderSidebar(); initCurrentTripData();}}
     function switchModule(m){
       const target=document.getElementById('module-'+m);
       if(!target) return;
@@ -1656,7 +1892,7 @@
       }
     }
 
-    applyLanguage(false); applyTheme(); renderSidebar(); initCurrentTripData();
+    applyLanguage(false); applyTheme(); ensureTripAccessDefaults(); syncActiveTripAccess(); renderSidebar(); initCurrentTripData();
   </script>
 </body>
 </html>
