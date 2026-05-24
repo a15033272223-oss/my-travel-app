@@ -17,6 +17,131 @@
         @supports (padding: max(0px)) {
             .safe-bottom { padding-bottom: max(1rem, env(safe-area-inset-bottom)); }
         }
+    
+
+        /* --- Apple-ish Minimal Design Layer --- */
+        :root {
+            --apple-bg: #f5f5f7;
+            --apple-card: rgba(255, 255, 255, 0.78);
+            --apple-card-strong: rgba(255, 255, 255, 0.92);
+            --apple-line: rgba(15, 23, 42, 0.08);
+            --apple-text: #1d1d1f;
+            --apple-subtext: #6e6e73;
+            --apple-blue: #007aff;
+            --apple-dark: #111827;
+        }
+
+        html, body {
+            font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", "SF Pro Text", "Segoe UI", system-ui, sans-serif;
+            background:
+                radial-gradient(circle at top left, rgba(0, 122, 255, 0.13), transparent 30%),
+                radial-gradient(circle at bottom right, rgba(175, 82, 222, 0.10), transparent 32%),
+                var(--apple-bg) !important;
+            color: var(--apple-text);
+        }
+
+        main { background: transparent !important; }
+
+        aside,
+        header,
+        #newTripModal > div,
+        .module-content > .bg-white,
+        .module-content .bg-white.rounded-xl,
+        #event-form-container {
+            background: var(--apple-card) !important;
+            border-color: var(--apple-line) !important;
+            box-shadow: 0 20px 60px rgba(15, 23, 42, 0.07) !important;
+            backdrop-filter: blur(22px);
+            -webkit-backdrop-filter: blur(22px);
+        }
+
+        header {
+            background: rgba(255, 255, 255, 0.72) !important;
+            box-shadow: 0 1px 0 rgba(15, 23, 42, 0.04) !important;
+        }
+
+        aside {
+            background: rgba(255, 255, 255, 0.84) !important;
+        }
+
+        .rounded-xl { border-radius: 1.35rem !important; }
+        .rounded-2xl { border-radius: 1.75rem !important; }
+        .rounded-lg { border-radius: 0.95rem !important; }
+
+        input, select {
+            background: rgba(255, 255, 255, 0.72) !important;
+            border-color: rgba(15, 23, 42, 0.10) !important;
+            color: var(--apple-text) !important;
+        }
+
+        input:focus, select:focus {
+            border-color: rgba(0, 122, 255, 0.55) !important;
+            box-shadow: 0 0 0 4px rgba(0, 122, 255, 0.12) !important;
+        }
+
+        button {
+            transition: transform 0.18s ease, box-shadow 0.18s ease, background-color 0.18s ease, opacity 0.18s ease;
+        }
+
+        button:active { transform: scale(0.98); }
+
+        .module-tab {
+            border-bottom: none !important;
+            padding: 0.55rem 0.9rem !important;
+            margin: 0.65rem 0 !important;
+            border-radius: 999px !important;
+            color: var(--apple-subtext) !important;
+        }
+
+        .module-tab:hover {
+            background: rgba(15, 23, 42, 0.05);
+            color: var(--apple-text) !important;
+        }
+
+        .module-tab.text-blue-600 {
+            background: rgba(17, 24, 39, 0.94) !important;
+            color: white !important;
+            box-shadow: 0 10px 24px rgba(17, 24, 39, 0.16);
+        }
+
+        #sidebar-trip-list button {
+            border-radius: 1.15rem !important;
+        }
+
+        #sidebar-trip-list button.bg-blue-50 {
+            background: rgba(0, 122, 255, 0.10) !important;
+            color: #0057d8 !important;
+            border-color: rgba(0, 122, 255, 0.14) !important;
+        }
+
+        #itinerary-list > div,
+        #checklist-container > div,
+        #checklist-container label {
+            background: var(--apple-card-strong) !important;
+            border: 1px solid var(--apple-line) !important;
+            border-radius: 1.35rem !important;
+            box-shadow: 0 14px 34px rgba(15, 23, 42, 0.055) !important;
+        }
+
+        table thead tr { background: rgba(15, 23, 42, 0.035) !important; }
+        table tbody tr:hover { background: rgba(0, 122, 255, 0.035); }
+
+        #mobile-create-trip-fab,
+        #submit-event-btn,
+        #submit-checklist-btn,
+        #submit-budget-btn,
+        button.bg-blue-600,
+        button.bg-slate-800,
+        button.bg-emerald-600 {
+            box-shadow: 0 12px 28px rgba(0, 122, 255, 0.18);
+        }
+
+        #mobile-create-trip-fab {
+            background: linear-gradient(135deg, #111827, #007aff) !important;
+        }
+
+        .text-slate-400, .text-slate-500 { color: var(--apple-subtext) !important; }
+        .shadow-sm { box-shadow: 0 14px 34px rgba(15, 23, 42, 0.055) !important; }
     </style>
 </head>
 <body class="bg-slate-100 text-slate-800 flex h-[100dvh] overflow-hidden relative">
@@ -25,7 +150,7 @@
 
     <aside id="mobile-sidebar" class="absolute z-50 h-full w-64 transform -translate-x-full transition-transform duration-300 md:relative md:translate-x-0 bg-white border-r border-slate-200 flex flex-col shadow-xl md:shadow-sm">
         <div class="p-6 border-b border-slate-100 flex justify-between items-center">
-            <h1 class="text-xl font-extrabold text-blue-600"><i class="fa-solid fa-plane-departure mr-2"></i>TripManager</h1>
+            <h1 class="text-xl font-extrabold text-slate-900 tracking-tight">🧭 TripManager</h1>
             <button onclick="toggleSidebar()" class="md:hidden text-slate-400 hover:text-slate-600 text-xl"><i class="fa-solid fa-xmark"></i></button>
         </div>
         <div class="flex-1 overflow-y-auto p-4 space-y-6 no-scrollbar">
@@ -35,7 +160,7 @@
             </div>
         </div>
         <div class="p-4 border-t border-slate-200 bg-slate-50">
-            <button onclick="openNewTripModal()" class="touch-safe w-full bg-slate-800 hover:bg-slate-700 text-white py-3 rounded-lg text-sm font-bold flex items-center justify-center active:scale-[0.98]">
+            <button id="sidebar-create-trip-btn" onclick="openNewTripModal()" class="touch-safe w-full bg-slate-800 hover:bg-slate-700 text-white py-3 rounded-lg text-sm font-bold flex items-center justify-center active:scale-[0.98]">
                 <i class="fa-solid fa-plus mr-2"></i>建立新行程
             </button>
         </div>
@@ -58,18 +183,21 @@
                     <p id="trip-dates" class="text-xs md:text-sm text-slate-500 mt-0.5 truncate">--</p>
                 </div>
             </div>
-            <div class="flex items-center ml-2 flex-shrink-0">
+            <div class="flex items-center ml-2 flex-shrink-0 gap-2">
                 <div class="flex items-center bg-blue-50 border border-blue-200 rounded-full px-2 md:px-3 py-1">
                     <i class="fa-solid fa-user-group text-blue-500 mr-1 text-xs"></i>
                     <input type="text" id="companionInput" class="bg-transparent border-none focus:outline-none text-xs md:text-sm font-medium text-slate-700 placeholder-slate-400 w-20 md:w-32" placeholder="如: 聖聖" oninput="saveCompanion(this.value)" onchange="renderBudget()">
                 </div>
+                <button id="language-toggle-btn" onclick="toggleLanguage()" class="touch-safe bg-white/70 hover:bg-white border border-slate-200 text-slate-700 px-3 py-1.5 rounded-full text-xs font-black shadow-sm active:scale-[0.98]">
+                    <span id="lang-toggle-label">EN</span>
+                </button>
             </div>
         </header>
 
         <div class="bg-white border-b border-slate-200 px-4 md:px-8 flex space-x-4 md:space-x-6 text-sm font-medium text-slate-500 z-10 overflow-x-auto no-scrollbar whitespace-nowrap flex-shrink-0">
-            <button onclick="switchModule('timeline')" id="tab-timeline" class="module-tab py-4 text-blue-600 border-b-2 border-blue-600 font-bold">行程列表</button>
-            <button onclick="switchModule('checklist')" id="tab-checklist" class="module-tab py-4 hover:text-blue-600 transition-colors">行李及待辦事項</button>
-            <button onclick="switchModule('budget')" id="tab-budget" class="module-tab py-4 hover:text-blue-600 transition-colors">預算與個人結算</button>
+            <button onclick="switchModule('timeline')" id="tab-timeline" class="module-tab py-4 text-blue-600 border-b-2 border-blue-600 font-bold">🗺️ 行程列表</button>
+            <button onclick="switchModule('checklist')" id="tab-checklist" class="module-tab py-4 hover:text-blue-600 transition-colors">🎒 行李與待辦</button>
+            <button onclick="switchModule('budget')" id="tab-budget" class="module-tab py-4 hover:text-blue-600 transition-colors">💸 預算結算</button>
         </div>
 
         <div class="flex-1 overflow-y-auto p-4 md:p-8">
@@ -79,7 +207,7 @@
                     <div class="flex items-center space-x-3 md:space-x-4">
                         <div class="text-3xl md:text-4xl text-blue-500 bg-blue-50 p-2 md:p-3 rounded-lg" id="weather-icon"><i class="fa-solid fa-cloud-sun"></i></div>
                         <div>
-                            <h3 class="text-[10px] md:text-xs font-bold text-slate-400 uppercase tracking-wider">目的地即時氣象</h3>
+                            <h3 class="text-[10px] md:text-xs font-bold text-slate-400 uppercase tracking-wider">目的地天氣</h3>
                             <div class="flex items-baseline space-x-2">
                                 <span id="temp-display" class="text-2xl md:text-3xl font-black text-slate-700">--°C</span>
                                 <span id="weather-desc" class="text-xs md:text-sm font-bold text-slate-500">連線中...</span>
@@ -90,8 +218,8 @@
 
                 <div id="event-form-container" class="bg-white rounded-xl shadow-sm border border-slate-200 p-4 md:p-5 transition-all">
                     <h3 class="text-sm font-bold text-slate-700 mb-3 flex items-center">
-                        <i class="fa-solid fa-calendar-plus mr-2 text-blue-500" id="form-icon"></i>
-                        <span id="form-title">規劃新行程</span>
+                        <span class="mr-2">✨</span><i class="fa-solid fa-calendar-plus mr-2 text-blue-500 hidden" id="form-icon"></i>
+                        <span id="form-title">新增行程</span>
                         <button id="cancel-edit-btn" onclick="cancelEdit()" class="hidden ml-auto text-xs text-slate-400 hover:text-slate-600 underline">取消編輯</button>
                     </h3>
                     
@@ -124,8 +252,8 @@
                 <div class="bg-white rounded-xl shadow-sm border border-slate-200 p-4 md:p-6">
                     <div class="flex flex-col md:flex-row md:items-center md:justify-between gap-3 mb-4">
                         <div>
-                            <h3 class="font-bold text-slate-800 flex items-center"><i class="fa-solid fa-route mr-2 text-blue-500"></i>行程時間軸</h3>
-                            <p class="text-xs text-slate-400 mt-1">可拖曳左側把手重新排序。拖曳後會自動檢查時間錯亂與排氮風險。</p>
+                            <h3 class="font-bold text-slate-800 flex items-center">🗓️ 行程列表</h3>
+                            <p class="text-xs text-slate-400 mt-1">拖曳排序、時間防呆、潛水後高空活動提醒都會自動檢查。</p>
                         </div>
                         <button onclick="autoSortItineraryByTime()" class="touch-safe bg-slate-800 hover:bg-slate-700 text-white text-xs font-bold px-3 py-2 rounded-lg active:scale-[0.98]"><i class="fa-solid fa-arrow-down-short-wide mr-1"></i>按時間自動排序</button>
                     </div>
@@ -137,7 +265,7 @@
             <div id="module-checklist" class="module-content hidden max-w-4xl mx-auto space-y-6">
                 <div class="bg-white rounded-xl shadow-sm border border-slate-200 p-6">
                     <h3 class="font-bold text-lg text-slate-800 mb-4 flex items-center">
-                        <span><i class="fa-solid fa-list-check mr-2 text-blue-500"></i>行李清單與行前待辦</span>
+                        <span>🎒 行李清單與行前待辦</span>
                         <button id="cancel-checklist-edit-btn" onclick="cancelChecklistEdit()" class="hidden ml-auto text-xs text-slate-400 hover:text-slate-600 underline">取消編輯</button>
                     </h3>
                     <div class="grid grid-cols-1 md:grid-cols-12 gap-2 mb-6">
@@ -150,7 +278,7 @@
                         </select>
                         <button id="submit-checklist-btn" onclick="submitChecklistItem()" class="touch-safe md:col-span-2 bg-blue-600 hover:bg-blue-700 text-white px-5 py-2 rounded-lg text-sm font-bold transition-colors active:scale-[0.98]">新增項目</button>
                     </div>
-                    <p class="text-xs text-slate-400 -mt-4 mb-3">提醒日可空白；填入後可一鍵加入 Google Calendar。Google Tasks 版本先採「複製內容＋開啟 Tasks」，真正自動寫入需串 OAuth/API。</p>
+                    <p class="text-xs text-slate-400 -mt-4 mb-3">可以先用這裡管理行李與行前任務；完成後會自動移到底部。提醒日可一鍵加入 Google Calendar。</p>
                     <div id="checklist-progress" class="mb-3 text-xs font-bold text-slate-500 bg-slate-50 border border-slate-200 rounded-lg px-3 py-2">待辦狀態載入中...</div>
                     <div id="checklist-container" class="space-y-2">
                         </div>
@@ -160,22 +288,22 @@
             <div id="module-budget" class="module-content hidden max-w-4xl mx-auto space-y-4 md:space-y-6">
                 <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
                     <div class="bg-white rounded-xl p-5 border border-slate-200 shadow-sm text-center md:text-left">
-                        <p class="text-xs font-bold text-slate-400 uppercase">本次總開銷</p>
+                        <p class="text-xs font-bold text-slate-400 uppercase">Total Spend</p>
                         <p class="text-3xl md:text-4xl font-black text-slate-800" id="budget-total">$0</p>
                         <p class="text-xs text-slate-400 mt-1" id="budget-per-capita">平均分攤：$0</p>
                     </div>
                     <div class="bg-blue-600 text-white rounded-xl p-5 shadow-md md:col-span-2">
-                        <p class="text-sm font-bold uppercase mb-2 flex items-center"><i class="fa-solid fa-comments-dollar mr-2"></i> 精準清帳指令</p>
+                        <p class="text-sm font-bold uppercase mb-2 flex items-center"><i class="fa-solid fa-comments-dollar mr-2"></i> 結算建議</p>
                         <div id="budget-settlement" class="space-y-2 text-sm md:text-base"></div>
                     </div>
                 </div>
                 <div class="bg-white rounded-xl shadow-sm border border-slate-200 p-4 md:p-6">
-                    <h4 class="font-bold text-sm text-slate-500 uppercase mb-3"><i class="fa-solid fa-users-viewfinder mr-2"></i>收支結算概況</h4>
+                    <h4 class="font-bold text-sm text-slate-500 uppercase mb-3"><i class="fa-solid fa-users-viewfinder mr-2"></i>成員分帳概況</h4>
                     <div class="overflow-x-auto no-scrollbar"><table class="w-full text-left border-collapse text-xs md:text-sm whitespace-nowrap"><thead><tr class="bg-slate-50 text-slate-500 border-b border-slate-200 font-bold"><th class="p-2 md:p-3">成員</th><th class="p-2 md:p-3 text-right">代墊</th><th class="p-2 md:p-3 text-right">應攤</th><th class="p-2 md:p-3 text-right">結算狀態</th></tr></thead><tbody id="member-summary-list" class="divide-y divide-slate-100"></tbody></table></div>
                 </div>
                 <div class="bg-white rounded-xl shadow-sm border border-slate-200 p-4 md:p-6">
                     <h3 class="font-bold text-base md:text-lg text-slate-800 mb-3 flex items-center">
-                        <span><i class="fa-solid fa-square-plus mr-2 text-emerald-500"></i>記一筆新的</span>
+                        <span>💳 記一筆新的</span>
                         <button id="cancel-budget-edit-btn" onclick="cancelBudgetEdit()" class="hidden ml-auto text-xs text-slate-400 hover:text-slate-600 underline">取消編輯</button>
                     </h3>
                     <div class="flex flex-col gap-2 mb-4">
@@ -242,6 +370,228 @@
             'tasmania': []
         };
 
+        // --- Language System: 中文 / English ---
+        let currentLang = localStorage.getItem('tripManagerLang') || 'zh';
+        const i18n = {
+            zh: {
+                pageTitle: 'TripManager V7.1｜我的旅遊行程總管',
+                appName: '🧭 TripManager',
+                langButton: 'EN',
+                newTrip: '<i class="fa-solid fa-plus mr-2"></i>建立新行程',
+                newTripShort: '<i class="fa-solid fa-plus mr-2"></i>新旅程',
+                tripListTitle: '我的行程清單',
+                tabTimeline: '🗺️ 行程列表',
+                tabChecklist: '🎒 行李與待辦',
+                tabBudget: '💸 預算結算',
+                weatherTitle: '目的地天氣',
+                loadingWeather: '連線中...',
+                weatherSunny: '多雲時晴',
+                weatherRain: '有降雨機率',
+                weatherTimeout: '讀取逾時',
+                eventFormAdd: '新增行程',
+                eventFormEdit: '編輯行程',
+                add: '加入',
+                saveUpdate: '儲存更新',
+                cancelEdit: '取消編輯',
+                autoSort: '<i class="fa-solid fa-arrow-down-short-wide mr-1"></i>按時間自動排序',
+                itineraryTitle: '🗓️ 行程列表',
+                itineraryHint: '拖曳排序、時間防呆、潛水後高空活動提醒都會自動檢查。',
+                checklistTitle: '🎒 行李清單與行前待辦',
+                checklistHint: '可以先用這裡管理行李與行前任務；完成後會自動移到底部。提醒日可一鍵加入 Google Calendar。',
+                checklistAdd: '新增項目',
+                checklistDoneSection: '已完成事項',
+                checklistPendingSection: '未完成事項',
+                checklistDone: '已完成',
+                checklistPending: '未完成',
+                noReminder: '未設定提醒',
+                addToCalendar: '<i class="fa-solid fa-calendar-plus mr-1"></i>加到 Calendar',
+                openTasks: '<i class="fa-solid fa-list-check mr-1"></i>開啟 Tasks',
+                edit: '<i class="fa-solid fa-pen mr-1"></i>編輯',
+                progress: (done,total,pending,percent) => `已完成 ${done} / ${total}，未完成 ${pending}`,
+                progressRate: percent => `完成率 ${percent}%｜勾選後會即時置底`,
+                budgetTotal: 'Total Spend',
+                budgetSettlement: '結算建議',
+                budgetSummary: '成員分帳概況',
+                budgetNew: '💳 記一筆新的',
+                budgetRecord: '記錄',
+                member: '成員',
+                paid: '代墊',
+                share: '應攤',
+                status: '結算狀態',
+                item: '項目',
+                payer: '代墊',
+                amount: '金額',
+                action: '操作',
+                perPerson: amount => `每人平均分攤：$${amount}`,
+                noExpense: '無開銷',
+                receive: amount => `收 $${amount}`,
+                pay: amount => `付 $${amount}`,
+                settled: '兩清',
+                noDebt: '互不相欠！',
+                booked: '已訂',
+                toBook: '待訂',
+                newTripModalTitle: '建立全新旅程計畫',
+                cancel: '取消',
+                confirmCreate: '確認建立',
+                placeholders: {
+                    companion: '如: 聖聖', eventDay: '日期(7/5)', eventTitle: '做什麼？(例如：吃海鮮大餐)', eventNote: '備註 (選填)',
+                    checklistText: '物品或待辦事項，例如：訂餐廳、防風外套', checklistDay: '提醒日 7/4', budgetTitle: '花費項目', budgetAmount: '金額', budgetPayer: '代墊人', tripName: '行程目的地', tripDates: '日期區間'
+                }
+            },
+            en: {
+                pageTitle: 'TripManager V7.1｜Travel Planner',
+                appName: '🧭 TripManager',
+                langButton: '中',
+                newTrip: '<i class="fa-solid fa-plus mr-2"></i>New Trip',
+                newTripShort: '<i class="fa-solid fa-plus mr-2"></i>Trip',
+                tripListTitle: 'My Trips',
+                tabTimeline: '🗺️ Itinerary',
+                tabChecklist: '🎒 Packing & To-dos',
+                tabBudget: '💸 Budget',
+                weatherTitle: 'Destination Weather',
+                loadingWeather: 'Loading...',
+                weatherSunny: 'Partly cloudy',
+                weatherRain: 'Chance of rain',
+                weatherTimeout: 'Weather timeout',
+                eventFormAdd: 'Add itinerary item',
+                eventFormEdit: 'Edit itinerary item',
+                add: 'Add',
+                saveUpdate: 'Save Changes',
+                cancelEdit: 'Cancel edit',
+                autoSort: '<i class="fa-solid fa-arrow-down-short-wide mr-1"></i>Sort by time',
+                itineraryTitle: '🗓️ Itinerary',
+                itineraryHint: 'Drag to reorder. Time conflicts and no-fly-after-diving warnings are checked automatically.',
+                checklistTitle: '🎒 Packing List & To-dos',
+                checklistHint: 'Manage packing and pre-trip tasks here. Completed items move to the bottom automatically.',
+                checklistAdd: 'Add item',
+                checklistDoneSection: 'Completed',
+                checklistPendingSection: 'Pending',
+                checklistDone: 'Done',
+                checklistPending: 'Pending',
+                noReminder: 'No reminder',
+                addToCalendar: '<i class="fa-solid fa-calendar-plus mr-1"></i>Add to Calendar',
+                openTasks: '<i class="fa-solid fa-list-check mr-1"></i>Open Tasks',
+                edit: '<i class="fa-solid fa-pen mr-1"></i>Edit',
+                progress: (done,total,pending,percent) => `${done} / ${total} completed, ${pending} pending`,
+                progressRate: percent => `${percent}% complete｜Checked items update instantly`,
+                budgetTotal: 'Total Spend',
+                budgetSettlement: 'Settlement Plan',
+                budgetSummary: 'Member Summary',
+                budgetNew: '💳 Add expense',
+                budgetRecord: 'Record',
+                member: 'Member',
+                paid: 'Paid',
+                share: 'Share',
+                status: 'Status',
+                item: 'Item',
+                payer: 'Payer',
+                amount: 'Amount',
+                action: 'Action',
+                perPerson: amount => `Per person: $${amount}`,
+                noExpense: 'No expense yet',
+                receive: amount => `Receive $${amount}`,
+                pay: amount => `Pay $${amount}`,
+                settled: 'Settled',
+                noDebt: 'All settled!',
+                booked: 'Booked',
+                toBook: 'To book',
+                newTripModalTitle: 'Create a New Trip',
+                cancel: 'Cancel',
+                confirmCreate: 'Create',
+                placeholders: {
+                    companion: 'e.g. Sheng', eventDay: 'Date (7/5)', eventTitle: 'What to do? e.g. Seafood dinner', eventNote: 'Notes (optional)',
+                    checklistText: 'Item or task, e.g. book restaurant, windbreaker', checklistDay: 'Reminder 7/4', budgetTitle: 'Expense item', budgetAmount: 'Amount', budgetPayer: 'Payer', tripName: 'Destination', tripDates: 'Date range'
+                }
+            }
+        };
+
+        function tr(key, ...args) {
+            const value = key.split('.').reduce((obj, part) => obj && obj[part], i18n[currentLang]);
+            if (typeof value === 'function') return value(...args);
+            return value ?? key;
+        }
+
+        function setTextById(id, value) { const el = document.getElementById(id); if (el) el.textContent = value; }
+        function setHTMLById(id, value) { const el = document.getElementById(id); if (el) el.innerHTML = value; }
+        function setPlaceholder(id, value) { const el = document.getElementById(id); if (el) el.placeholder = value; }
+
+        function toggleLanguage() {
+            currentLang = currentLang === 'zh' ? 'en' : 'zh';
+            localStorage.setItem('tripManagerLang', currentLang);
+            applyLanguage(true);
+        }
+
+        function applyLanguage(shouldRender = false) {
+            document.documentElement.lang = currentLang === 'zh' ? 'zh-TW' : 'en';
+            document.title = tr('pageTitle');
+            const brand = document.querySelector('aside h1'); if (brand) brand.textContent = tr('appName');
+            const tripListTitle = document.querySelector('aside h2'); if (tripListTitle) tripListTitle.textContent = tr('tripListTitle');
+            setHTMLById('sidebar-create-trip-btn', tr('newTrip'));
+            setHTMLById('mobile-create-trip-fab', tr('newTripShort'));
+            setTextById('lang-toggle-label', tr('langButton'));
+            setTextById('tab-timeline', tr('tabTimeline'));
+            setTextById('tab-checklist', tr('tabChecklist'));
+            setTextById('tab-budget', tr('tabBudget'));
+            setPlaceholder('companionInput', tr('placeholders.companion'));
+            setPlaceholder('event-day', tr('placeholders.eventDay'));
+            setPlaceholder('event-title', tr('placeholders.eventTitle'));
+            setPlaceholder('event-note', tr('placeholders.eventNote'));
+            setPlaceholder('newChecklistItem', tr('placeholders.checklistText'));
+            setPlaceholder('newChecklistDueDay', tr('placeholders.checklistDay'));
+            setPlaceholder('budget-title', tr('placeholders.budgetTitle'));
+            setPlaceholder('budget-amount', tr('placeholders.budgetAmount'));
+            setPlaceholder('budget-payer', tr('placeholders.budgetPayer'));
+            setPlaceholder('new-trip-name', tr('placeholders.tripName'));
+            setPlaceholder('new-trip-dates', tr('placeholders.tripDates'));
+            const weatherLabel = document.querySelector('#module-timeline h3.text-\[10px\]'); if (weatherLabel) weatherLabel.textContent = tr('weatherTitle');
+            const itineraryHeader = document.querySelector('#module-timeline .bg-white.rounded-xl.shadow-sm.border.border-slate-200.p-4.md\\:p-6 h3'); if (itineraryHeader) itineraryHeader.textContent = tr('itineraryTitle');
+            const itineraryHint = document.querySelector('#module-timeline .bg-white.rounded-xl.shadow-sm.border.border-slate-200.p-4.md\\:p-6 p.text-xs'); if (itineraryHint) itineraryHint.textContent = tr('itineraryHint');
+            const checklistTitle = document.querySelector('#module-checklist h3 span'); if (checklistTitle) checklistTitle.textContent = tr('checklistTitle');
+            const checklistHint = document.querySelector('#module-checklist p.text-xs.text-slate-400'); if (checklistHint) checklistHint.textContent = tr('checklistHint');
+            setTextById('submit-checklist-btn', editingChecklistId ? tr('saveUpdate') : tr('checklistAdd'));
+            const budgetNew = document.querySelector('#module-budget h3 span'); if (budgetNew) budgetNew.textContent = tr('budgetNew');
+            const totalLabel = document.querySelector('#module-budget .grid .bg-white p.text-xs'); if (totalLabel) totalLabel.textContent = tr('budgetTotal');
+            const settlementLabel = document.querySelector('#module-budget .bg-blue-600 p'); if (settlementLabel) settlementLabel.innerHTML = `<i class="fa-solid fa-comments-dollar mr-2"></i> ${tr('budgetSettlement')}`;
+            const budgetSummary = document.querySelector('#module-budget h4'); if (budgetSummary) budgetSummary.innerHTML = `<i class="fa-solid fa-users-viewfinder mr-2"></i>${tr('budgetSummary')}`;
+            const modalTitle = document.querySelector('#newTripModal h3'); if (modalTitle) modalTitle.textContent = tr('newTripModalTitle');
+            const modalButtons = document.querySelectorAll('#newTripModal button');
+            if (modalButtons[0]) modalButtons[0].textContent = tr('cancel');
+            if (modalButtons[1]) modalButtons[1].textContent = tr('confirmCreate');
+            const autoSortBtn = document.querySelector('button[onclick="autoSortItineraryByTime()"]'); if (autoSortBtn) autoSortBtn.innerHTML = tr('autoSort');
+            const cancelEventBtn = document.getElementById('cancel-edit-btn'); if (cancelEventBtn) cancelEventBtn.textContent = tr('cancelEdit');
+            const cancelChecklistBtn = document.getElementById('cancel-checklist-edit-btn'); if (cancelChecklistBtn) cancelChecklistBtn.textContent = tr('cancelEdit');
+            const cancelBudgetBtn = document.getElementById('cancel-budget-edit-btn'); if (cancelBudgetBtn) cancelBudgetBtn.textContent = tr('cancelEdit');
+            setTextById('form-title', editingEventId ? tr('eventFormEdit') : tr('eventFormAdd'));
+            setTextById('submit-event-btn', editingEventId ? tr('saveUpdate') : tr('add'));
+            setTextById('submit-budget-btn', editingBudgetId ? tr('saveUpdate') : tr('budgetRecord'));
+
+            const statusSelect = document.getElementById('event-status');
+            if (statusSelect) {
+                const opts = statusSelect.options;
+                if (opts[0]) opts[0].textContent = currentLang === 'zh' ? '無票券' : 'No ticket';
+                if (opts[1]) opts[1].textContent = currentLang === 'zh' ? '🔴 待定' : '🔴 To book';
+                if (opts[2]) opts[2].textContent = currentLang === 'zh' ? '🟢 已定' : '🟢 Booked';
+            }
+
+            const budgetTables = document.querySelectorAll('#module-budget table');
+            if (budgetTables[0]) {
+                const th = budgetTables[0].querySelectorAll('thead th');
+                if (th[0]) th[0].textContent = tr('member');
+                if (th[1]) th[1].textContent = tr('paid');
+                if (th[2]) th[2].textContent = tr('share');
+                if (th[3]) th[3].textContent = tr('status');
+            }
+            if (budgetTables[1]) {
+                const th = budgetTables[1].querySelectorAll('thead th');
+                if (th[0]) th[0].textContent = tr('item');
+                if (th[1]) th[1].textContent = tr('payer');
+                if (th[2]) th[2].textContent = tr('amount');
+                if (th[3]) th[3].textContent = tr('action');
+            }
+
+            if (shouldRender) { renderSidebar(); renderItinerary(); renderChecklist(); renderBudget(); }
+        }
+
         let isSidebarOpen = false;
         function toggleSidebar() {
             const sidebar = document.getElementById('mobile-sidebar'), overlay = document.getElementById('sidebar-overlay');
@@ -263,7 +613,7 @@
 
         function selectTrip(key) { 
             currentTripKey = key; localStorage.setItem('activeTripKey', key); 
-            renderSidebar(); initCurrentTripData(); cancelEdit();
+            applyLanguage(false); renderSidebar(); initCurrentTripData(); cancelEdit();
             if (window.innerWidth < 768 && isSidebarOpen) toggleSidebar(); 
         }
 
@@ -521,11 +871,11 @@
             document.getElementById('event-note').value = item.note || '';
 
             editingEventId = id;
-            document.getElementById('form-title').innerText = '編輯行程';
+            document.getElementById('form-title').innerText = tr('eventFormEdit');
             document.getElementById('form-icon').classList.replace('fa-calendar-plus', 'fa-pen-to-square');
             document.getElementById('form-icon').classList.replace('text-blue-500', 'text-amber-500');
             const submitBtn = document.getElementById('submit-event-btn');
-            submitBtn.innerText = '儲存更新';
+            submitBtn.innerText = tr('saveUpdate');
             submitBtn.classList.replace('bg-blue-600', 'bg-amber-500');
             submitBtn.classList.replace('hover:bg-blue-700', 'hover:bg-amber-600');
             document.getElementById('cancel-edit-btn').classList.remove('hidden');
@@ -539,11 +889,11 @@
             document.getElementById('event-title').value = ''; document.getElementById('event-note').value = '';
             document.getElementById('event-type').value = 'general'; document.getElementById('event-status').value = 'none';
             
-            document.getElementById('form-title').innerText = '規劃新行程';
+            document.getElementById('form-title').innerText = tr('eventFormAdd');
             document.getElementById('form-icon').classList.replace('fa-pen-to-square', 'fa-calendar-plus');
             document.getElementById('form-icon').classList.replace('text-amber-500', 'text-blue-500');
             const submitBtn = document.getElementById('submit-event-btn');
-            submitBtn.innerText = '加入';
+            submitBtn.innerText = tr('add');
             submitBtn.classList.replace('bg-amber-500', 'bg-blue-600');
             submitBtn.classList.replace('hover:bg-amber-600', 'hover:bg-blue-700');
             document.getElementById('cancel-edit-btn').classList.add('hidden');
@@ -590,7 +940,7 @@
                 const issues = validation.issues.filter(issue => issue.id === item.id);
                 const isAcc = item.type === 'accommodation';
                 let typeIcon = item.type === 'dive' ? '🤿' : item.type === 'altitude' ? '🚁' : item.type === 'flight' ? '✈️' : item.type === 'accommodation' ? '⛺️' : item.type === 'dining' ? '🍽️' : '📍';
-                let statusBadge = item.status === 'to-book' ? '<span class="ml-1 md:ml-2 bg-red-100 text-red-700 text-[10px] font-bold px-1.5 py-0.5 rounded">待訂</span>' : item.status === 'booked' ? '<span class="ml-1 md:ml-2 bg-green-100 text-green-700 text-[10px] font-bold px-1.5 py-0.5 rounded">已訂</span>' : '';
+                let statusBadge = item.status === 'to-book' ? `<span class="ml-1 md:ml-2 bg-red-100 text-red-700 text-[10px] font-bold px-1.5 py-0.5 rounded">${tr('toBook')}</span>` : item.status === 'booked' ? `<span class="ml-1 md:ml-2 bg-green-100 text-green-700 text-[10px] font-bold px-1.5 py-0.5 rounded">${tr('booked')}</span>` : '';
                 let warningHTML = issues.length ? issues.map(issue => `<div class="mt-1 md:mt-2 ${issue.severity === 'danger' || issue.severity === 'error' ? 'bg-red-500 text-white animate-pulse' : 'bg-amber-100 text-amber-800'} text-[10px] md:text-xs font-bold px-2 py-1 rounded">⚠️ ${issue.message}</div>`).join('') : '';
 
                 let weatherBadgeHTML = '';
@@ -712,8 +1062,8 @@
 
             progressBox.innerHTML = `
                 <div class="flex flex-col md:flex-row md:items-center md:justify-between gap-2">
-                    <span><i class="fa-solid fa-circle-check mr-1 text-emerald-500"></i>已完成 ${done} / ${total}，未完成 ${pending}</span>
-                    <span class="text-slate-400">完成率 ${percent}%｜勾選後會即時置底</span>
+                    <span><i class="fa-solid fa-circle-check mr-1 text-emerald-500"></i>${tr('progress', done, total, pending, percent)}</span>
+                    <span class="text-slate-400">${tr('progressRate', percent)}</span>
                 </div>
                 <div class="mt-2 h-2 bg-slate-200 rounded-full overflow-hidden">
                     <div class="h-full bg-blue-600 rounded-full transition-all duration-300" style="width:${percent}%"></div>
@@ -735,12 +1085,12 @@
             const pendingCount = items.filter(i => !i.checked).length;
 
             items.forEach((item, index) => {
-                const reminder = item.dueDay ? `${escapeHTML(item.dueDay)} ${escapeHTML(item.dueTime || '09:00')}` : '未設定提醒';
+                const reminder = item.dueDay ? `${escapeHTML(item.dueDay)} ${escapeHTML(item.dueTime || '09:00')}` : tr('noReminder');
                 const targetLabel = item.target === 'task' ? 'Google Task' : 'Google Calendar';
                 const sectionLabel = index === 0 && !item.checked
-                    ? `<div class="text-[11px] font-black text-slate-400 uppercase tracking-wider mt-1 mb-2">未完成事項</div>`
+                    ? `<div class="text-[11px] font-black text-slate-400 uppercase tracking-wider mt-1 mb-2">${tr('checklistPendingSection')}</div>`
                     : (index === pendingCount && item.checked
-                        ? `<div class="text-[11px] font-black text-slate-400 uppercase tracking-wider mt-5 mb-2">已完成事項</div>`
+                        ? `<div class="text-[11px] font-black text-slate-400 uppercase tracking-wider mt-5 mb-2">${tr('checklistDoneSection')}</div>`
                         : '');
 
                 container.innerHTML += `
@@ -752,12 +1102,12 @@
                             <div class="mt-1 flex flex-wrap items-center gap-2 text-[11px] text-slate-400">
                                 <span class="bg-slate-100 px-2 py-0.5 rounded-full"><i class="fa-regular fa-clock mr-1"></i>${reminder}</span>
                                 <span class="bg-blue-50 text-blue-600 px-2 py-0.5 rounded-full">${targetLabel}</span>
-                                ${item.checked ? '<span class="bg-emerald-50 text-emerald-600 px-2 py-0.5 rounded-full">已完成</span>' : '<span class="bg-amber-50 text-amber-600 px-2 py-0.5 rounded-full">未完成</span>'}
+                                ${item.checked ? `<span class="bg-emerald-50 text-emerald-600 px-2 py-0.5 rounded-full">${tr('checklistDone')}</span>` : `<span class="bg-amber-50 text-amber-600 px-2 py-0.5 rounded-full">${tr('checklistPending')}</span>`}
                             </div>
                             <div class="mt-2 flex flex-wrap gap-2">
-                                <button onclick="addChecklistReminderToCalendar(${item.id})" class="touch-safe bg-blue-50 hover:bg-blue-100 text-blue-700 px-2.5 py-1 rounded-lg text-xs font-bold"><i class="fa-solid fa-calendar-plus mr-1"></i>加到 Calendar</button>
-                                <button onclick="openChecklistTaskHelper(${item.id})" class="touch-safe bg-slate-100 hover:bg-slate-200 text-slate-700 px-2.5 py-1 rounded-lg text-xs font-bold"><i class="fa-solid fa-list-check mr-1"></i>開啟 Tasks</button>
-                                <button onclick="editChecklistItem(${item.id})" class="touch-safe bg-amber-50 hover:bg-amber-100 text-amber-700 px-2.5 py-1 rounded-lg text-xs font-bold"><i class="fa-solid fa-pen mr-1"></i>編輯</button>
+                                <button onclick="addChecklistReminderToCalendar(${item.id})" class="touch-safe bg-blue-50 hover:bg-blue-100 text-blue-700 px-2.5 py-1 rounded-lg text-xs font-bold">${tr('addToCalendar')}</button>
+                                <button onclick="openChecklistTaskHelper(${item.id})" class="touch-safe bg-slate-100 hover:bg-slate-200 text-slate-700 px-2.5 py-1 rounded-lg text-xs font-bold">${tr('openTasks')}</button>
+                                <button onclick="editChecklistItem(${item.id})" class="touch-safe bg-amber-50 hover:bg-amber-100 text-amber-700 px-2.5 py-1 rounded-lg text-xs font-bold">${tr('edit')}</button>
                             </div>
                         </div>
                         <button onclick="deleteChecklist(event, ${item.id})" class="touch-safe text-slate-300 hover:text-red-500 p-1 opacity-100 md:opacity-0 md:group-hover:opacity-100 transition-opacity"><i class="fa-solid fa-xmark"></i></button>
@@ -775,7 +1125,7 @@
 
             const btn = document.getElementById('submit-checklist-btn');
             if (btn) {
-                btn.innerText = '新增項目';
+                btn.innerText = tr('checklistAdd');
                 btn.classList.remove('bg-amber-500', 'hover:bg-amber-600');
                 btn.classList.add('bg-blue-600', 'hover:bg-blue-700');
             }
@@ -800,7 +1150,7 @@
 
             const btn = document.getElementById('submit-checklist-btn');
             if (btn) {
-                btn.innerText = '儲存更新';
+                btn.innerText = tr('saveUpdate');
                 btn.classList.remove('bg-blue-600', 'hover:bg-blue-700');
                 btn.classList.add('bg-amber-500', 'hover:bg-amber-600');
             }
@@ -838,9 +1188,10 @@
             }
 
             localStorage.setItem('tripChecklistsV6', JSON.stringify(checklists));
+            const wasEditingChecklist = !!editingChecklistId;
             resetChecklistForm();
             renderChecklist();
-            showToast(editingChecklistId ? '待辦事項已更新。' : '已新增待辦事項。');
+            showToast(wasEditingChecklist ? (currentLang === 'zh' ? '待辦事項已更新。' : 'To-do item updated.') : (currentLang === 'zh' ? '已新增待辦事項。' : 'To-do item added.'));
         }
 
         function addChecklistItem() {
@@ -919,13 +1270,13 @@
 
             const totalMembers = participants.size; const perPersonShare = totalMembers > 0 ? (totalAmount / totalMembers) : 0;
             document.getElementById('budget-total').innerText = '$' + Math.round(totalAmount).toLocaleString();
-            document.getElementById('budget-per-capita').innerText = `每人平均分攤：$${Math.round(perPersonShare).toLocaleString()}`;
+            document.getElementById('budget-per-capita').innerText = tr('perPerson', Math.round(perPersonShare).toLocaleString());
 
-            if (totalAmount === 0) { document.getElementById('budget-settlement').innerHTML = '<span class="text-blue-100 text-sm">無開銷</span>'; return; }
+            if (totalAmount === 0) { document.getElementById('budget-settlement').innerHTML = `<span class="text-blue-100 text-sm">${tr('noExpense')}</span>`; return; }
             let balances = {};
             participants.forEach(member => {
                 const paid = paidByPerson[member] || 0; const net = paid - perPersonShare; balances[member] = net;
-                let statusHTML = net > 0.01 ? `<span class="text-emerald-600 font-bold">收 $${Math.round(net).toLocaleString()}</span>` : net < -0.01 ? `<span class="text-red-500 font-bold">付 $${Math.round(Math.abs(net)).toLocaleString()}</span>` : `<span class="text-slate-400">兩清</span>`;
+                let statusHTML = net > 0.01 ? `<span class="text-emerald-600 font-bold">${tr('receive', Math.round(net).toLocaleString())}</span>` : net < -0.01 ? `<span class="text-red-500 font-bold">${tr('pay', Math.round(Math.abs(net)).toLocaleString())}</span>` : `<span class="text-slate-400">${tr('settled')}</span>`;
                 summaryTable.innerHTML += `<tr><td class="p-2 md:p-3 font-semibold text-slate-700">${member}</td><td class="p-2 md:p-3 text-right text-slate-600">$${Math.round(paid).toLocaleString()}</td><td class="p-2 md:p-3 text-right text-slate-600">$${Math.round(perPersonShare).toLocaleString()}</td><td class="p-2 md:p-3 text-right">${statusHTML}</td></tr>`;
             });
 
@@ -939,7 +1290,7 @@
                 settlementText += `<div class="flex justify-between items-center bg-white/10 px-3 py-1.5 rounded border border-white/10 text-xs md:text-sm"><span><b>${d.person}</b> 給 <b>${c.person}</b></span><span class="font-black text-yellow-200">$${Math.round(amountToPay).toLocaleString()}</span></div>`;
                 d.amount -= amountToPay; c.amount -= amountToPay; if (d.amount < 0.01) i++; if (c.amount < 0.01) j++;
             }
-            document.getElementById('budget-settlement').innerHTML = settlementText || '互不相欠！';
+            document.getElementById('budget-settlement').innerHTML = settlementText || tr('noDebt');
         }
 
         function resetBudgetForm() {
@@ -950,7 +1301,7 @@
 
             const btn = document.getElementById('submit-budget-btn');
             if (btn) {
-                btn.innerText = '記錄';
+                btn.innerText = tr('budgetRecord');
                 btn.classList.remove('bg-amber-500', 'hover:bg-amber-600');
                 btn.classList.add('bg-emerald-600', 'hover:bg-emerald-700');
             }
@@ -974,7 +1325,7 @@
 
             const btn = document.getElementById('submit-budget-btn');
             if (btn) {
-                btn.innerText = '儲存更新';
+                btn.innerText = tr('saveUpdate');
                 btn.classList.remove('bg-emerald-600', 'hover:bg-emerald-700');
                 btn.classList.add('bg-amber-500', 'hover:bg-amber-600');
             }
@@ -1004,9 +1355,10 @@
             }
 
             localStorage.setItem('tripBudgetsV6', JSON.stringify(budgets));
+            const wasEditingBudget = !!editingBudgetId;
             resetBudgetForm();
             renderBudget();
-            showToast(editingBudgetId ? '預算項目已更新。' : '已新增預算項目。');
+            showToast(wasEditingBudget ? (currentLang === 'zh' ? '預算項目已更新。' : 'Budget item updated.') : (currentLang === 'zh' ? '已新增預算項目。' : 'Budget item added.'));
         }
 
         function addBudgetItem() {
@@ -1048,11 +1400,11 @@
         async function fetchWeather(lat, lng) {
             if (!lat || !lng) return;
             try {
-                document.getElementById('temp-display').innerText = '--°C'; document.getElementById('weather-desc').innerText = '連線中...';
+                document.getElementById('temp-display').innerText = '--°C'; document.getElementById('weather-desc').innerText = tr('loadingWeather');
                 const response = await fetch(`https://api.open-meteo.com/v1/forecast?latitude=${lat}&longitude=${lng}&current_weather=true&daily=weathercode,temperature_2m_max,temperature_2m_min&timezone=auto`);
                 const data = await response.json();
                 document.getElementById('temp-display').innerText = `${data.current_weather.temperature}°C`;
-                document.getElementById('weather-desc').innerText = data.current_weather.weathercode <= 3 ? '多雲時晴' : '有降雨機率';
+                document.getElementById('weather-desc').innerText = data.current_weather.weathercode <= 3 ? tr('weatherSunny') : tr('weatherRain');
                 
                 dailyWeatherMap = {}; let currentEvents = itineraries[currentTripKey] || [];
                 const defaultMock = currentTripKey === 'tasmania' ? { max: 14, min: 6, code: 3, icon: '⛅' } : { max: 29, min: 22, code: 0, icon: '☀️' };
@@ -1066,7 +1418,7 @@
                     });
                 }
                 renderItinerary(); renderBudget();
-            } catch (e) { document.getElementById('weather-desc').innerText = '讀取逾時'; renderItinerary(); }
+            } catch (e) { document.getElementById('weather-desc').innerText = tr('weatherTimeout'); renderItinerary(); }
         }
 
         function switchModule(m) { 
