@@ -947,6 +947,328 @@
       display: none !important;
     }
 
+  
+    /* === MEMBER MODAL + CLEAN POPUP FORM PATCH === */
+    #form-modal-body #event-form-container > h3,
+    #form-modal-body #checklist-form-container > h3,
+    #form-modal-body #budget-form-container > h3 {
+      display: none !important;
+    }
+
+    #member-icon-btn {
+      flex-shrink: 0;
+      min-width: 2.65rem;
+      color: #111827 !important;
+    }
+
+    #member-icon-btn i {
+      color: #111827 !important;
+    }
+
+    body.dark-mode #member-icon-btn {
+      background: #1f2937 !important;
+      border-color: #374151 !important;
+      color: #f9fafb !important;
+    }
+
+    body.dark-mode #member-icon-btn i {
+      color: #f9fafb !important;
+    }
+
+    body.dark-mode #memberModal .modal-shell {
+      background: #111827 !important;
+      color: #f9fafb !important;
+      border-color: #374151 !important;
+    }
+
+    body.dark-mode #memberModal input {
+      background: #0b1220 !important;
+      color: #f9fafb !important;
+      border-color: #374151 !important;
+    }
+
+  
+    /* === MEMBER CHIP LIST + SIDEBAR TRIP ACTIONS === */
+    .member-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: .65rem;
+      padding: .65rem .75rem;
+      border-radius: 16px;
+      border: 1px solid #eeeeee;
+      background: #f7f7f8;
+      color: #111827;
+      font-size: .875rem;
+      font-weight: 800;
+    }
+
+    .member-remove-btn,
+    .trip-sidebar-action-btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 1.75rem;
+      height: 1.75rem;
+      border-radius: 999px;
+      color: #111827;
+      background: transparent;
+      flex-shrink: 0;
+    }
+
+    .member-remove-btn:hover,
+    .trip-sidebar-action-btn:hover {
+      background: rgba(17,24,39,.07);
+    }
+
+    .trip-sidebar-row {
+      display: flex;
+      align-items: stretch;
+      gap: .35rem;
+    }
+
+    .trip-sidebar-main {
+      min-width: 0;
+      flex: 1;
+    }
+
+    .trip-sidebar-actions {
+      display: inline-flex;
+      align-items: center;
+      gap: .1rem;
+      padding-right: .1rem;
+    }
+
+    body.dark-mode .member-row {
+      background: #1f2937 !important;
+      border-color: #374151 !important;
+      color: #f9fafb !important;
+    }
+
+    body.dark-mode .member-remove-btn,
+    body.dark-mode .trip-sidebar-action-btn {
+      color: #f9fafb !important;
+    }
+
+    body.dark-mode .member-remove-btn:hover,
+    body.dark-mode .trip-sidebar-action-btn:hover {
+      background: rgba(249,250,251,.10);
+    }
+
+    body.dark-mode #editTripModal .modal-shell {
+      background: #111827 !important;
+      color: #f9fafb !important;
+      border-color: #374151 !important;
+    }
+
+    body.dark-mode #editTripModal input,
+    body.dark-mode #editTripModal select {
+      background: #0b1220 !important;
+      color: #f9fafb !important;
+      border-color: #374151 !important;
+    }
+
+  
+    /* === MEMBER EDIT / DELETE BUTTON PATCH === */
+    .member-action-group {
+      display: inline-flex;
+      align-items: center;
+      gap: .25rem;
+      flex-shrink: 0;
+    }
+
+    .member-edit-btn,
+    .member-delete-btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 1.75rem;
+      height: 1.75rem;
+      border-radius: 999px;
+      color: #111827;
+      background: transparent;
+      flex-shrink: 0;
+    }
+
+    .member-edit-btn:hover,
+    .member-delete-btn:hover {
+      background: rgba(17,24,39,.07);
+    }
+
+    .member-delete-btn:hover {
+      color: #dc2626;
+    }
+
+    body.dark-mode .member-edit-btn,
+    body.dark-mode .member-delete-btn {
+      color: #f9fafb !important;
+    }
+
+    body.dark-mode .member-edit-btn:hover,
+    body.dark-mode .member-delete-btn:hover {
+      background: rgba(249,250,251,.10);
+    }
+
+  
+    /* === JOURNAL OVERVIEW ACTION ICONS === */
+    .journal-overview-actions {
+      display: inline-flex;
+      flex-direction: column;
+      align-items: center;
+      gap: .55rem;
+      flex-shrink: 0;
+      margin-left: .5rem;
+    }
+
+    .journal-overview-action-btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 1.9rem;
+      height: 1.9rem;
+      border-radius: 999px;
+      color: #111827;
+      background: transparent;
+    }
+
+    .journal-overview-action-btn:hover {
+      background: rgba(17,24,39,.07);
+    }
+
+    .journal-overview-action-btn.delete:hover {
+      color: #dc2626;
+    }
+
+    body.dark-mode .journal-overview-action-btn {
+      color: #f9fafb !important;
+    }
+
+    body.dark-mode .journal-overview-action-btn:hover {
+      background: rgba(249,250,251,.10);
+    }
+
+  
+    /* === UNIFIED EDIT / DELETE ICON SYSTEM === */
+    .tm-action-stack,
+    .tm-action-row,
+    .journal-overview-actions,
+    .member-action-group,
+    .trip-sidebar-actions {
+      display: inline-flex !important;
+      align-items: center;
+      gap: .45rem;
+      flex-shrink: 0;
+    }
+
+    .tm-action-stack,
+    .journal-overview-actions {
+      flex-direction: column !important;
+    }
+
+    .tm-action-row,
+    .member-action-group,
+    .trip-sidebar-actions {
+      flex-direction: row !important;
+    }
+
+    .tm-action-btn,
+    .event-action-btn,
+    .checklist-icon-btn,
+    .member-edit-btn,
+    .member-delete-btn,
+    .trip-sidebar-action-btn,
+    .journal-overview-action-btn {
+      width: 1.9rem !important;
+      height: 1.9rem !important;
+      border-radius: 999px !important;
+      display: inline-flex !important;
+      align-items: center !important;
+      justify-content: center !important;
+      background: transparent !important;
+      border: 0 !important;
+      color: #111827 !important;
+      padding: 0 !important;
+      line-height: 1 !important;
+      font-size: .9rem !important;
+      transition: background-color .15s ease, opacity .15s ease, transform .15s ease, color .15s ease;
+    }
+
+    .tm-action-btn:hover,
+    .event-action-btn:hover,
+    .checklist-icon-btn:hover,
+    .member-edit-btn:hover,
+    .member-delete-btn:hover,
+    .trip-sidebar-action-btn:hover,
+    .journal-overview-action-btn:hover {
+      background: rgba(17,24,39,.07) !important;
+      opacity: .95 !important;
+      transform: translateY(-1px);
+    }
+
+    .tm-action-btn.edit,
+    .event-action-btn.edit,
+    .checklist-icon-btn.edit,
+    .member-edit-btn,
+    .trip-sidebar-action-btn.edit,
+    .journal-overview-action-btn.edit {
+      color: #111827 !important;
+    }
+
+    .tm-action-btn.delete,
+    .event-action-btn.delete,
+    .checklist-icon-btn.delete,
+    .member-delete-btn,
+    .trip-sidebar-action-btn.delete,
+    .journal-overview-action-btn.delete {
+      color: #111827 !important;
+    }
+
+    .tm-action-btn.delete:hover,
+    .event-action-btn.delete:hover,
+    .checklist-icon-btn.delete:hover,
+    .member-delete-btn:hover,
+    .trip-sidebar-action-btn.delete:hover,
+    .journal-overview-action-btn.delete:hover {
+      color: #dc2626 !important;
+      background: rgba(220,38,38,.08) !important;
+    }
+
+    .tm-action-btn.calendar,
+    .event-action-btn.calendar,
+    .checklist-icon-btn.calendar {
+      color: #111827 !important;
+    }
+
+    body.dark-mode .tm-action-btn,
+    body.dark-mode .event-action-btn,
+    body.dark-mode .checklist-icon-btn,
+    body.dark-mode .member-edit-btn,
+    body.dark-mode .member-delete-btn,
+    body.dark-mode .trip-sidebar-action-btn,
+    body.dark-mode .journal-overview-action-btn {
+      color: #f9fafb !important;
+    }
+
+    body.dark-mode .tm-action-btn:hover,
+    body.dark-mode .event-action-btn:hover,
+    body.dark-mode .checklist-icon-btn:hover,
+    body.dark-mode .member-edit-btn:hover,
+    body.dark-mode .member-delete-btn:hover,
+    body.dark-mode .trip-sidebar-action-btn:hover,
+    body.dark-mode .journal-overview-action-btn:hover {
+      background: rgba(249,250,251,.10) !important;
+    }
+
+    body.dark-mode .tm-action-btn.delete:hover,
+    body.dark-mode .event-action-btn.delete:hover,
+    body.dark-mode .checklist-icon-btn.delete:hover,
+    body.dark-mode .member-delete-btn:hover,
+    body.dark-mode .trip-sidebar-action-btn.delete:hover,
+    body.dark-mode .journal-overview-action-btn.delete:hover {
+      color: #fca5a5 !important;
+      background: rgba(252,165,165,.12) !important;
+    }
+
   </style>
 </head>
 <body class="flex h-[100dvh] overflow-hidden relative">
@@ -995,16 +1317,15 @@
         <div class="min-w-0">
           <div class="flex items-center space-x-2">
             <h2 id="trip-title" class="text-lg md:text-2xl font-black text-stone-900 truncate">載入中...</h2>
-            <button onclick="deleteCurrentTrip()" class="text-stone-300 hover:text-red-500 text-sm"><i class="fa-solid fa-trash-can"></i></button>
           </div>
           <p id="trip-dates" class="text-xs md:text-sm text-stone-500 mt-0.5 truncate">--</p>
         </div>
       </div>
       <div class="flex items-center gap-2 ml-2 flex-shrink-0">
-        <div id="member-pill" class="flex items-center bg-[#f7f7f8] border border-[#e5e7eb] rounded-full px-2 md:px-3 py-1 min-w-[11rem] md:min-w-[18rem] max-w-[54vw] md:max-w-none">
-          <i class="fa-solid fa-user-group text-stone-900 mr-1 text-xs"></i>
-          <input type="text" id="companionInput" class="bg-transparent border-none focus:outline-none text-xs md:text-sm font-bold w-full min-w-0" placeholder="如: 聖聖, Ryan" oninput="saveCompanion(this.value)" onchange="renderBudget()">
-        </div>
+        <button id="member-icon-btn" onclick="openMemberModal()" class="touch-safe bg-white hover:bg-stone-50 border border-[#e5e7eb] text-stone-800 px-3 py-1.5 rounded-full text-xs font-black" title="旅伴成員">
+          <i class="fa-solid fa-user-group"></i>
+        </button>
+        <input type="hidden" id="companionInput" value="">
         <button onclick="toggleTheme()" class="touch-safe bg-white hover:bg-stone-50 border border-[#f1d7ce] text-stone-700 px-3 py-1.5 rounded-full text-xs font-black" title="Dark mode">
           <span id="theme-toggle-label">🌙</span>
         </button>
@@ -1190,6 +1511,54 @@
   </main>
 
 
+
+  <div id="memberModal" class="fixed inset-0 bg-black/40 hidden items-center justify-center z-[66] p-4">
+    <div class="modal-shell card w-full max-w-md p-5">
+      <div class="flex items-center justify-between gap-3 mb-4">
+        <h3 id="member-modal-title" class="font-black text-lg text-stone-900">旅伴成員</h3>
+        <button type="button" onclick="closeMemberModal()" class="touch-safe text-stone-400 hover:text-stone-900 text-xl"><i class="fa-solid fa-xmark"></i></button>
+      </div>
+
+      <p id="member-modal-hint" class="text-xs text-stone-500 mb-3">用下方 + 新增成員；點筆可以編輯，點垃圾桶可以刪除。</p>
+
+      <div id="member-list" class="space-y-2 mb-4"></div>
+
+      <div class="flex gap-2">
+        <input id="memberNameInput" type="text" class="flex-1 px-3 py-2 text-sm" placeholder="輸入成員名稱">
+        <button id="member-add-btn" onclick="addMemberFromInput()" class="primary-btn px-4 py-2 rounded-2xl text-sm font-black" title="新增成員">
+          <i class="fa-solid fa-plus"></i>
+        </button>
+      </div>
+
+      <button id="member-modal-save-btn" onclick="saveMemberFromModal()" class="primary-btn w-full py-2 rounded-2xl text-sm font-black mt-4">儲存成員</button>
+    </div>
+  </div>
+
+  <div id="editTripModal" class="fixed inset-0 bg-black/40 hidden items-center justify-center z-[66] p-4">
+    <div class="modal-shell card w-full max-w-md p-5">
+      <div class="flex items-center justify-between gap-3 mb-4">
+        <h3 id="edit-trip-modal-title" class="font-black text-lg text-stone-900">修改行程名稱</h3>
+        <button type="button" onclick="closeEditTripModal()" class="touch-safe text-stone-400 hover:text-stone-900 text-xl"><i class="fa-solid fa-xmark"></i></button>
+      </div>
+      <div class="space-y-3">
+        <input id="edit-trip-name" type="text" class="w-full px-3 py-2 text-sm" placeholder="行程名稱">
+        <select id="edit-trip-emoji" class="w-full px-3 py-2 text-sm bg-white">
+          <option value="🧳">🧳 Travel</option>
+          <option value="🏝️">🏝️ Island</option>
+          <option value="🌊">🌊 Ocean</option>
+          <option value="🤿">🤿 Diving</option>
+          <option value="🏕️">🏕️ Camping</option>
+          <option value="🥾">🥾 Hiking</option>
+          <option value="🚐">🚐 Road Trip</option>
+          <option value="🏔️">🏔️ Mountain</option>
+          <option value="🍷">🍷 City / Dining</option>
+          <option value="✈️">✈️ Flight</option>
+        </select>
+      </div>
+      <button id="edit-trip-save-btn" onclick="saveTripNameFromModal()" class="primary-btn w-full py-2 rounded-2xl text-sm font-black mt-4">儲存修改</button>
+    </div>
+  </div>
+
   <div id="formModal" class="fixed inset-0 bg-black/40 hidden items-center justify-center z-[60] p-4">
     <div class="modal-shell card w-full max-w-2xl p-5">
       <div class="flex items-center justify-between gap-3 mb-4">
@@ -1299,6 +1668,7 @@
     let editingJournalId = null;
     let currentModule = 'timeline';
     let currentEventJournalId = null;
+    let editingMemberIndex = null;
 
     let tripsMaster = JSON.parse(localStorage.getItem('tripsMasterV6')) || {
       cairns: { name: '凱恩斯海陸空大冒險', dates: '2026/06/28 - 2026/07/13', lat: -16.9203, lng: 145.7710, emoji: '🤿', icon: 'fa-anchor' },
@@ -1536,7 +1906,20 @@
         const active = key === currentTripKey;
         const mark = trip.emoji || '🧳';
         const chip = isAdminMode ? `<span class="trip-visibility-chip">${tripAccess[key] ? (currentLang==='zh'?'公開':'Public') : (currentLang==='zh'?'私人':'Private')}</span>` : '';
-        list.innerHTML += `<li><button onclick="selectTrip('${key}')" class="w-full text-left px-3 py-3 rounded-2xl font-bold text-sm border flex flex-col ${active ? 'bg-[#eefaff] text-stone-900 border-[#cfefff]' : 'text-stone-600 border-transparent hover:bg-[#fff2ea]'}"><span class="flex items-center"><span class="w-6 mr-2 text-base">${mark}</span>${escapeHTML(trip.name)}</span><span class="text-xs opacity-60 mt-1 ml-8">${escapeHTML(trip.dates.split(' ')[0])}</span>${chip}</button></li>`;
+        const actions = isAdminMode ? `
+          <div class="trip-sidebar-actions">
+            <button type="button" onclick="openEditTripModal('${key}')" class="trip-sidebar-action-btn edit" title="${currentLang === 'zh' ? '修改行程名稱' : 'Edit trip name'}"><i class="fa-solid fa-pen"></i></button>
+            <button type="button" onclick="deleteCurrentTrip('${key}')" class="trip-sidebar-action-btn delete" title="${currentLang === 'zh' ? '刪除行程' : 'Delete trip'}"><i class="fa-solid fa-trash-can"></i></button>
+          </div>` : '';
+        list.innerHTML += `
+          <li class="trip-sidebar-row">
+            <button onclick="selectTrip('${key}')" class="trip-sidebar-main text-left px-3 py-3 rounded-2xl font-bold text-sm border flex flex-col ${active ? 'bg-[#eefaff] text-stone-900 border-[#cfefff]' : 'text-stone-600 border-transparent hover:bg-[#fff2ea]'}">
+              <span class="flex items-center min-w-0"><span class="w-6 mr-2 text-base flex-shrink-0">${mark}</span><span class="truncate">${escapeHTML(trip.name)}</span></span>
+              <span class="text-xs opacity-60 mt-1 ml-8">${escapeHTML(trip.dates.split(' ')[0])}</span>
+              ${chip}
+            </button>
+            ${actions}
+          </li>`;
       });
       renderAccessPanel();
     }
@@ -1628,6 +2011,126 @@
       if (!fab) return;
       fab.classList.toggle('hidden-fab', currentModule === 'journal');
     }
+
+
+    function parseMemberString(value) {
+      return [...new Set(String(value || '').split(/[,，]/).map(x => x.trim()).filter(Boolean))];
+    }
+
+    function getMemberDraft() {
+      return parseMemberString(document.getElementById('companionInput')?.value || localStorage.getItem(`companion_${currentTripKey}`) || '我');
+    }
+
+    function setMemberDraft(list) {
+      const normalized = [...new Set((list || []).map(x => String(x).trim()).filter(Boolean))];
+      document.getElementById('companionInput').value = normalized.join(', ');
+      renderMemberList(normalized);
+    }
+
+    function renderMemberList(list = getMemberDraft()) {
+      const box = document.getElementById('member-list');
+      if (!box) return;
+      const members = list.length ? list : ['我'];
+      box.innerHTML = members.map((name, index) => `
+        <div class="member-row">
+          <span class="truncate">👤 ${escapeHTML(name)}</span>
+          <span class="member-action-group">
+            <button type="button" onclick="editMemberAt(${index})" class="member-edit-btn edit" title="${currentLang === 'zh' ? '編輯' : 'Edit'}">
+              <i class="fa-solid fa-pen"></i>
+            </button>
+            <button type="button" onclick="removeMemberAt(${index})" class="member-delete-btn delete" title="${currentLang === 'zh' ? '刪除' : 'Delete'}">
+              <i class="fa-solid fa-trash-can"></i>
+            </button>
+          </span>
+        </div>
+      `).join('');
+      updateMemberAddButton();
+    }
+
+    function updateMemberAddButton() {
+      const btn = document.getElementById('member-add-btn');
+      if (!btn) return;
+      btn.innerHTML = editingMemberIndex === null ? '<i class="fa-solid fa-plus"></i>' : '<i class="fa-solid fa-check"></i>';
+      btn.title = editingMemberIndex === null
+        ? (currentLang === 'zh' ? '新增成員' : 'Add member')
+        : (currentLang === 'zh' ? '完成編輯' : 'Save edit');
+    }
+
+    function openMemberModal() {
+      const modal = document.getElementById('memberModal');
+      const input = document.getElementById('memberNameInput');
+      if (!modal) return;
+      editingMemberIndex = null;
+      renderMemberList(getMemberDraft());
+      if (input) input.value = '';
+      updateMemberAddButton();
+      modal.classList.replace('hidden','flex');
+      setTimeout(() => input && input.focus(), 30);
+    }
+
+    function closeMemberModal() {
+      const modal = document.getElementById('memberModal');
+      if (modal) modal.classList.replace('flex','hidden');
+      editingMemberIndex = null;
+      updateMemberAddButton();
+    }
+
+    function addMemberFromInput() {
+      const input = document.getElementById('memberNameInput');
+      const name = input ? input.value.trim() : '';
+      if (!name) return;
+      const members = getMemberDraft();
+
+      if (editingMemberIndex !== null) {
+        members[editingMemberIndex] = name;
+      } else if (!members.includes(name)) {
+        members.push(name);
+      }
+
+      const normalized = [...new Set(members.map(x => String(x).trim()).filter(Boolean))];
+      editingMemberIndex = null;
+      setMemberDraft(normalized.length ? normalized : ['我']);
+
+      if (input) {
+        input.value = '';
+        input.focus();
+      }
+      updateMemberAddButton();
+    }
+
+    function editMemberAt(index) {
+      const members = getMemberDraft();
+      const input = document.getElementById('memberNameInput');
+      if (!members[index] || !input) return;
+      editingMemberIndex = index;
+      input.value = members[index];
+      input.focus();
+      input.select();
+      updateMemberAddButton();
+    }
+
+    function removeMemberAt(index) {
+      const members = getMemberDraft();
+      const target = members[index] || '';
+      const ok = confirm(currentLang === 'zh' ? `刪除成員「${target}」？` : `Delete member "${target}"?`);
+      if (!ok) return;
+      members.splice(index, 1);
+      editingMemberIndex = null;
+      setMemberDraft(members.length ? members : ['我']);
+      const input = document.getElementById('memberNameInput');
+      if (input) input.value = '';
+      updateMemberAddButton();
+    }
+
+    function saveMemberFromModal() {
+      const members = getMemberDraft();
+      const value = (members.length ? members : ['我']).join(', ');
+      document.getElementById('companionInput').value = value;
+      saveCompanion(value);
+      closeMemberModal();
+      showToast(currentLang === 'zh' ? '成員已更新。' : 'Members updated.');
+    }
+
 
     function handleGlobalAdd() {
       const active = currentModule || 'timeline';
@@ -1912,10 +2415,10 @@
                 ${noteHTML}
                 ${warns}
               </div>
-              <div class="flex flex-col gap-2 opacity-100 md:opacity-0 md:group-hover:opacity-100">
-                <button onclick="addEventToGoogleCalendar(${item.id})" class="event-action-btn" title="Google Calendar"><i class="fa-solid fa-calendar-plus"></i></button>
-                <button onclick="editEvent(${item.id})" class="event-action-btn" title="Edit"><i class="fa-solid fa-pen"></i></button>
-                <button onclick="deleteEvent(${item.id})" class="event-action-btn" title="Delete"><i class="fa-solid fa-trash"></i></button>
+              <div class="tm-action-stack opacity-100 md:opacity-0 md:group-hover:opacity-100">
+                <button onclick="addEventToGoogleCalendar(${item.id})" class="event-action-btn calendar" title="Google Calendar"><i class="fa-solid fa-calendar-plus"></i></button>
+                <button onclick="editEvent(${item.id})" class="event-action-btn edit" title="Edit"><i class="fa-solid fa-pen"></i></button>
+                <button onclick="deleteEvent(${item.id})" class="event-action-btn delete" title="Delete"><i class="fa-solid fa-trash-can"></i></button>
               </div>
             </div>
             ${renderEventJournalPanel(item)}
@@ -1955,10 +2458,10 @@
                   ${reminderLine}
                 </div>
               </div>
-              <div class="flex flex-col gap-2 opacity-100 md:opacity-0 md:group-hover:opacity-100 transition-opacity">
-                <button onclick="addChecklistReminderToCalendar(${item.id})" class="checklist-icon-btn" title="Google Calendar"><i class="fa-solid fa-calendar-plus"></i></button>
-                <button onclick="editChecklistItem(${item.id})" class="checklist-icon-btn" title="Edit"><i class="fa-solid fa-pen"></i></button>
-                <button onclick="deleteChecklist(${item.id})" class="checklist-icon-btn" title="Delete"><i class="fa-solid fa-trash"></i></button>
+              <div class="tm-action-stack opacity-100 md:opacity-0 md:group-hover:opacity-100 transition-opacity">
+                <button onclick="addChecklistReminderToCalendar(${item.id})" class="checklist-icon-btn calendar" title="Google Calendar"><i class="fa-solid fa-calendar-plus"></i></button>
+                <button onclick="editChecklistItem(${item.id})" class="checklist-icon-btn edit" title="Edit"><i class="fa-solid fa-pen"></i></button>
+                <button onclick="deleteChecklist(${item.id})" class="checklist-icon-btn delete" title="Delete"><i class="fa-solid fa-trash-can"></i></button>
               </div>
             </div>
           </div>`;
@@ -2004,7 +2507,19 @@
       document.getElementById('journal-photo-input').value = '';
       document.getElementById('journal-video-input').value = '';
       document.getElementById('cancel-journal-edit-btn').classList.add('hidden');
-      applyLanguage(false);
+  
+    document.addEventListener('keydown', function(e){
+      if(e.key === 'Enter' && document.getElementById('memberModal')?.classList.contains('flex')) {
+        e.preventDefault();
+        addMemberFromInput();
+      }
+      if(e.key === 'Escape') {
+        closeMemberModal();
+        closeEditTripModal();
+      }
+    });
+
+    applyLanguage(false);
     }
 
     async function submitJournalEntry() {
@@ -2053,7 +2568,18 @@
       document.getElementById('journal-entry-tags').value = (entry.tags || []).join(', ');
       document.getElementById('journal-entry-body').value = entry.body || '';
       document.getElementById('cancel-journal-edit-btn').classList.remove('hidden');
-      applyLanguage(false);
+  
+    document.addEventListener('keydown', function(e){
+      if(e.key === 'Enter' && document.getElementById('memberModal')?.classList.contains('flex')) {
+        e.preventDefault();
+        saveMemberFromModal();
+      }
+      if(e.key === 'Escape') {
+        closeMemberModal();
+      }
+    });
+
+    applyLanguage(false);
       document.getElementById('module-journal').scrollIntoView({ behavior: 'smooth', block: 'start' });
     }
 
@@ -2113,6 +2639,29 @@
       URL.revokeObjectURL(url);
     }
 
+
+    function editJournalOverviewEntry(id) {
+      const entry = (journals[currentTripKey] || []).find(x => x.id === id);
+      if (!entry) return;
+
+      if (entry.eventId && (itineraries[currentTripKey] || []).some(item => String(item.id) === String(entry.eventId))) {
+        openEventJournalModal(entry.eventId);
+        return;
+      }
+
+      const newBody = prompt(
+        currentLang === 'zh' ? '編輯心得內容：' : 'Edit journal notes:',
+        entry.body || ''
+      );
+      if (newBody === null) return;
+      entry.body = newBody.trim();
+      entry.updatedAt = Date.now();
+      saveAll();
+      renderJournal();
+      showToast(currentLang === 'zh' ? '心得已更新。' : 'Journal updated.');
+    }
+
+
     function renderJournal() {
       const list = document.getElementById('journal-list');
       if (!list) return;
@@ -2129,8 +2678,8 @@
           const stars = '★'.repeat(Number(entry.rating || 0)) + '☆'.repeat(Math.max(0, 5 - Number(entry.rating || 0)));
           const tags = (entry.tags || []).map(tag => `<span class="pill pill-sand">#${escapeHTML(tag)}</span>`).join('');
           list.innerHTML += `
-            <div class="journal-overview-card p-4 md:p-5">
-              <div class="flex flex-col md:flex-row md:items-start md:justify-between gap-3">
+            <div class="journal-overview-card p-4 md:p-5 group">
+              <div class="flex justify-between gap-3">
                 <div class="min-w-0 flex-1">
                   <div class="flex flex-wrap items-center gap-2 mb-2">
                     <span class="pill pill-red">${stars}</span>
@@ -2140,9 +2689,13 @@
                   <h4 class="text-base font-black text-stone-900">${escapeHTML(entry.title || '')}</h4>
                   <p class="text-sm text-stone-700 whitespace-pre-wrap mt-2">${escapeHTML(entry.body || '')}</p>
                 </div>
-                <div class="flex gap-2 shrink-0">
-                  ${entry.eventId ? `<button onclick="switchModule('timeline')" class="secondary-btn px-3 py-1.5 rounded-full text-xs font-black">${currentLang === 'zh' ? '回行程' : 'Itinerary'}</button>` : ''}
-                  <button onclick="deleteJournalEntry(${entry.id})" class="bg-white border border-[#eeeeee] px-3 py-1.5 rounded-full text-xs font-black text-stone-800">${currentLang === 'zh' ? '刪除' : 'Delete'}</button>
+                <div class="journal-overview-actions">
+                  <button onclick="editJournalOverviewEntry(${entry.id})" class="journal-overview-action-btn edit" title="${currentLang === 'zh' ? '編輯心得' : 'Edit journal'}">
+                    <i class="fa-solid fa-pen"></i>
+                  </button>
+                  <button onclick="deleteJournalEntry(${entry.id})" class="journal-overview-action-btn delete" title="${currentLang === 'zh' ? '刪除心得' : 'Delete journal'}">
+                    <i class="fa-solid fa-trash-can"></i>
+                  </button>
                 </div>
               </div>
               <div class="grid grid-cols-1 md:grid-cols-2 gap-3 mt-4">
@@ -2157,17 +2710,55 @@
     function renderBudgetSplitOptions(selected=parseList(document.getElementById('budget-split-hidden')?.value)) { const wrap=document.getElementById('budget-split-options'); if(!wrap)return; const members=getTripMembers(); wrap.innerHTML=members.map(name=>`<label class="split-chip"><input type="checkbox" value="${escapeHTML(name)}" ${selected.includes(name)?'checked':''}><span>👤 ${escapeHTML(name)}</span></label>`).join(''); }
     function getSelectedSplitMembers(){return [...document.querySelectorAll('#budget-split-options input:checked')].map(x=>x.value.trim()).filter(Boolean);} function selectAllBudgetMembers(state){document.querySelectorAll('#budget-split-options input').forEach(x=>x.checked=state);}
     function updateBudgetTableHeaders(){const tables=document.querySelectorAll('#module-budget table'); if(tables[0]){const th=tables[0].querySelectorAll('th'); [0,1,2,3].forEach((i)=>{if(th[i])th[i].textContent=T('table')[i];});} if(tables[1]){const th=tables[1].querySelectorAll('th'); if(th[0])th[0].textContent=T('table')[4]; if(th[1])th[1].textContent=T('table')[1]; if(th[2])th[2].textContent=T('table')[5]; if(th[3])th[3].textContent=T('table')[6]; if(th[4])th[4].textContent=T('table')[7];}}
-    function renderBudget(){const list=document.getElementById('budget-list'), sum=document.getElementById('member-summary-list'); list.innerHTML=''; sum.innerHTML=''; const items=budgets[currentTripKey]||[], base=getTripMembers(), people=new Set(base); let paid={}, share={}, total=0; const ensure=p=>{if(!p)return; people.add(p); if(!paid[p])paid[p]=0;if(!share[p])share[p]=0;}; base.forEach(ensure); items.forEach(item=>{const amount=+item.amount||0,payer=(item.payer||'我').trim(); let splits=getBudgetSplitMembers(item,base); if(!splits.length)splits=[payer]; ensure(payer); splits.forEach(ensure); total+=amount; paid[payer]=(paid[payer]||0)+amount; splits.forEach(p=>share[p]=(share[p]||0)+amount/splits.length); const label=parseList(item.splitWith).length?splits.join(', '):T('allMembers'); list.innerHTML+=`<tr><td class="p-3 font-bold text-stone-800">${escapeHTML(item.title)}</td><td class="p-3"><span class="pill pill-green">${escapeHTML(payer)}</span></td><td class="p-3 text-stone-500 text-xs max-w-[220px] whitespace-normal">${escapeHTML(label)}</td><td class="p-3 text-right font-black text-stone-900">$${Math.round(amount).toLocaleString()}</td><td class="p-3 text-center whitespace-nowrap"><button onclick="editBudgetItem(${item.id})" class="text-stone-300 hover:text-amber-600 px-1"><i class="fa-solid fa-pen"></i></button><button onclick="deleteBudgetItem(${item.id})" class="text-stone-300 hover:text-red-500 px-1"><i class="fa-solid fa-trash-can"></i></button></td></tr>`;}); setText('budget-total','$'+Math.round(total).toLocaleString()); setText('budget-per-capita',T('calculatedByGroup')); if(total===0){setHTML('budget-settlement',`<span class="text-white/70 text-sm">${T('noExpense')}</span>`);return;} let balances={}; [...people].forEach(p=>{const pa=paid[p]||0, sh=share[p]||0, net=pa-sh; balances[p]=net; const status=net>.01?`<span class="text-stone-900 font-black">${T('receive',Math.round(net).toLocaleString())}</span>`:net<-.01?`<span class="text-red-500 font-black">${T('pay',Math.round(Math.abs(net)).toLocaleString())}</span>`:`<span class="text-stone-400">${T('settled')}</span>`; sum.innerHTML+=`<tr><td class="p-3 font-bold text-stone-800">${escapeHTML(p)}</td><td class="p-3 text-right text-stone-600">$${Math.round(pa).toLocaleString()}</td><td class="p-3 text-right text-stone-600">$${Math.round(sh).toLocaleString()}</td><td class="p-3 text-right">${status}</td></tr>`;}); let debtors=[], creditors=[]; Object.entries(balances).forEach(([p,n])=>{if(n<-.01)debtors.push({p,amt:-n}); else if(n>.01)creditors.push({p,amt:n});}); let out='',i=0,j=0; while(i<debtors.length&&j<creditors.length){const amt=Math.min(debtors[i].amt,creditors[j].amt); out+=`<div class="flex justify-between items-center bg-white/10 px-3 py-1.5 rounded-xl border border-white/10 text-xs md:text-sm"><span>${T('pays',escapeHTML(debtors[i].p),escapeHTML(creditors[j].p))}</span><span class="font-black text-[#fff2ea]">$${Math.round(amt).toLocaleString()}</span></div>`; debtors[i].amt-=amt; creditors[j].amt-=amt; if(debtors[i].amt<.01)i++; if(creditors[j].amt<.01)j++;} setHTML('budget-settlement',out||T('noDebt')); updateBudgetTableHeaders();}
+    function renderBudget(){const list=document.getElementById('budget-list'), sum=document.getElementById('member-summary-list'); list.innerHTML=''; sum.innerHTML=''; const items=budgets[currentTripKey]||[], base=getTripMembers(), people=new Set(base); let paid={}, share={}, total=0; const ensure=p=>{if(!p)return; people.add(p); if(!paid[p])paid[p]=0;if(!share[p])share[p]=0;}; base.forEach(ensure); items.forEach(item=>{const amount=+item.amount||0,payer=(item.payer||'我').trim(); let splits=getBudgetSplitMembers(item,base); if(!splits.length)splits=[payer]; ensure(payer); splits.forEach(ensure); total+=amount; paid[payer]=(paid[payer]||0)+amount; splits.forEach(p=>share[p]=(share[p]||0)+amount/splits.length); const label=parseList(item.splitWith).length?splits.join(', '):T('allMembers'); list.innerHTML+=`<tr><td class="p-3 font-bold text-stone-800">${escapeHTML(item.title)}</td><td class="p-3"><span class="pill pill-green">${escapeHTML(payer)}</span></td><td class="p-3 text-stone-500 text-xs max-w-[220px] whitespace-normal">${escapeHTML(label)}</td><td class="p-3 text-right font-black text-stone-900">$${Math.round(amount).toLocaleString()}</td><td class="p-3 text-center whitespace-nowrap"><span class="tm-action-row justify-center"><button onclick="editBudgetItem(${item.id})" class="tm-action-btn edit" title="Edit"><i class="fa-solid fa-pen"></i></button><button onclick="deleteBudgetItem(${item.id})" class="tm-action-btn delete" title="Delete"><i class="fa-solid fa-trash-can"></i></button></span></td></tr>`;}); setText('budget-total','$'+Math.round(total).toLocaleString()); setText('budget-per-capita',T('calculatedByGroup')); if(total===0){setHTML('budget-settlement',`<span class="text-white/70 text-sm">${T('noExpense')}</span>`);return;} let balances={}; [...people].forEach(p=>{const pa=paid[p]||0, sh=share[p]||0, net=pa-sh; balances[p]=net; const status=net>.01?`<span class="text-stone-900 font-black">${T('receive',Math.round(net).toLocaleString())}</span>`:net<-.01?`<span class="text-red-500 font-black">${T('pay',Math.round(Math.abs(net)).toLocaleString())}</span>`:`<span class="text-stone-400">${T('settled')}</span>`; sum.innerHTML+=`<tr><td class="p-3 font-bold text-stone-800">${escapeHTML(p)}</td><td class="p-3 text-right text-stone-600">$${Math.round(pa).toLocaleString()}</td><td class="p-3 text-right text-stone-600">$${Math.round(sh).toLocaleString()}</td><td class="p-3 text-right">${status}</td></tr>`;}); let debtors=[], creditors=[]; Object.entries(balances).forEach(([p,n])=>{if(n<-.01)debtors.push({p,amt:-n}); else if(n>.01)creditors.push({p,amt:n});}); let out='',i=0,j=0; while(i<debtors.length&&j<creditors.length){const amt=Math.min(debtors[i].amt,creditors[j].amt); out+=`<div class="flex justify-between items-center bg-white/10 px-3 py-1.5 rounded-xl border border-white/10 text-xs md:text-sm"><span>${T('pays',escapeHTML(debtors[i].p),escapeHTML(creditors[j].p))}</span><span class="font-black text-[#fff2ea]">$${Math.round(amt).toLocaleString()}</span></div>`; debtors[i].amt-=amt; creditors[j].amt-=amt; if(debtors[i].amt<.01)i++; if(creditors[j].amt<.01)j++;} setHTML('budget-settlement',out||T('noDebt')); updateBudgetTableHeaders();}
     function resetBudgetForm(){editingBudgetId=null; document.getElementById('budget-title').value='';document.getElementById('budget-amount').value='';document.getElementById('budget-payer').value='';selectAllBudgetMembers(false);document.getElementById('cancel-budget-edit-btn').classList.add('hidden');applyLanguage();}
     function editBudgetItem(id){const item=(budgets[currentTripKey]||[]).find(x=>x.id===id); if(!item)return; editingBudgetId=id; document.getElementById('budget-title').value=item.title||'';document.getElementById('budget-amount').value=item.amount||'';document.getElementById('budget-payer').value=item.payer||''; renderBudgetSplitOptions(parseList(item.splitWith)); document.getElementById('cancel-budget-edit-btn').classList.remove('hidden'); applyLanguage(); openFormModal('budget');}
     function cancelBudgetEdit(){resetBudgetForm(); closeFormModal();}
     function submitBudgetItem(){const title=document.getElementById('budget-title').value.trim(), amount=parseFloat(document.getElementById('budget-amount').value), payer=document.getElementById('budget-payer').value.trim()||'我', splitWith=getSelectedSplitMembers().join(', '); if(!title||isNaN(amount))return alert(currentLang==='zh'?'輸入不完整':'Please complete the expense item and amount.'); if(!budgets[currentTripKey])budgets[currentTripKey]=[]; if(editingBudgetId){const item=budgets[currentTripKey].find(x=>x.id===editingBudgetId); Object.assign(item,{title,amount,payer,splitWith,updatedAt:Date.now()});} else budgets[currentTripKey].push({id:Date.now(),title,amount,payer,splitWith,createdAt:Date.now(),updatedAt:Date.now()}); saveAll(); resetBudgetForm(); closeFormModal(); renderBudget();}
     function deleteBudgetItem(id){budgets[currentTripKey]=budgets[currentTripKey].filter(x=>x.id!==id); saveAll(); renderBudget();}
 
+
+    let editingTripKey = null;
+
+    function openEditTripModal(key = currentTripKey) {
+      if (!isAdminMode) {
+        alert(currentLang === 'zh' ? '請先輸入管理密碼，才能修改行程名稱。' : 'Please enter the admin password before editing trip name.');
+        return;
+      }
+      const trip = tripsMaster[key];
+      if (!trip) return;
+      editingTripKey = key;
+      document.getElementById('edit-trip-name').value = trip.name || '';
+      document.getElementById('edit-trip-emoji').value = trip.emoji || '🧳';
+      document.getElementById('editTripModal').classList.replace('hidden','flex');
+      setTimeout(() => document.getElementById('edit-trip-name').focus(), 30);
+    }
+
+    function closeEditTripModal() {
+      const modal = document.getElementById('editTripModal');
+      if (modal) modal.classList.replace('flex','hidden');
+      editingTripKey = null;
+    }
+
+    function saveTripNameFromModal() {
+      if (!editingTripKey || !tripsMaster[editingTripKey]) return;
+      const name = document.getElementById('edit-trip-name').value.trim();
+      const emoji = document.getElementById('edit-trip-emoji').value || '🧳';
+      if (!name) return alert(currentLang === 'zh' ? '請輸入行程名稱。' : 'Please enter a trip name.');
+      tripsMaster[editingTripKey].name = name;
+      tripsMaster[editingTripKey].emoji = emoji;
+      saveAll();
+      closeEditTripModal();
+      renderSidebar();
+      initCurrentTripData();
+      showToast(currentLang === 'zh' ? '行程名稱已更新。' : 'Trip name updated.');
+    }
+
+
     function openNewTripModal(){ if(!isAdminMode){ alert(currentLang==='zh'?'請先輸入管理密碼，才能建立新旅程。':'Please enter the admin password before creating a new trip.'); const input=document.getElementById('admin-password-input'); if(input) input.focus(); return; } document.getElementById('newTripModal').classList.replace('hidden','flex'); applyLanguage();} function closeNewTripModal(){document.getElementById('newTripModal').classList.replace('flex','hidden');}
     function formatTripDate(v){return v.replace(/-/g,'/');}
     function createNewTrip(){const name=document.getElementById('new-trip-name').value.trim(), start=document.getElementById('new-trip-start').value, end=document.getElementById('new-trip-end').value, emoji=document.getElementById('new-trip-emoji').value||'🧳'; if(!name||!start||!end)return alert(currentLang==='zh'?'請填寫旅程名稱、開始日期與結束日期':'Please enter destination, start date, and end date.'); if(new Date(end)<new Date(start))return alert(currentLang==='zh'?'結束日期不能早於開始日期':'End date cannot be earlier than start date.'); const key='trip_'+Date.now(); tripsMaster[key]={name,dates:`${formatTripDate(start)} - ${formatTripDate(end)}`,lat:-16.9203,lng:145.7710,emoji,icon:'fa-route'}; itineraries[key]=[]; checklists[key]=[]; budgets[key]=[]; journals[key]=[]; tripAccess[key]=false; currentTripKey=key; localStorage.setItem('activeTripKey',key); saveAll(); closeNewTripModal(); ['new-trip-name','new-trip-start','new-trip-end'].forEach(id=>document.getElementById(id).value=''); document.getElementById('new-trip-emoji').value='🧳'; renderSidebar(); initCurrentTripData(); updateGlobalAddButton();}
-    function deleteCurrentTrip(){if(!isAdminMode)return alert(currentLang==='zh'?'請先輸入管理密碼，才能刪除旅程。':'Please enter the admin password before deleting a trip.'); if(Object.keys(tripsMaster).length<=1)return alert(currentLang==='zh'?'至少保留一個旅程':'Keep at least one trip.'); if(confirm(currentLang==='zh'?'確定刪除這個旅程？':'Delete this trip?')){delete tripsMaster[currentTripKey]; delete itineraries[currentTripKey]; delete checklists[currentTripKey]; delete budgets[currentTripKey]; delete journals[currentTripKey]; delete tripAccess[currentTripKey]; currentTripKey=Object.keys(tripsMaster)[0]; localStorage.setItem('activeTripKey',currentTripKey); saveAll(); renderSidebar(); initCurrentTripData();}}
+    function deleteCurrentTrip(key = currentTripKey){if(!isAdminMode)return alert(currentLang==='zh'?'請先輸入管理密碼，才能刪除旅程。':'Please enter the admin password before deleting a trip.'); if(Object.keys(tripsMaster).length<=1)return alert(currentLang==='zh'?'至少保留一個旅程':'Keep at least one trip.'); const targetKey = key || currentTripKey; const tripName = tripsMaster[targetKey]?.name || ''; if(confirm(currentLang==='zh'?`確定刪除「${tripName}」？`:`Delete "${tripName}"?`)){delete tripsMaster[targetKey]; delete itineraries[targetKey]; delete checklists[targetKey]; delete budgets[targetKey]; delete journals[targetKey]; delete tripAccess[targetKey]; if(currentTripKey===targetKey) currentTripKey=Object.keys(tripsMaster)[0]; localStorage.setItem('activeTripKey',currentTripKey); saveAll(); renderSidebar(); initCurrentTripData();}}
     function switchModule(m){
       currentModule = m;
       const target=document.getElementById('module-'+m);
@@ -2205,6 +2796,17 @@
         renderItinerary();
       }
     }
+
+
+    document.addEventListener('keydown', function(e){
+      if(e.key === 'Enter' && document.getElementById('memberModal')?.classList.contains('flex')) {
+        e.preventDefault();
+        saveMemberFromModal();
+      }
+      if(e.key === 'Escape') {
+        closeMemberModal();
+      }
+    });
 
     applyLanguage(false); applyTheme(); setupFormPanels(); ensureTripAccessDefaults(); syncActiveTripAccess(); renderSidebar(); initCurrentTripData();
   </script>
