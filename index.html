@@ -3,16 +3,23 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>我的旅遊行程總管</title>
+    <title>TripManager V7.1｜我的旅遊行程總管</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <script src="https://cdn.jsdelivr.net/npm/sortablejs@latest/Sortable.min.js"></script>
     <style>
         .no-scrollbar::-webkit-scrollbar { display: none; }
         .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+
+        .touch-safe { touch-action: manipulation; -webkit-tap-highlight-color: transparent; }
+        .drag-handle { cursor: grab; touch-action: none; }
+        .drag-handle:active { cursor: grabbing; }
+        @supports (padding: max(0px)) {
+            .safe-bottom { padding-bottom: max(1rem, env(safe-area-inset-bottom)); }
+        }
     </style>
 </head>
-<body class="bg-slate-100 text-slate-800 flex h-screen overflow-hidden relative">
+<body class="bg-slate-100 text-slate-800 flex h-[100dvh] overflow-hidden relative">
 
     <div id="sidebar-overlay" onclick="toggleSidebar()" class="fixed inset-0 bg-black/50 z-40 hidden transition-opacity md:hidden"></div>
 
@@ -28,11 +35,16 @@
             </div>
         </div>
         <div class="p-4 border-t border-slate-200 bg-slate-50">
-            <button onclick="openNewTripModal()" class="w-full bg-slate-800 hover:bg-slate-700 text-white py-2.5 rounded-lg text-sm font-bold flex items-center justify-center">
+            <button onclick="openNewTripModal()" class="touch-safe w-full bg-slate-800 hover:bg-slate-700 text-white py-3 rounded-lg text-sm font-bold flex items-center justify-center active:scale-[0.98]">
                 <i class="fa-solid fa-plus mr-2"></i>建立新行程
             </button>
         </div>
     </aside>
+
+    <!-- 手機版固定新增旅程按鈕：避免側邊欄底部按不到 -->
+    <button id="mobile-create-trip-fab" onclick="openNewTripModal()" class="touch-safe md:hidden fixed right-4 bottom-4 z-30 bg-blue-600 hover:bg-blue-700 text-white rounded-full shadow-xl px-4 py-3 text-sm font-black flex items-center active:scale-95 safe-bottom">
+        <i class="fa-solid fa-plus mr-2"></i>新旅程
+    </button>
 
     <main class="flex-1 flex flex-col overflow-hidden bg-slate-50 w-full relative">
         <header class="bg-white border-b border-slate-200 px-4 md:px-8 py-4 flex justify-between items-center z-10 flex-shrink-0">
@@ -55,7 +67,7 @@
         </header>
 
         <div class="bg-white border-b border-slate-200 px-4 md:px-8 flex space-x-4 md:space-x-6 text-sm font-medium text-slate-500 z-10 overflow-x-auto no-scrollbar whitespace-nowrap flex-shrink-0">
-            <button onclick="switchModule('timeline')" id="tab-timeline" class="module-tab py-4 text-blue-600 border-b-2 border-blue-600 font-bold">日曆與排氮追蹤</button>
+            <button onclick="switchModule('timeline')" id="tab-timeline" class="module-tab py-4 text-blue-600 border-b-2 border-blue-600 font-bold">行程列表</button>
             <button onclick="switchModule('checklist')" id="tab-checklist" class="module-tab py-4 hover:text-blue-600 transition-colors">行李及待辦事項</button>
             <button onclick="switchModule('budget')" id="tab-budget" class="module-tab py-4 hover:text-blue-600 transition-colors">預算與個人結算</button>
         </div>
@@ -90,7 +102,8 @@
                             <option value="general">一般</option>
                             <option value="dining">🍽️ 餐飲</option>
                             <option value="dive">🤿 潛水</option>
-                            <option value="altitude">✈️ 航班/高空</option>
+                            <option value="flight">✈️ 航班</option>
+                            <option value="altitude">🚁 高空活動</option>
                             <option value="accommodation">⛺️ 住宿</option>
                         </select>
                         <select id="event-status" class="col-span-2 md:col-span-1 border border-slate-300 rounded-lg px-2 md:px-3 py-2 text-xs md:text-sm outline-none bg-white focus:ring-1 focus:ring-blue-500">
@@ -109,17 +122,36 @@
                 </div>
 
                 <div class="bg-white rounded-xl shadow-sm border border-slate-200 p-4 md:p-6">
+                    <div class="flex flex-col md:flex-row md:items-center md:justify-between gap-3 mb-4">
+                        <div>
+                            <h3 class="font-bold text-slate-800 flex items-center"><i class="fa-solid fa-route mr-2 text-blue-500"></i>行程時間軸</h3>
+                            <p class="text-xs text-slate-400 mt-1">可拖曳左側把手重新排序。拖曳後會自動檢查時間錯亂與排氮風險。</p>
+                        </div>
+                        <button onclick="autoSortItineraryByTime()" class="touch-safe bg-slate-800 hover:bg-slate-700 text-white text-xs font-bold px-3 py-2 rounded-lg active:scale-[0.98]"><i class="fa-solid fa-arrow-down-short-wide mr-1"></i>按時間自動排序</button>
+                    </div>
+                    <div id="itinerary-validation-summary" class="hidden mb-4 rounded-lg border px-3 py-2 text-xs md:text-sm font-bold"></div>
                     <div id="itinerary-list" class="space-y-1"></div>
                 </div>
             </div>
 
             <div id="module-checklist" class="module-content hidden max-w-4xl mx-auto space-y-6">
                 <div class="bg-white rounded-xl shadow-sm border border-slate-200 p-6">
-                    <h3 class="font-bold text-lg text-slate-800 mb-4 flex items-center"><i class="fa-solid fa-list-check mr-2 text-blue-500"></i>行李清單與行前待辦</h3>
-                    <div class="flex flex-col md:flex-row gap-2 mb-6">
-                        <input type="text" id="newChecklistItem" class="flex-1 border border-slate-300 rounded-lg px-3 py-2 text-sm focus:ring-1 focus:ring-blue-500 outline-none" placeholder="輸入要帶的物品或待辦事項 (例如：防風外套、訂餐廳)">
-                        <button onclick="addChecklistItem()" class="bg-blue-600 hover:bg-blue-700 text-white px-5 py-2 rounded-lg text-sm font-bold transition-colors">新增項目</button>
+                    <h3 class="font-bold text-lg text-slate-800 mb-4 flex items-center">
+                        <span><i class="fa-solid fa-list-check mr-2 text-blue-500"></i>行李清單與行前待辦</span>
+                        <button id="cancel-checklist-edit-btn" onclick="cancelChecklistEdit()" class="hidden ml-auto text-xs text-slate-400 hover:text-slate-600 underline">取消編輯</button>
+                    </h3>
+                    <div class="grid grid-cols-1 md:grid-cols-12 gap-2 mb-6">
+                        <input type="text" id="newChecklistItem" class="md:col-span-5 border border-slate-300 rounded-lg px-3 py-2 text-sm focus:ring-1 focus:ring-blue-500 outline-none" placeholder="物品或待辦事項，例如：訂餐廳、防風外套">
+                        <input type="text" id="newChecklistDueDay" class="md:col-span-2 border border-slate-300 rounded-lg px-3 py-2 text-sm focus:ring-1 focus:ring-blue-500 outline-none" placeholder="提醒日 7/4">
+                        <input type="time" id="newChecklistDueTime" class="md:col-span-2 border border-slate-300 rounded-lg px-3 py-2 text-sm focus:ring-1 focus:ring-blue-500 outline-none" value="09:00">
+                        <select id="newChecklistTarget" class="md:col-span-1 border border-slate-300 rounded-lg px-3 py-2 text-sm bg-white focus:ring-1 focus:ring-blue-500 outline-none">
+                            <option value="calendar">Calendar</option>
+                            <option value="task">Task</option>
+                        </select>
+                        <button id="submit-checklist-btn" onclick="submitChecklistItem()" class="touch-safe md:col-span-2 bg-blue-600 hover:bg-blue-700 text-white px-5 py-2 rounded-lg text-sm font-bold transition-colors active:scale-[0.98]">新增項目</button>
                     </div>
+                    <p class="text-xs text-slate-400 -mt-4 mb-3">提醒日可空白；填入後可一鍵加入 Google Calendar。Google Tasks 版本先採「複製內容＋開啟 Tasks」，真正自動寫入需串 OAuth/API。</p>
+                    <div id="checklist-progress" class="mb-3 text-xs font-bold text-slate-500 bg-slate-50 border border-slate-200 rounded-lg px-3 py-2">待辦狀態載入中...</div>
                     <div id="checklist-container" class="space-y-2">
                         </div>
                 </div>
@@ -142,13 +174,16 @@
                     <div class="overflow-x-auto no-scrollbar"><table class="w-full text-left border-collapse text-xs md:text-sm whitespace-nowrap"><thead><tr class="bg-slate-50 text-slate-500 border-b border-slate-200 font-bold"><th class="p-2 md:p-3">成員</th><th class="p-2 md:p-3 text-right">代墊</th><th class="p-2 md:p-3 text-right">應攤</th><th class="p-2 md:p-3 text-right">結算狀態</th></tr></thead><tbody id="member-summary-list" class="divide-y divide-slate-100"></tbody></table></div>
                 </div>
                 <div class="bg-white rounded-xl shadow-sm border border-slate-200 p-4 md:p-6">
-                    <h3 class="font-bold text-base md:text-lg text-slate-800 mb-3 flex items-center"><i class="fa-solid fa-square-plus mr-2 text-emerald-500"></i>記一筆新的</h3>
+                    <h3 class="font-bold text-base md:text-lg text-slate-800 mb-3 flex items-center">
+                        <span><i class="fa-solid fa-square-plus mr-2 text-emerald-500"></i>記一筆新的</span>
+                        <button id="cancel-budget-edit-btn" onclick="cancelBudgetEdit()" class="hidden ml-auto text-xs text-slate-400 hover:text-slate-600 underline">取消編輯</button>
+                    </h3>
                     <div class="flex flex-col gap-2 mb-4">
                         <input type="text" id="budget-title" placeholder="花費項目" class="border border-slate-300 rounded-lg px-3 py-2 text-sm outline-none">
                         <div class="grid grid-cols-2 gap-2"><input type="number" id="budget-amount" placeholder="金額" class="border border-slate-300 rounded-lg px-3 py-2 text-sm outline-none"><input type="text" id="budget-payer" placeholder="代墊人" class="border border-slate-300 rounded-lg px-3 py-2 text-sm outline-none"></div>
-                        <button onclick="addBudgetItem()" class="bg-emerald-600 text-white py-2 rounded-lg text-sm font-bold w-full">記錄</button>
+                        <button id="submit-budget-btn" onclick="submitBudgetItem()" class="bg-emerald-600 hover:bg-emerald-700 text-white py-2 rounded-lg text-sm font-bold w-full">記錄</button>
                     </div>
-                    <div class="overflow-x-auto no-scrollbar"><table class="w-full text-left border-collapse text-xs md:text-sm whitespace-nowrap"><thead><tr class="bg-slate-50 text-slate-500 border-b border-slate-200 font-bold"><th class="p-2 md:p-3">項目</th><th class="p-2 md:p-3">代墊</th><th class="p-2 md:p-3 text-right">金額</th><th class="p-2 md:p-3 text-center">刪</th></tr></thead><tbody id="budget-list" class="divide-y divide-slate-100"></tbody></table></div>
+                    <div class="overflow-x-auto no-scrollbar"><table class="w-full text-left border-collapse text-xs md:text-sm whitespace-nowrap"><thead><tr class="bg-slate-50 text-slate-500 border-b border-slate-200 font-bold"><th class="p-2 md:p-3">項目</th><th class="p-2 md:p-3">代墊</th><th class="p-2 md:p-3 text-right">金額</th><th class="p-2 md:p-3 text-center">操作</th></tr></thead><tbody id="budget-list" class="divide-y divide-slate-100"></tbody></table></div>
                 </div>
             </div>
         </div>
@@ -162,14 +197,14 @@
                 <input type="text" id="new-trip-dates" placeholder="日期區間" class="w-full border border-slate-300 rounded-lg px-3 py-2 text-sm">
             </div>
             <div class="flex justify-end space-x-3 mt-5">
-                <button onclick="closeNewTripModal()" class="px-4 py-2 text-sm font-medium text-slate-500">取消</button>
-                <button onclick="createNewTrip()" class="px-5 py-2 text-sm font-bold bg-blue-600 text-white rounded-lg">確認建立</button>
+                <button onclick="closeNewTripModal()" class="touch-safe px-4 py-3 text-sm font-medium text-slate-500">取消</button>
+                <button onclick="createNewTrip()" class="touch-safe px-5 py-3 text-sm font-bold bg-blue-600 text-white rounded-lg active:scale-[0.98]">確認建立</button>
             </div>
         </div>
     </div>
 
     <script>
-        // --- 核心系統資料庫 V6 ---
+        // --- 核心系統資料庫 V7.1 ---
         let currentTripKey = localStorage.getItem('activeTripKey') || 'cairns';
         let dailyWeatherMap = {}; 
         
@@ -240,6 +275,182 @@
             fetchWeather(trip.lat, trip.lng); renderItinerary(); renderChecklist(); renderBudget();
         }
 
+        function saveCompanion(value) {
+            localStorage.setItem(`companion_${currentTripKey}`, value);
+            renderBudget();
+        }
+
+        function normalizeYearForMonth(month) {
+            const trip = tripsMaster[currentTripKey];
+            const range = parseTripDateRange(trip?.dates || '');
+            if (range?.start && range?.end) {
+                const startMonth = range.start.getMonth() + 1;
+                const endMonth = range.end.getMonth() + 1;
+                if (range.start.getFullYear() !== range.end.getFullYear()) {
+                    if (month >= startMonth) return range.start.getFullYear();
+                    if (month <= endMonth) return range.end.getFullYear();
+                }
+                return range.start.getFullYear();
+            }
+            return 2026;
+        }
+
+        function parseTripDate(day, time = '00:00', tripKey = currentTripKey) {
+            const raw = String(day || '').trim();
+            const timeValue = String(time || '00:00').trim() || '00:00';
+            if (!raw) return { valid: false, reason: '缺少日期' };
+
+            let year, month, date;
+            let normalized = raw.replace(/-/g, '/');
+            const parts = normalized.split('/').map(p => p.trim()).filter(Boolean);
+            if (parts.length === 3) {
+                year = Number(parts[0]); month = Number(parts[1]); date = Number(parts[2]);
+            } else if (parts.length === 2) {
+                month = Number(parts[0]); date = Number(parts[1]); year = normalizeYearForMonth(month);
+            } else {
+                return { valid: false, reason: `日期格式請用 7/5 或 2026/7/5，目前是「${raw}」` };
+            }
+
+            if (!year || !month || !date || month < 1 || month > 12 || date < 1 || date > 31) {
+                return { valid: false, reason: `日期數字不合理：「${raw}」` };
+            }
+
+            const timeMatch = timeValue.match(/^(\d{1,2}):(\d{2})$/);
+            if (!timeMatch) return { valid: false, reason: `時間格式請用 HH:MM，目前是「${timeValue}」` };
+            const hour = Number(timeMatch[1]); const minute = Number(timeMatch[2]);
+            if (hour > 23 || minute > 59) return { valid: false, reason: `時間數字不合理：「${timeValue}」` };
+
+            const parsedDate = new Date(year, month - 1, date, hour, minute, 0, 0);
+            if (Number.isNaN(parsedDate.getTime()) || parsedDate.getMonth() !== month - 1 || parsedDate.getDate() !== date) {
+                return { valid: false, reason: `無法解析日期：「${raw}」` };
+            }
+
+            const range = parseTripDateRange(tripsMaster[tripKey]?.dates || '');
+            const withinTrip = range?.start && range?.end
+                ? parsedDate >= startOfDay(range.start) && parsedDate <= endOfDay(range.end)
+                : true;
+
+            return { valid: true, date: parsedDate, withinTrip, year, month, day: date };
+        }
+
+        function startOfDay(d) { return new Date(d.getFullYear(), d.getMonth(), d.getDate(), 0, 0, 0, 0); }
+        function endOfDay(d) { return new Date(d.getFullYear(), d.getMonth(), d.getDate(), 23, 59, 59, 999); }
+
+        function parseTripDateRange(rangeText) {
+            const match = String(rangeText || '').match(/(\d{4})[\/\-](\d{1,2})[\/\-](\d{1,2}).*?(\d{4})[\/\-](\d{1,2})[\/\-](\d{1,2})/);
+            if (!match) return null;
+            const start = new Date(Number(match[1]), Number(match[2]) - 1, Number(match[3]));
+            const end = new Date(Number(match[4]), Number(match[5]) - 1, Number(match[6]));
+            if (Number.isNaN(start.getTime()) || Number.isNaN(end.getTime())) return null;
+            return { start, end };
+        }
+
+        function formatCalendarDate(date) {
+            const pad = n => String(n).padStart(2, '0');
+            return `${date.getFullYear()}${pad(date.getMonth() + 1)}${pad(date.getDate())}T${pad(date.getHours())}${pad(date.getMinutes())}00`;
+        }
+
+        function buildGoogleCalendarUrl({ title, date, minutes = 60, details = '' }) {
+            const endDate = new Date(date.getTime() + minutes * 60000);
+            const params = new URLSearchParams({
+                action: 'TEMPLATE',
+                text: title,
+                dates: `${formatCalendarDate(date)}/${formatCalendarDate(endDate)}`,
+                details
+            });
+            return `https://calendar.google.com/calendar/render?${params.toString()}`;
+        }
+
+        function getEventById(id) {
+            return (itineraries[currentTripKey] || []).find(i => i.id === id);
+        }
+
+        function addEventToGoogleCalendar(id) {
+            const item = getEventById(id);
+            if (!item) return;
+            const parsed = parseTripDate(item.day, item.time || '09:00');
+            if (!parsed.valid) return alert(`無法加入 Google Calendar：${parsed.reason}`);
+            const url = buildGoogleCalendarUrl({
+                title: item.title || 'TripManager 行程',
+                date: parsed.date,
+                minutes: item.type === 'dining' ? 90 : item.type === 'flight' ? 180 : 60,
+                details: `${tripsMaster[currentTripKey]?.name || 'TripManager'}\n類型：${item.type || 'general'}\n狀態：${item.status || 'none'}\n備註：${item.note || ''}`
+            });
+            window.open(url, '_blank', 'noopener,noreferrer');
+        }
+
+        function validateItinerary(events = itineraries[currentTripKey] || []) {
+            const issues = [];
+            const withParsed = events.map((item, index) => {
+                const parsed = parseTripDate(item.day, item.time || '00:00');
+                if (!parsed.valid) {
+                    issues.push({ id: item.id, severity: 'error', message: `日期/時間格式錯誤：${parsed.reason}` });
+                    return { item, index, parsed, date: null };
+                }
+                if (!parsed.withinTrip) {
+                    issues.push({ id: item.id, severity: 'warn', message: `日期可能不在旅程期間內：${item.day} ${item.time || ''}` });
+                }
+                return { item, index, parsed, date: parsed.date };
+            });
+
+            for (let i = 1; i < withParsed.length; i++) {
+                const prev = withParsed[i - 1]; const current = withParsed[i];
+                if (prev.date && current.date && current.date < prev.date) {
+                    issues.push({ id: current.item.id, severity: 'danger', message: `順序錯亂：這筆時間早於上一筆行程，建議按時間排序或調整日期。` });
+                }
+                if (prev.date && current.date) {
+                    const gapHours = (current.date - prev.date) / 36e5;
+                    if (gapHours >= 0 && gapHours < 0.5 && prev.item.type !== 'accommodation' && current.item.type !== 'accommodation') {
+                        issues.push({ id: current.item.id, severity: 'warn', message: `行程太密：距離上一筆只有 ${Math.round(gapHours * 60)} 分鐘。` });
+                    }
+                }
+            }
+
+            let lastDive = null;
+            withParsed.forEach(({ item, date }) => {
+                if (!date) return;
+                if (item.type === 'dive') lastDive = { item, date };
+                if ((item.type === 'flight' || item.type === 'altitude') && lastDive) {
+                    const diffHours = (date - lastDive.date) / 36e5;
+                    if (diffHours >= 0 && diffHours < 24) {
+                        issues.push({ id: item.id, severity: 'danger', message: `排氮警告：距離上次潛水僅 ${diffHours.toFixed(1)} 小時，處於 24H 禁飛/高空紅區。` });
+                    }
+                }
+            });
+
+            return { issues, withParsed };
+        }
+
+        function getIssuesForEvent(id) {
+            const validation = validateItinerary();
+            return validation.issues.filter(issue => issue.id === id);
+        }
+
+        function renderValidationSummary(validation) {
+            const box = document.getElementById('itinerary-validation-summary');
+            if (!box) return;
+            if (!validation.issues.length) {
+                box.className = 'hidden mb-4 rounded-lg border px-3 py-2 text-xs md:text-sm font-bold';
+                box.innerHTML = '';
+                return;
+            }
+            const dangerCount = validation.issues.filter(i => i.severity === 'danger' || i.severity === 'error').length;
+            box.className = `mb-4 rounded-lg border px-3 py-2 text-xs md:text-sm font-bold ${dangerCount ? 'bg-red-50 border-red-200 text-red-700' : 'bg-amber-50 border-amber-200 text-amber-700'}`;
+            const topIssues = validation.issues.slice(0, 3).map(i => `<li>${i.message}</li>`).join('');
+            box.innerHTML = `<div class="flex items-start"><i class="fa-solid fa-triangle-exclamation mt-0.5 mr-2"></i><div><p>偵測到 ${validation.issues.length} 個行程提醒</p><ul class="list-disc ml-4 mt-1 space-y-0.5">${topIssues}</ul>${validation.issues.length > 3 ? '<p class="mt-1 opacity-70">更多提醒已標在行程卡片上。</p>' : ''}</div></div>`;
+        }
+
+        function showToast(message, tone = 'info') {
+            const old = document.getElementById('toast-message');
+            if (old) old.remove();
+            const div = document.createElement('div');
+            div.id = 'toast-message';
+            div.className = `fixed left-1/2 -translate-x-1/2 bottom-20 z-[70] px-4 py-3 rounded-xl shadow-xl text-sm font-bold ${tone === 'danger' ? 'bg-red-600 text-white' : 'bg-slate-900 text-white'}`;
+            div.textContent = message;
+            document.body.appendChild(div);
+            setTimeout(() => div.remove(), 2800);
+        }
+
         // --- ★ 升級 1：即時防呆計算 (Live No-Fly Warning) ★ ---
         function checkLiveWarning() {
             const type = document.getElementById('event-type').value;
@@ -253,20 +464,34 @@
                 return;
             }
 
-            // 模擬將目前表單的資料放入時間軸並排序，看看會不會出問題
+            const parsedInput = parseTripDate(day, time);
+            if (!parsedInput.valid) {
+                warningText.innerText = parsedInput.reason;
+                warningBox.classList.remove('hidden');
+                return;
+            }
+
+            if (!parsedInput.withinTrip) {
+                warningText.innerText = '注意！這個日期可能不在目前旅程日期範圍內。';
+                warningBox.classList.remove('hidden');
+                return;
+            }
+
             let tempEvents = [...(itineraries[currentTripKey] || [])];
             if (editingEventId) tempEvents = tempEvents.filter(e => e.id !== editingEventId);
-            tempEvents.push({ day, time, type });
+            tempEvents.push({ id: 'preview', day, time, type, title: '目前輸入' });
 
-            let sorted = tempEvents.sort((a, b) => new Date(`2026/${a.day} ${a.time || '00:00'}`) - new Date(`2026/${b.day} ${b.time || '00:00'}`));
+            let sorted = tempEvents
+                .map(item => ({ item, parsed: parseTripDate(item.day, item.time || '00:00') }))
+                .filter(x => x.parsed.valid)
+                .sort((a, b) => a.parsed.date - b.parsed.date);
             let lastDiveTime = null;
             let foundWarning = null;
 
-            sorted.forEach(item => {
-                let d = new Date(`2026/${item.day} ${item.time || '00:00'}`);
-                if (item.type === 'dive') lastDiveTime = d;
+            sorted.forEach(({ item, parsed }) => {
+                if (item.type === 'dive') lastDiveTime = parsed.date;
                 if ((item.type === 'flight' || item.type === 'altitude') && lastDiveTime) {
-                    let diffHours = (d - lastDiveTime) / (1000 * 60 * 60);
+                    let diffHours = (parsed.date - lastDiveTime) / (1000 * 60 * 60);
                     if (diffHours >= 0 && diffHours < 24) {
                         foundWarning = `注意！您輸入的時間距離上方潛水僅 ${diffHours.toFixed(1)} 小時，處於 24H 禁飛紅區內！`;
                     }
@@ -288,7 +513,6 @@
             const item = itineraries[currentTripKey].find(i => i.id === id);
             if (!item) return;
 
-            // 將資料填回表單
             document.getElementById('event-day').value = item.day || '';
             document.getElementById('event-time').value = item.time || '';
             document.getElementById('event-type').value = item.type || 'general';
@@ -296,7 +520,6 @@
             document.getElementById('event-title').value = item.title || '';
             document.getElementById('event-note').value = item.note || '';
 
-            // 改變 UI 狀態為編輯模式
             editingEventId = id;
             document.getElementById('form-title').innerText = '編輯行程';
             document.getElementById('form-icon').classList.replace('fa-calendar-plus', 'fa-pen-to-square');
@@ -306,8 +529,6 @@
             submitBtn.classList.replace('bg-blue-600', 'bg-amber-500');
             submitBtn.classList.replace('hover:bg-blue-700', 'hover:bg-amber-600');
             document.getElementById('cancel-edit-btn').classList.remove('hidden');
-            
-            // 捲動到表單區
             document.getElementById('event-form-container').scrollIntoView({ behavior: 'smooth', block: 'center' });
             checkLiveWarning();
         }
@@ -339,46 +560,38 @@
             const status = document.getElementById('event-status').value;
             const note = document.getElementById('event-note').value.trim();
 
+            if (day) {
+                const parsed = parseTripDate(day, time || '00:00');
+                if (!parsed.valid) return alert(parsed.reason);
+                if (!parsed.withinTrip && !confirm('這筆行程可能不在旅程日期範圍內，仍要儲存嗎？')) return;
+            }
+
             if (editingEventId) {
-                // 編輯模式：更新該筆資料
                 const index = itineraries[currentTripKey].findIndex(i => i.id === editingEventId);
-                if (index !== -1) {
-                    itineraries[currentTripKey][index] = { id: editingEventId, day, time, type, status, title, note };
-                }
+                if (index !== -1) itineraries[currentTripKey][index] = { id: editingEventId, day, time, type, status, title, note };
             } else {
-                // 新增模式：推入新資料
+                if (!itineraries[currentTripKey]) itineraries[currentTripKey] = [];
                 itineraries[currentTripKey].push({ id: Date.now(), day, time, type, status, title, note });
             }
 
             localStorage.setItem('tripItinerariesV6', JSON.stringify(itineraries));
             if (day && !dailyWeatherMap[day]) { dailyWeatherMap[day] = currentTripKey==='tasmania'?{max:14,min:6,code:3,icon:'⛅'}:{max:29,min:22,code:0,icon:'☀️'}; }
-            
-            cancelEdit(); // 復原表單狀態
+            cancelEdit();
             renderItinerary();
         }
 
         function renderItinerary() {
             const list = document.getElementById('itinerary-list'); list.innerHTML = '';
             let events = itineraries[currentTripKey] || [];
+            const validation = validateItinerary(events);
+            renderValidationSummary(validation);
             
-            let lastDiveTime = null;
             events.forEach(item => {
-                let currentEventTime = new Date(`2026/${item.day} ${item.time || '00:00'}`);
-                item.warning = null; 
-                if (item.type === 'dive') lastDiveTime = currentEventTime;
-                if ((item.type === 'flight' || item.type === 'altitude') && lastDiveTime) {
-                    let diffHours = (currentEventTime - lastDiveTime) / (1000 * 60 * 60);
-                    if (diffHours < 24 && diffHours >= 0) item.warning = `⚠️ 排氮警告：距離上方潛水僅 ${diffHours.toFixed(1)} 小時，處於禁飛區！`;
-                    else if (diffHours < 0) item.warning = `⚠️ 時間錯亂：排在潛水之後，但時間較早？`;
-                }
-            });
-
-            events.forEach(item => {
+                const issues = validation.issues.filter(issue => issue.id === item.id);
                 const isAcc = item.type === 'accommodation';
-                // ★ 加入餐飲圖示判定
                 let typeIcon = item.type === 'dive' ? '🤿' : item.type === 'altitude' ? '🚁' : item.type === 'flight' ? '✈️' : item.type === 'accommodation' ? '⛺️' : item.type === 'dining' ? '🍽️' : '📍';
                 let statusBadge = item.status === 'to-book' ? '<span class="ml-1 md:ml-2 bg-red-100 text-red-700 text-[10px] font-bold px-1.5 py-0.5 rounded">待訂</span>' : item.status === 'booked' ? '<span class="ml-1 md:ml-2 bg-green-100 text-green-700 text-[10px] font-bold px-1.5 py-0.5 rounded">已訂</span>' : '';
-                let warningHTML = item.warning ? `<div class="mt-1 md:mt-2 bg-red-500 text-white text-[10px] md:text-xs font-bold px-2 py-1 rounded animate-pulse">${item.warning}</div>` : '';
+                let warningHTML = issues.length ? issues.map(issue => `<div class="mt-1 md:mt-2 ${issue.severity === 'danger' || issue.severity === 'error' ? 'bg-red-500 text-white animate-pulse' : 'bg-amber-100 text-amber-800'} text-[10px] md:text-xs font-bold px-2 py-1 rounded">⚠️ ${issue.message}</div>`).join('') : '';
 
                 let weatherBadgeHTML = '';
                 if (item.day && dailyWeatherMap[item.day.trim()]) {
@@ -387,13 +600,14 @@
                 }
 
                 list.innerHTML += `
-                    <div data-id="${item.id}" class="relative pl-6 md:pl-8 py-3 md:py-4 border-l-2 border-blue-200 ${isAcc?'bg-slate-800 text-white rounded-r-xl':'bg-white'} mb-1.5 shadow-sm group">
-                        <span class="absolute -left-[9px] top-5 w-4 h-4 bg-blue-500 rounded-full border-4 border-slate-100"></span>
-                        <div class="flex justify-between items-start">
-                            <div class="w-full pr-2">
-                                <div class="flex items-center justify-between w-full">
-                                    <div class="flex items-center space-x-1 md:space-x-2">
-                                        <span class="bg-blue-100 text-blue-700 text-[10px] md:text-[11px] font-bold px-1.5 py-0.5 rounded">${item.day}</span>
+                    <div data-id="${item.id}" class="relative pl-6 md:pl-8 py-3 md:py-4 border-l-2 ${issues.some(i => i.severity === 'danger' || i.severity === 'error') ? 'border-red-400' : 'border-blue-200'} ${isAcc?'bg-slate-800 text-white rounded-r-xl':'bg-white'} mb-1.5 shadow-sm group">
+                        <span class="absolute -left-[9px] top-5 w-4 h-4 ${issues.length ? 'bg-red-500' : 'bg-blue-500'} rounded-full border-4 border-slate-100"></span>
+                        <div class="flex justify-between items-start gap-2">
+                            <div class="w-full pr-2 min-w-0">
+                                <div class="flex items-center justify-between w-full gap-2">
+                                    <div class="flex items-center space-x-1 md:space-x-2 min-w-0">
+                                        <button class="drag-handle touch-safe text-slate-300 hover:text-blue-500 p-1 -ml-1" title="拖曳排序"><i class="fa-solid fa-grip-vertical"></i></button>
+                                        <span class="bg-blue-100 text-blue-700 text-[10px] md:text-[11px] font-bold px-1.5 py-0.5 rounded">${item.day || '--'}</span>
                                         <span class="text-[10px] md:text-xs font-bold opacity-60 ${isAcc?'text-slate-300':''}">${item.time || '--:--'}</span>
                                         ${statusBadge}
                                     </div>
@@ -403,15 +617,16 @@
                                 ${item.note ? `<p class="text-xs opacity-80 mt-1.5 bg-black/5 px-2 py-1 rounded inline-block">${item.note}</p>` : ''}
                                 ${warningHTML}
                             </div>
-                            <div class="flex flex-col space-y-2 opacity-0 group-hover:opacity-100 transition-opacity">
-                                <button onclick="editEvent(${item.id})" class="text-slate-300 hover:text-amber-500 p-1" title="編輯行程"><i class="fa-solid fa-pen"></i></button>
-                                <button onclick="deleteEvent(${item.id})" class="text-slate-300 hover:text-red-500 p-1" title="刪除行程"><i class="fa-solid fa-trash"></i></button>
+                            <div class="action-buttons flex flex-col space-y-2 opacity-100 md:opacity-0 md:group-hover:opacity-100 transition-opacity">
+                                <button onclick="addEventToGoogleCalendar(${item.id})" class="touch-safe text-slate-300 hover:text-blue-500 p-1" title="加入 Google Calendar"><i class="fa-solid fa-calendar-plus"></i></button>
+                                <button onclick="editEvent(${item.id})" class="touch-safe text-slate-300 hover:text-amber-500 p-1" title="編輯行程"><i class="fa-solid fa-pen"></i></button>
+                                <button onclick="deleteEvent(${item.id})" class="touch-safe text-slate-300 hover:text-red-500 p-1" title="刪除行程"><i class="fa-solid fa-trash"></i></button>
                             </div>
                         </div>
                     </div>`;
             });
         }
-        
+
         function deleteEvent(id) { 
             if(confirm('確定要刪除這個行程嗎？')) {
                 itineraries[currentTripKey] = itineraries[currentTripKey].filter(i => i.id !== id); 
@@ -420,51 +635,265 @@
             }
         }
         
-        new Sortable(document.getElementById('itinerary-list'), { animation: 150, handle: '.group', onEnd: function (evt) { const arr = itineraries[currentTripKey]; arr.splice(evt.newIndex, 0, arr.splice(evt.oldIndex, 1)[0]); localStorage.setItem('tripItinerariesV6', JSON.stringify(itineraries)); renderItinerary(); } });
+        new Sortable(document.getElementById('itinerary-list'), { 
+            animation: 150,
+            handle: '.drag-handle',
+            delay: 120,
+            delayOnTouchOnly: true,
+            ghostClass: 'opacity-50',
+            fallbackOnBody: true,
+            swapThreshold: 0.65,
+            onEnd: function (evt) { 
+                const arr = itineraries[currentTripKey]; 
+                arr.splice(evt.newIndex, 0, arr.splice(evt.oldIndex, 1)[0]); 
+                localStorage.setItem('tripItinerariesV6', JSON.stringify(itineraries)); 
+                const validation = validateItinerary(arr);
+                renderItinerary(); 
+                if (validation.issues.length) showToast('拖曳後偵測到時間提醒，請檢查紅/黃提示。', validation.issues.some(i => i.severity === 'danger' || i.severity === 'error') ? 'danger' : 'info');
+            } 
+        });
 
         // --- ★ 升級 3：滿血復活的行李與待辦事項系統 ★ ---
+        // V7.1：待辦清單會自動排序：未完成在上、已完成置底；勾選後立即重排並儲存。
+        let editingChecklistId = null;
+
+        function escapeHTML(value) {
+            return String(value ?? '').replace(/[&<>'\"]/g, char => ({
+                '&': '&amp;',
+                '<': '&lt;',
+                '>': '&gt;',
+                "'": '&#39;',
+                '\"': '&quot;'
+            }[char]));
+        }
+
+        function getChecklistDueTimestamp(item) {
+            if (!item || !item.dueDay) return Number.MAX_SAFE_INTEGER;
+            const parsed = parseTripDate(item.dueDay, item.dueTime || '09:00');
+            return parsed.valid ? parsed.date.getTime() : Number.MAX_SAFE_INTEGER;
+        }
+
+        function sortChecklistItems(save = true) {
+            if (!checklists[currentTripKey]) checklists[currentTripKey] = [];
+
+            checklists[currentTripKey].forEach((item, index) => {
+                if (!item.id) item.id = Date.now() + index;
+                if (!item.createdAt) item.createdAt = item.id || Date.now() + index;
+                if (item.checked && !item.completedAt) item.completedAt = item.createdAt;
+            });
+
+            checklists[currentTripKey].sort((a, b) => {
+                // 1) 未完成永遠在上，已完成永遠置底
+                if (!!a.checked !== !!b.checked) return a.checked ? 1 : -1;
+
+                // 2) 未完成項目：有提醒時間的排前面，時間越早越上面
+                if (!a.checked && !b.checked) {
+                    const dueDiff = getChecklistDueTimestamp(a) - getChecklistDueTimestamp(b);
+                    if (dueDiff !== 0) return dueDiff;
+                    return (a.createdAt || a.id || 0) - (b.createdAt || b.id || 0);
+                }
+
+                // 3) 已完成項目：最近完成的先顯示在已完成區最上方，但整組仍在底部
+                return (b.completedAt || b.updatedAt || b.createdAt || b.id || 0) - (a.completedAt || a.updatedAt || a.createdAt || a.id || 0);
+            });
+
+            if (save) localStorage.setItem('tripChecklistsV6', JSON.stringify(checklists));
+            return checklists[currentTripKey];
+        }
+
+        function updateChecklistProgress(items) {
+            const progressBox = document.getElementById('checklist-progress');
+            if (!progressBox) return;
+
+            const total = items.length;
+            const done = items.filter(i => i.checked).length;
+            const pending = total - done;
+            const percent = total ? Math.round((done / total) * 100) : 0;
+
+            progressBox.innerHTML = `
+                <div class="flex flex-col md:flex-row md:items-center md:justify-between gap-2">
+                    <span><i class="fa-solid fa-circle-check mr-1 text-emerald-500"></i>已完成 ${done} / ${total}，未完成 ${pending}</span>
+                    <span class="text-slate-400">完成率 ${percent}%｜勾選後會即時置底</span>
+                </div>
+                <div class="mt-2 h-2 bg-slate-200 rounded-full overflow-hidden">
+                    <div class="h-full bg-blue-600 rounded-full transition-all duration-300" style="width:${percent}%"></div>
+                </div>
+            `;
+        }
+
         function renderChecklist() {
             const container = document.getElementById('checklist-container');
             container.innerHTML = '';
-            const items = checklists[currentTripKey] || [];
-            
+            const items = sortChecklistItems(true);
+            updateChecklistProgress(items);
+
             if (items.length === 0) {
                 container.innerHTML = `<p class="text-sm text-slate-400 text-center py-6">目前還沒有任何待辦事項，上方輸入框新增一個吧！</p>`;
                 return;
             }
 
-            items.forEach(item => {
+            const pendingCount = items.filter(i => !i.checked).length;
+
+            items.forEach((item, index) => {
+                const reminder = item.dueDay ? `${escapeHTML(item.dueDay)} ${escapeHTML(item.dueTime || '09:00')}` : '未設定提醒';
+                const targetLabel = item.target === 'task' ? 'Google Task' : 'Google Calendar';
+                const sectionLabel = index === 0 && !item.checked
+                    ? `<div class="text-[11px] font-black text-slate-400 uppercase tracking-wider mt-1 mb-2">未完成事項</div>`
+                    : (index === pendingCount && item.checked
+                        ? `<div class="text-[11px] font-black text-slate-400 uppercase tracking-wider mt-5 mb-2">已完成事項</div>`
+                        : '');
+
                 container.innerHTML += `
-                    <label class="flex items-center space-x-3 bg-white p-3 rounded-xl border border-slate-200 shadow-sm cursor-pointer hover:bg-slate-50 transition-colors group">
-                        <input type="checkbox" ${item.checked ? 'checked' : ''} onchange="toggleChecklist(${item.id})" class="w-5 h-5 text-blue-600 rounded focus:ring-blue-500 border-slate-300">
-                        <span class="text-sm flex-1 transition-all ${item.checked ? 'line-through text-slate-400' : 'text-slate-700 font-bold'}">${item.text}</span>
-                        <button onclick="deleteChecklist(event, ${item.id})" class="text-slate-300 hover:text-red-500 p-1 opacity-0 group-hover:opacity-100 transition-opacity"><i class="fa-solid fa-xmark"></i></button>
-                    </label>
+                    ${sectionLabel}
+                    <div class="flex items-start space-x-3 bg-white p-3 rounded-xl border ${item.checked ? 'border-slate-100 opacity-75' : 'border-slate-200'} shadow-sm hover:bg-slate-50 transition-all group">
+                        <input type="checkbox" ${item.checked ? 'checked' : ''} onchange="toggleChecklist(${item.id})" class="mt-1 w-5 h-5 text-blue-600 rounded focus:ring-blue-500 border-slate-300">
+                        <div class="flex-1 min-w-0">
+                            <p class="text-sm transition-all ${item.checked ? 'line-through text-slate-400' : 'text-slate-700 font-bold'}">${escapeHTML(item.text)}</p>
+                            <div class="mt-1 flex flex-wrap items-center gap-2 text-[11px] text-slate-400">
+                                <span class="bg-slate-100 px-2 py-0.5 rounded-full"><i class="fa-regular fa-clock mr-1"></i>${reminder}</span>
+                                <span class="bg-blue-50 text-blue-600 px-2 py-0.5 rounded-full">${targetLabel}</span>
+                                ${item.checked ? '<span class="bg-emerald-50 text-emerald-600 px-2 py-0.5 rounded-full">已完成</span>' : '<span class="bg-amber-50 text-amber-600 px-2 py-0.5 rounded-full">未完成</span>'}
+                            </div>
+                            <div class="mt-2 flex flex-wrap gap-2">
+                                <button onclick="addChecklistReminderToCalendar(${item.id})" class="touch-safe bg-blue-50 hover:bg-blue-100 text-blue-700 px-2.5 py-1 rounded-lg text-xs font-bold"><i class="fa-solid fa-calendar-plus mr-1"></i>加到 Calendar</button>
+                                <button onclick="openChecklistTaskHelper(${item.id})" class="touch-safe bg-slate-100 hover:bg-slate-200 text-slate-700 px-2.5 py-1 rounded-lg text-xs font-bold"><i class="fa-solid fa-list-check mr-1"></i>開啟 Tasks</button>
+                                <button onclick="editChecklistItem(${item.id})" class="touch-safe bg-amber-50 hover:bg-amber-100 text-amber-700 px-2.5 py-1 rounded-lg text-xs font-bold"><i class="fa-solid fa-pen mr-1"></i>編輯</button>
+                            </div>
+                        </div>
+                        <button onclick="deleteChecklist(event, ${item.id})" class="touch-safe text-slate-300 hover:text-red-500 p-1 opacity-100 md:opacity-0 md:group-hover:opacity-100 transition-opacity"><i class="fa-solid fa-xmark"></i></button>
+                    </div>
                 `;
             });
         }
 
-        function addChecklistItem() {
-            const text = document.getElementById('newChecklistItem').value.trim();
-            if (!text) return;
-            if (!checklists[currentTripKey]) checklists[currentTripKey] = [];
-            checklists[currentTripKey].push({ id: Date.now(), text, checked: false });
-            localStorage.setItem('tripChecklistsV6', JSON.stringify(checklists));
+        function resetChecklistForm() {
+            editingChecklistId = null;
             document.getElementById('newChecklistItem').value = '';
+            document.getElementById('newChecklistDueDay').value = '';
+            document.getElementById('newChecklistDueTime').value = '09:00';
+            document.getElementById('newChecklistTarget').value = 'calendar';
+
+            const btn = document.getElementById('submit-checklist-btn');
+            if (btn) {
+                btn.innerText = '新增項目';
+                btn.classList.remove('bg-amber-500', 'hover:bg-amber-600');
+                btn.classList.add('bg-blue-600', 'hover:bg-blue-700');
+            }
+            const cancelBtn = document.getElementById('cancel-checklist-edit-btn');
+            if (cancelBtn) cancelBtn.classList.add('hidden');
+        }
+
+        function cancelChecklistEdit() {
+            resetChecklistForm();
+            showToast('已取消編輯待辦事項。');
+        }
+
+        function editChecklistItem(id) {
+            const item = getChecklistItem(id);
+            if (!item) return;
+
+            editingChecklistId = id;
+            document.getElementById('newChecklistItem').value = item.text || '';
+            document.getElementById('newChecklistDueDay').value = item.dueDay || '';
+            document.getElementById('newChecklistDueTime').value = item.dueTime || '09:00';
+            document.getElementById('newChecklistTarget').value = item.target || 'calendar';
+
+            const btn = document.getElementById('submit-checklist-btn');
+            if (btn) {
+                btn.innerText = '儲存更新';
+                btn.classList.remove('bg-blue-600', 'hover:bg-blue-700');
+                btn.classList.add('bg-amber-500', 'hover:bg-amber-600');
+            }
+            const cancelBtn = document.getElementById('cancel-checklist-edit-btn');
+            if (cancelBtn) cancelBtn.classList.remove('hidden');
+            document.getElementById('module-checklist').scrollIntoView({ behavior: 'smooth', block: 'start' });
+        }
+
+        function submitChecklistItem() {
+            const text = document.getElementById('newChecklistItem').value.trim();
+            const dueDay = document.getElementById('newChecklistDueDay').value.trim();
+            const dueTime = document.getElementById('newChecklistDueTime').value || '09:00';
+            const target = document.getElementById('newChecklistTarget').value || 'calendar';
+            if (!text) return;
+
+            if (dueDay) {
+                const parsed = parseTripDate(dueDay, dueTime);
+                if (!parsed.valid) return alert(`提醒日期格式有問題：${parsed.reason}`);
+                if (!parsed.withinTrip && !confirm('提醒日期可能不在旅程範圍內，仍要儲存嗎？')) return;
+            }
+
+            if (!checklists[currentTripKey]) checklists[currentTripKey] = [];
+
+            if (editingChecklistId) {
+                const item = getChecklistItem(editingChecklistId);
+                if (item) {
+                    item.text = text;
+                    item.dueDay = dueDay;
+                    item.dueTime = dueTime;
+                    item.target = target;
+                    item.updatedAt = Date.now();
+                }
+            } else {
+                checklists[currentTripKey].push({ id: Date.now(), text, checked: false, dueDay, dueTime, target, createdAt: Date.now(), updatedAt: Date.now() });
+            }
+
+            localStorage.setItem('tripChecklistsV6', JSON.stringify(checklists));
+            resetChecklistForm();
             renderChecklist();
+            showToast(editingChecklistId ? '待辦事項已更新。' : '已新增待辦事項。');
+        }
+
+        function addChecklistItem() {
+            submitChecklistItem();
+        }
+
+        function getChecklistItem(id) {
+            return (checklists[currentTripKey] || []).find(i => i.id === id);
+        }
+
+        function addChecklistReminderToCalendar(id) {
+            const item = getChecklistItem(id);
+            if (!item) return;
+            if (!item.dueDay) return alert('這個待辦還沒有設定提醒日期');
+            const parsed = parseTripDate(item.dueDay, item.dueTime || '09:00');
+            if (!parsed.valid) return alert(`無法加入 Google Calendar：${parsed.reason}`);
+            const url = buildGoogleCalendarUrl({
+                title: `待辦｜${item.text}`,
+                date: parsed.date,
+                minutes: 30,
+                details: `${tripsMaster[currentTripKey]?.name || 'TripManager'} 的行李/待辦提醒`
+            });
+            window.open(url, '_blank', 'noopener,noreferrer');
+        }
+
+        async function openChecklistTaskHelper(id) {
+            const item = getChecklistItem(id);
+            if (!item) return;
+            const text = `${item.text}${item.dueDay ? `\nDue: ${item.dueDay} ${item.dueTime || '09:00'}` : ''}\nTrip: ${tripsMaster[currentTripKey]?.name || ''}`;
+            try {
+                await navigator.clipboard.writeText(text);
+                showToast('已複製待辦內容，貼到 Google Tasks 即可');
+            } catch (e) {
+                alert(text);
+            }
+            window.open('https://tasks.google.com/', '_blank', 'noopener,noreferrer');
         }
 
         function toggleChecklist(id) {
             const item = checklists[currentTripKey].find(i => i.id === id);
             if (item) {
                 item.checked = !item.checked;
-                localStorage.setItem('tripChecklistsV6', JSON.stringify(checklists));
+                item.updatedAt = Date.now();
+                if (item.checked) item.completedAt = Date.now();
+                else delete item.completedAt;
+                sortChecklistItems(true);
                 renderChecklist();
+                showToast(item.checked ? '已完成，已自動移到已完成區。' : '已改回未完成，已自動移回上方。');
             }
         }
 
         function deleteChecklist(e, id) {
-            e.preventDefault(); // 阻止 label 的點擊事件
+            e.preventDefault();
             e.stopPropagation();
             checklists[currentTripKey] = checklists[currentTripKey].filter(i => i.id !== id);
             localStorage.setItem('tripChecklistsV6', JSON.stringify(checklists));
@@ -472,6 +901,8 @@
         }
 
         // --- 預算分帳 (沿用完美版) ---
+        let editingBudgetId = null;
+
         function renderBudget() {
             const list = document.getElementById('budget-list'); const summaryTable = document.getElementById('member-summary-list');
             list.innerHTML = ''; summaryTable.innerHTML = ''; const items = budgets[currentTripKey] || [];
@@ -483,7 +914,7 @@
             items.forEach(item => {
                 totalAmount += item.amount; const payer = item.payer ? item.payer.trim() : "我"; participants.add(payer);
                 paidByPerson[payer] = (paidByPerson[payer] || 0) + item.amount;
-                list.innerHTML += `<tr><td class="p-2 md:p-3 font-medium text-slate-700">${item.title}</td><td class="p-2 md:p-3"><span class="bg-blue-50 text-blue-700 font-bold px-1.5 py-0.5 rounded text-[10px] md:text-xs">${payer}</span></td><td class="p-2 md:p-3 text-right font-bold text-slate-900">$${item.amount.toLocaleString()}</td><td class="p-2 md:p-3 text-center"><button onclick="deleteBudgetItem(${item.id})" class="text-slate-300 hover:text-red-500"><i class="fa-solid fa-trash-can"></i></button></td></tr>`;
+                list.innerHTML += `<tr><td class="p-2 md:p-3 font-medium text-slate-700">${item.title}</td><td class="p-2 md:p-3"><span class="bg-blue-50 text-blue-700 font-bold px-1.5 py-0.5 rounded text-[10px] md:text-xs">${payer}</span></td><td class="p-2 md:p-3 text-right font-bold text-slate-900">$${item.amount.toLocaleString()}</td><td class="p-2 md:p-3 text-center whitespace-nowrap"><button onclick="editBudgetItem(${item.id})" class="text-slate-300 hover:text-amber-500 px-1" title="編輯"><i class="fa-solid fa-pen"></i></button><button onclick="deleteBudgetItem(${item.id})" class="text-slate-300 hover:text-red-500 px-1" title="刪除"><i class="fa-solid fa-trash-can"></i></button></td></tr>`;
             });
 
             const totalMembers = participants.size; const perPersonShare = totalMembers > 0 ? (totalAmount / totalMembers) : 0;
@@ -511,10 +942,75 @@
             document.getElementById('budget-settlement').innerHTML = settlementText || '互不相欠！';
         }
 
+        function resetBudgetForm() {
+            editingBudgetId = null;
+            document.getElementById('budget-title').value = '';
+            document.getElementById('budget-amount').value = '';
+            document.getElementById('budget-payer').value = '';
+
+            const btn = document.getElementById('submit-budget-btn');
+            if (btn) {
+                btn.innerText = '記錄';
+                btn.classList.remove('bg-amber-500', 'hover:bg-amber-600');
+                btn.classList.add('bg-emerald-600', 'hover:bg-emerald-700');
+            }
+            const cancelBtn = document.getElementById('cancel-budget-edit-btn');
+            if (cancelBtn) cancelBtn.classList.add('hidden');
+        }
+
+        function cancelBudgetEdit() {
+            resetBudgetForm();
+            showToast('已取消編輯預算項目。');
+        }
+
+        function editBudgetItem(id) {
+            const item = (budgets[currentTripKey] || []).find(i => i.id === id);
+            if (!item) return;
+
+            editingBudgetId = id;
+            document.getElementById('budget-title').value = item.title || '';
+            document.getElementById('budget-amount').value = item.amount || '';
+            document.getElementById('budget-payer').value = item.payer || '';
+
+            const btn = document.getElementById('submit-budget-btn');
+            if (btn) {
+                btn.innerText = '儲存更新';
+                btn.classList.remove('bg-emerald-600', 'hover:bg-emerald-700');
+                btn.classList.add('bg-amber-500', 'hover:bg-amber-600');
+            }
+            const cancelBtn = document.getElementById('cancel-budget-edit-btn');
+            if (cancelBtn) cancelBtn.classList.remove('hidden');
+            document.getElementById('budget-title').focus();
+        }
+
+        function submitBudgetItem() {
+            const title = document.getElementById('budget-title').value.trim();
+            const amount = parseFloat(document.getElementById('budget-amount').value);
+            const payer = document.getElementById('budget-payer').value.trim() || '我';
+            if (!title || isNaN(amount)) return alert('輸入不完整');
+
+            if (!budgets[currentTripKey]) budgets[currentTripKey] = [];
+
+            if (editingBudgetId) {
+                const item = budgets[currentTripKey].find(i => i.id === editingBudgetId);
+                if (item) {
+                    item.title = title;
+                    item.amount = amount;
+                    item.payer = payer;
+                    item.updatedAt = Date.now();
+                }
+            } else {
+                budgets[currentTripKey].push({ id: Date.now(), title, amount, payer, createdAt: Date.now(), updatedAt: Date.now() });
+            }
+
+            localStorage.setItem('tripBudgetsV6', JSON.stringify(budgets));
+            resetBudgetForm();
+            renderBudget();
+            showToast(editingBudgetId ? '預算項目已更新。' : '已新增預算項目。');
+        }
+
         function addBudgetItem() {
-            const title = document.getElementById('budget-title').value.trim(); const amount = parseFloat(document.getElementById('budget-amount').value); const payer = document.getElementById('budget-payer').value.trim() || '我';
-            if (!title || isNaN(amount)) return alert('輸入不完整'); budgets[currentTripKey].push({ id: Date.now(), title, amount, payer });
-            localStorage.setItem('tripBudgetsV6', JSON.stringify(budgets)); document.getElementById('budget-title').value = ''; document.getElementById('budget-amount').value = ''; document.getElementById('budget-payer').value = ''; renderBudget();
+            submitBudgetItem();
         }
         function deleteBudgetItem(id) { budgets[currentTripKey] = budgets[currentTripKey].filter(i => i.id !== id); localStorage.setItem('tripBudgetsV6', JSON.stringify(budgets)); renderBudget(); }
 
@@ -525,11 +1021,28 @@
             const name = document.getElementById('new-trip-name').value.trim(); const dates = document.getElementById('new-trip-dates').value.trim(); if (!name || !dates) return;
             const key = 'trip_' + Date.now(); tripsMaster[key] = { name, dates, lat: -16.9203, lng: 145.7710, icon: 'fa-route' };
             itineraries[key] = []; checklists[key] = []; budgets[key] = []; localStorage.setItem('tripsMasterV6', JSON.stringify(tripsMaster));
+            localStorage.setItem('tripItinerariesV6', JSON.stringify(itineraries)); localStorage.setItem('tripChecklistsV6', JSON.stringify(checklists)); localStorage.setItem('tripBudgetsV6', JSON.stringify(budgets));
             currentTripKey = key; localStorage.setItem('activeTripKey', key); closeNewTripModal(); renderSidebar(); initCurrentTripData();
+            document.getElementById('new-trip-name').value = ''; document.getElementById('new-trip-dates').value = '';
         }
         function deleteCurrentTrip() {
             if (Object.keys(tripsMaster).length <= 1) return alert('至少保留一個');
-            if (confirm(`確定刪除？`)) { delete tripsMaster[currentTripKey]; localStorage.setItem('tripsMasterV6', JSON.stringify(tripsMaster)); currentTripKey = Object.keys(tripsMaster)[0]; renderSidebar(); initCurrentTripData(); }
+            if (confirm(`確定刪除？`)) { delete tripsMaster[currentTripKey]; delete itineraries[currentTripKey]; delete checklists[currentTripKey]; delete budgets[currentTripKey]; localStorage.setItem('tripsMasterV6', JSON.stringify(tripsMaster)); localStorage.setItem('tripItinerariesV6', JSON.stringify(itineraries)); localStorage.setItem('tripChecklistsV6', JSON.stringify(checklists)); localStorage.setItem('tripBudgetsV6', JSON.stringify(budgets)); currentTripKey = Object.keys(tripsMaster)[0]; localStorage.setItem('activeTripKey', currentTripKey); renderSidebar(); initCurrentTripData(); }
+        }
+
+        function autoSortItineraryByTime() {
+            const arr = itineraries[currentTripKey] || [];
+            arr.sort((a, b) => {
+                const pa = parseTripDate(a.day, a.time || '00:00');
+                const pb = parseTripDate(b.day, b.time || '00:00');
+                if (!pa.valid && !pb.valid) return 0;
+                if (!pa.valid) return 1;
+                if (!pb.valid) return -1;
+                return pa.date - pb.date;
+            });
+            localStorage.setItem('tripItinerariesV6', JSON.stringify(itineraries));
+            renderItinerary();
+            showToast('已依照日期時間重新排序。');
         }
 
         async function fetchWeather(lat, lng) {
