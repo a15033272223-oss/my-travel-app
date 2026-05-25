@@ -1778,6 +1778,1024 @@
 
     function escapeHTML(v) { return String(v ?? '').replace(/[&<>'"]/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;',"'":'&#39;','"':'&quot;'}[c])); }
     function saveAll() { localStorage.setItem('tripsMasterV6', JSON.stringify(tripsMaster)); localStorage.setItem('tripItinerariesV6', JSON.stringify(itineraries)); localStorage.setItem('tripChecklistsV6', JSON.stringify(checklists)); localStorage.setItem('tripBudgetsV6', JSON.stringify(budgets)); localStorage.setItem('tripJournalsV1', JSON.stringify(journals)); localStorage.setItem('tripAccessV1', JSON.stringify(tripAccess)); }
+
+    const TASMANIA_TRIP_SEED_VERSION = 'tasmania_full_plan_2026_01_v1';
+
+    const TASMANIA_TRIP_DATA = {
+      trip: { name: 'BNE/Taz🐨 寶貝集合', dates: '2026/01/12 - 2026/01/27', lat: -42.8821, lng: 147.3272, emoji: '🐨', icon: 'fa-suitcase-rolling' },
+      itineraries: [
+      {
+            "id": 2601120930,
+            "day": "2026-01-12",
+            "time": "09:30",
+            "title": "BR315 台北 TPE 起飛 → 布里斯本 BNE",
+            "note": "第二航廈；20:20 抵達布里斯本",
+            "type": "flight",
+            "status": "booked"
+      },
+      {
+            "id": 2601122300,
+            "day": "2026-01-12",
+            "time": "23:00",
+            "title": "回 Samuel St 休息",
+            "note": "第一晚先恢復體力",
+            "type": "accommodation",
+            "status": "none"
+      },
+      {
+            "id": 2601130930,
+            "day": "2026-01-13",
+            "time": "09:30",
+            "title": "與閨蜜早午餐",
+            "note": "布里斯本出發前小聚",
+            "type": "dining",
+            "status": "none"
+      },
+      {
+            "id": 2601131535,
+            "day": "2026-01-13",
+            "time": "15:35",
+            "title": "JQ757 BNE 起飛 → HBA",
+            "note": "19:15 抵達 Hobart",
+            "type": "flight",
+            "status": "booked"
+      },
+      {
+            "id": 2601131930,
+            "day": "2026-01-13",
+            "time": "19:30",
+            "title": "搭 Uber 前往住宿",
+            "note": "機場到 Hobart 市區",
+            "type": "general",
+            "status": "none"
+      },
+      {
+            "id": 2601132030,
+            "day": "2026-01-13",
+            "time": "20:30",
+            "title": "Check-in Argyle Accommodation",
+            "note": "附近好停車；Argyle 第 1 晚",
+            "type": "accommodation",
+            "status": "booked"
+      },
+      {
+            "id": 2601132100,
+            "day": "2026-01-13",
+            "time": "21:00",
+            "title": "Bar Wa Izakaya 晚餐",
+            "note": "抵達 Hobart 後放鬆開局",
+            "type": "dining",
+            "status": "none"
+      },
+      {
+            "id": 2601140800,
+            "day": "2026-01-14",
+            "time": "08:00",
+            "title": "市區取車 Bargain Car Rentals",
+            "note": "Compact SUV；173 Harrington St",
+            "type": "general",
+            "status": "booked"
+      },
+      {
+            "id": 2601140830,
+            "day": "2026-01-14",
+            "time": "08:30",
+            "title": "開車前往 Orford / Triabunna",
+            "note": "約 1h10m；路上可停 Raspin's Beach 拍 Maria Island",
+            "type": "general",
+            "status": "none"
+      },
+      {
+            "id": 2601140940,
+            "day": "2026-01-14",
+            "time": "09:40",
+            "title": "Orford 早午餐與補給",
+            "note": "Wattlebanks Coastal Cafe；IGA 買水與行動糧，島上沒有商店",
+            "type": "dining",
+            "status": "none"
+      },
+      {
+            "id": 2601141040,
+            "day": "2026-01-14",
+            "time": "10:40",
+            "title": "Maria Island Gateway 報到",
+            "note": "Triabunna 碼頭遊客中心",
+            "type": "general",
+            "status": "booked"
+      },
+      {
+            "id": 2601141130,
+            "day": "2026-01-14",
+            "time": "11:30",
+            "title": "搭渡輪前往 Maria Island",
+            "note": "已事先訂票；17:30 回程",
+            "type": "general",
+            "status": "booked"
+      },
+      {
+            "id": 2601141230,
+            "day": "2026-01-14",
+            "time": "12:30",
+            "title": "Maria Island 袋熊、Painted Cliffs、舊監獄區",
+            "note": "租腳踏車探索 Darlington、Painted Cliffs、Fossil Cliffs；帶足水和食物",
+            "type": "general",
+            "status": "booked"
+      },
+      {
+            "id": 2601141730,
+            "day": "2026-01-14",
+            "time": "17:30",
+            "title": "搭船返回 Triabunna",
+            "note": "18:15 開車回 Hobart",
+            "type": "general",
+            "status": "booked"
+      },
+      {
+            "id": 2601142145,
+            "day": "2026-01-14",
+            "time": "21:45",
+            "title": "住：Hobart Argyle Accommodation 第 2 晚",
+            "note": "可停 Argyle Street Car Park；Overnight Fee 約 7 AUD",
+            "type": "accommodation",
+            "status": "booked"
+      },
+      {
+            "id": 2601150830,
+            "day": "2026-01-15",
+            "time": "08:30",
+            "title": "出發前往 Port Arthur / Tasman 半島",
+            "note": "Arthur Highway 集合點",
+            "type": "general",
+            "status": "none"
+      },
+      {
+            "id": 2601151000,
+            "day": "2026-01-15",
+            "time": "10:00",
+            "title": "Port Arthur Historic Site 與海港遊船",
+            "note": "監獄遺跡、Harbour Cruise；若沒趕上船班就改參觀遺跡",
+            "type": "general",
+            "status": "booked"
+      },
+      {
+            "id": 2601151400,
+            "day": "2026-01-15",
+            "time": "14:00",
+            "title": "回程 Hobart / Blue Lagoon Oysters 備案",
+            "note": "Blue Lagoon Oysters 營業至 16:00，想吃可安排回程",
+            "type": "dining",
+            "status": "none"
+      },
+      {
+            "id": 2601151800,
+            "day": "2026-01-15",
+            "time": "18:00",
+            "title": "Mt Wellington 夕陽備案",
+            "note": "若霧太大就取消，改休息或市區晚餐",
+            "type": "altitude",
+            "status": "none"
+      },
+      {
+            "id": 2601152200,
+            "day": "2026-01-15",
+            "time": "22:00",
+            "title": "住：Hobart Argyle Accommodation 第 3 晚",
+            "note": "Port Arthur 日回後休息",
+            "type": "accommodation",
+            "status": "booked"
+      },
+      {
+            "id": 2601160630,
+            "day": "2026-01-16",
+            "time": "06:30",
+            "title": "出發往 Kettering / Bruny Island Ferry",
+            "note": "07:30 排隊上渡輪；車輛來回票現場買",
+            "type": "general",
+            "status": "none"
+      },
+      {
+            "id": 2601160830,
+            "day": "2026-01-16",
+            "time": "08:30",
+            "title": "Bruny Island 一日探索",
+            "note": "The Neck Lookout、Cape Bruny Lighthouse、Get Shucked、Cheese Co.、Honey、Baker",
+            "type": "general",
+            "status": "none"
+      },
+      {
+            "id": 2601161530,
+            "day": "2026-01-16",
+            "time": "15:30",
+            "title": "搭船回本島",
+            "note": "留意 SeaLink Bruny Island 末班回程時間",
+            "type": "general",
+            "status": "none"
+      },
+      {
+            "id": 2601161730,
+            "day": "2026-01-16",
+            "time": "17:30",
+            "title": "Willie Smith’s Apple Shed",
+            "note": "週五 Live Music；蘋果酒廠放鬆行程",
+            "type": "dining",
+            "status": "none"
+      },
+      {
+            "id": 2601162200,
+            "day": "2026-01-16",
+            "time": "22:00",
+            "title": "住：Hobart Argyle Accommodation 第 4 晚",
+            "note": "隔天退房與換車",
+            "type": "accommodation",
+            "status": "booked"
+      },
+      {
+            "id": 2601170800,
+            "day": "2026-01-17",
+            "time": "08:00",
+            "title": "退房、行李上車、Salamanca Market",
+            "note": "Argyle 最晚 10:00 退房；週六市集",
+            "type": "general",
+            "status": "none"
+      },
+      {
+            "id": 2601171130,
+            "day": "2026-01-17",
+            "time": "11:30",
+            "title": "還小車 Bargain Car Rentals City",
+            "note": "12:00 搭 Uber 前往 Cambridge",
+            "type": "general",
+            "status": "booked"
+      },
+      {
+            "id": 2601171230,
+            "day": "2026-01-17",
+            "time": "12:30",
+            "title": "取 GoCheap Campervans 露營車",
+            "note": "Highball 3.0m 高；開始露營車段",
+            "type": "general",
+            "status": "booked"
+      },
+      {
+            "id": 2601171330,
+            "day": "2026-01-17",
+            "time": "13:30",
+            "title": "Richmond 甜點任務",
+            "note": "Richmond Bakery 扇貝派、Czegs / Wicked Cheese、Chocolate Shop 冰淇淋",
+            "type": "dining",
+            "status": "none"
+      },
+      {
+            "id": 2601171430,
+            "day": "2026-01-17",
+            "time": "14:30",
+            "title": "Richmond Bridge、Richmond Gaol、Old Hobart Town",
+            "note": "古鎮散步、拍照與歷史感行程",
+            "type": "general",
+            "status": "none"
+      },
+      {
+            "id": 2601171600,
+            "day": "2026-01-17",
+            "time": "16:00",
+            "title": "Sorell Woolworths 大採買",
+            "note": "買牛排、水、酒與露營車補給；好停車",
+            "type": "general",
+            "status": "none"
+      },
+      {
+            "id": 2601171730,
+            "day": "2026-01-17",
+            "time": "17:30",
+            "title": "Check-in Richmond Caravan & Cabin Park",
+            "note": "最晚 17:30；露營車首煮晚餐",
+            "type": "accommodation",
+            "status": "to-book"
+      },
+      {
+            "id": 2601181000,
+            "day": "2026-01-18",
+            "time": "10:00",
+            "title": "離開 Richmond 營地往東海岸",
+            "note": "前往 Swansea / Bicheno 方向",
+            "type": "general",
+            "status": "none"
+      },
+      {
+            "id": 2601181230,
+            "day": "2026-01-18",
+            "time": "12:30",
+            "title": "Homestead Restaurant (Piermont) 午餐",
+            "note": "Swansea；已訂位",
+            "type": "dining",
+            "status": "booked"
+      },
+      {
+            "id": 2601181500,
+            "day": "2026-01-18",
+            "time": "15:00",
+            "title": "Melshell Oysters 備案",
+            "note": "原計畫吃現開生蠔；若公休就直接前往 Bicheno",
+            "type": "dining",
+            "status": "none"
+      },
+      {
+            "id": 2601181600,
+            "day": "2026-01-18",
+            "time": "16:00",
+            "title": "Bicheno 三點快閃：Blowhole / Lobster Shack / Peggy's Point",
+            "note": "三個點距離很近；看噴水洞、吃龍蝦堡、岩岸散步",
+            "type": "general",
+            "status": "none"
+      },
+      {
+            "id": 2601181830,
+            "day": "2026-01-18",
+            "time": "18:30",
+            "title": "Check-in Bicheno East Coast Holiday Park",
+            "note": "櫃台 18:00 下班，會遲到需先打電話 (03) 6375 1999",
+            "type": "accommodation",
+            "status": "booked"
+      },
+      {
+            "id": 2601182200,
+            "day": "2026-01-18",
+            "time": "22:00",
+            "title": "Bicheno 企鵝觀察備案",
+            "note": "有機會但不保證看到",
+            "type": "general",
+            "status": "none"
+      },
+      {
+            "id": 2601190800,
+            "day": "2026-01-19",
+            "time": "08:00",
+            "title": "前往 Freycinet National Park",
+            "note": "準備 Wineglass Bay Lookout",
+            "type": "general",
+            "status": "none"
+      },
+      {
+            "id": 2601190830,
+            "day": "2026-01-19",
+            "time": "08:30",
+            "title": "Wineglass Bay Lookout 酒杯灣觀景台",
+            "note": "體力好可挑戰 Mt Amos",
+            "type": "general",
+            "status": "none"
+      },
+      {
+            "id": 2601191615,
+            "day": "2026-01-19",
+            "time": "16:15",
+            "title": "Launceston Leisure & Aquatic Centre 洗澡",
+            "note": "停留約 1 小時，洗完暖呼呼再出來",
+            "type": "general",
+            "status": "none"
+      },
+      {
+            "id": 2601191730,
+            "day": "2026-01-19",
+            "time": "17:30",
+            "title": "Josef Chromy Wines 酒莊",
+            "note": "品酒 / 晚餐備案",
+            "type": "dining",
+            "status": "none"
+      },
+      {
+            "id": 2601191830,
+            "day": "2026-01-19",
+            "time": "18:30",
+            "title": "Check-in Old Mac's Farm Stay",
+            "note": "Site 06；農場散步看夕陽，車上煮晚餐",
+            "type": "accommodation",
+            "status": "booked"
+      },
+      {
+            "id": 2601201000,
+            "day": "2026-01-20",
+            "time": "10:00",
+            "title": "Cataract Gorge 峽谷",
+            "note": "搭纜車或走吊橋；可現場買纜車票",
+            "type": "general",
+            "status": "none"
+      },
+      {
+            "id": 2601201230,
+            "day": "2026-01-20",
+            "time": "12:30",
+            "title": "Launceston 市區逛街 / 看猴子 / 喝啤酒",
+            "note": "輕鬆城市段",
+            "type": "dining",
+            "status": "none"
+      },
+      {
+            "id": 2601201530,
+            "day": "2026-01-20",
+            "time": "15:30",
+            "title": "Van Diemen's Land Creamery",
+            "note": "Elizabeth Town 手工冰淇淋",
+            "type": "dining",
+            "status": "none"
+      },
+      {
+            "id": 2601201645,
+            "day": "2026-01-20",
+            "time": "16:45",
+            "title": "Ashgrove Cheese Dairy Door",
+            "note": "試吃起司、買牛奶",
+            "type": "dining",
+            "status": "none"
+      },
+      {
+            "id": 2601201830,
+            "day": "2026-01-20",
+            "time": "18:30",
+            "title": "Check-in Gowrie Park Wilderness Village",
+            "note": "靠近搖籃山；辦公室至 19:30，尾款約 38.44 AUD",
+            "type": "accommodation",
+            "status": "booked"
+      },
+      {
+            "id": 2601202300,
+            "day": "2026-01-20",
+            "time": "23:00",
+            "title": "極光觀察備案",
+            "note": "若天氣與極光指數配合，就出發看極光",
+            "type": "general",
+            "status": "none"
+      },
+      {
+            "id": 2601210900,
+            "day": "2026-01-21",
+            "time": "09:00",
+            "title": "經 Sheffield 加油吃早餐",
+            "note": "壁畫小鎮，前往 Cradle Mountain",
+            "type": "dining",
+            "status": "none"
+      },
+      {
+            "id": 2601211030,
+            "day": "2026-01-21",
+            "time": "10:30",
+            "title": "Cradle Mountain Visitor Centre",
+            "note": "買票轉搭 Shuttle Bus",
+            "type": "general",
+            "status": "booked"
+      },
+      {
+            "id": 2601211100,
+            "day": "2026-01-21",
+            "time": "11:00",
+            "title": "Dove Lake 鴿子湖環湖步道",
+            "note": "世界遺產搖籃山經典路線",
+            "type": "general",
+            "status": "none"
+      },
+      {
+            "id": 2601211530,
+            "day": "2026-01-21",
+            "time": "15:30",
+            "title": "露營區火鍋晚餐",
+            "note": "山區冷，吃鍋最爽",
+            "type": "dining",
+            "status": "none"
+      },
+      {
+            "id": 2601211800,
+            "day": "2026-01-21",
+            "time": "18:00",
+            "title": "住：Discovery Parks Cradle Mountain",
+            "note": "搖籃山住宿",
+            "type": "accommodation",
+            "status": "booked"
+      },
+      {
+            "id": 2601221000,
+            "day": "2026-01-22",
+            "time": "10:00",
+            "title": "退房下山 / 動物保育園區備案",
+            "note": "隔壁保育園區可視時間安排",
+            "type": "general",
+            "status": "none"
+      },
+      {
+            "id": 2601221200,
+            "day": "2026-01-22",
+            "time": "12:00",
+            "title": "Iron Blow Lookout、Queenstown、The Gravel Oval",
+            "note": "西岸風景與皇后鎮路線",
+            "type": "general",
+            "status": "none"
+      },
+      {
+            "id": 2601222000,
+            "day": "2026-01-22",
+            "time": "20:00",
+            "title": "Check-in Wrest Point Hotel",
+            "note": "Hobart 最後一晚；飯店戶外免費停車",
+            "type": "accommodation",
+            "status": "booked"
+      },
+      {
+            "id": 2601222030,
+            "day": "2026-01-22",
+            "time": "20:30",
+            "title": "Hobart Waterfront 慶功晚餐",
+            "note": "停好露營車後搭 Uber 去吃頓好的",
+            "type": "dining",
+            "status": "none"
+      },
+      {
+            "id": 2601231030,
+            "day": "2026-01-23",
+            "time": "10:30",
+            "title": "MONA 藝術巡禮",
+            "note": "開車前往，停車方便；票先不訂可查便宜票",
+            "type": "general",
+            "status": "to-book"
+      },
+      {
+            "id": 2601231430,
+            "day": "2026-01-23",
+            "time": "14:30",
+            "title": "開往 Cambridge 還 GoCheap 露營車",
+            "note": "15:30 Drop Off；車行在機場旁",
+            "type": "general",
+            "status": "booked"
+      },
+      {
+            "id": 2601231730,
+            "day": "2026-01-23",
+            "time": "17:30",
+            "title": "Yamashita Japanese Restaurant 晚餐",
+            "note": "回布里斯本前最後晚餐",
+            "type": "dining",
+            "status": "none"
+      },
+      {
+            "id": 2601232120,
+            "day": "2026-01-23",
+            "time": "21:20",
+            "title": "VA1007 HBA 起飛 → BNE",
+            "note": "23:05 抵達布里斯本",
+            "type": "flight",
+            "status": "booked"
+      },
+      {
+            "id": 2601241000,
+            "day": "2026-01-24",
+            "time": "10:00",
+            "title": "出發前往 Australia Zoo",
+            "note": "無尾熊、鱷魚秀；線上票可再查便宜票",
+            "type": "general",
+            "status": "to-book"
+      },
+      {
+            "id": 2601241900,
+            "day": "2026-01-24",
+            "time": "19:00",
+            "title": "Brisbane 晚餐",
+            "note": "動物園回來後休息",
+            "type": "dining",
+            "status": "none"
+      },
+      {
+            "id": 2601250930,
+            "day": "2026-01-25",
+            "time": "09:30",
+            "title": "黃金海岸 Gold Coast 一日",
+            "note": "Burleigh Heads 玩水、野餐、找閨蜜；晚上房東姊姊晚餐",
+            "type": "general",
+            "status": "none"
+      },
+      {
+            "id": 2601261300,
+            "day": "2026-01-26",
+            "time": "13:00",
+            "title": "South Bank 與閨蜜會合",
+            "note": "Australia Day 國慶煙火前散步卡位",
+            "type": "general",
+            "status": "none"
+      },
+      {
+            "id": 2601262000,
+            "day": "2026-01-26",
+            "time": "20:00",
+            "title": "Australia Day 煙火秀",
+            "note": "河邊看煙火",
+            "type": "general",
+            "status": "none"
+      },
+      {
+            "id": 2601270930,
+            "day": "2026-01-27",
+            "time": "09:30",
+            "title": "最後早餐與打包",
+            "note": "不想返台的一天",
+            "type": "dining",
+            "status": "none"
+      },
+      {
+            "id": 2601271700,
+            "day": "2026-01-27",
+            "time": "17:00",
+            "title": "前往機場",
+            "note": "DFO 補買後準備返台",
+            "type": "general",
+            "status": "none"
+      },
+      {
+            "id": 2601272235,
+            "day": "2026-01-27",
+            "time": "22:35",
+            "title": "BR316 BNE 起飛返台",
+            "note": "隔日 05:05 抵達 TPE",
+            "type": "flight",
+            "status": "booked"
+      }
+],
+      checklists: [
+      {
+            "id": 270001,
+            "text": "信用 Cruisin Motorhomes / GoCheap Campervans 改時間",
+            "checked": false,
+            "dueDay": "2026-01-10",
+            "dueTime": "09:00",
+            "target": "calendar",
+            "createdAt": 270001
+      },
+      {
+            "id": 270002,
+            "text": "確認 1/17 Richmond Caravan Park 回信",
+            "checked": false,
+            "dueDay": "2026-01-12",
+            "dueTime": "09:00",
+            "target": "calendar",
+            "createdAt": 270002
+      },
+      {
+            "id": 270003,
+            "text": "確認 Cataract on Paterson / Launceston 備案",
+            "checked": false,
+            "dueDay": "2026-01-19",
+            "dueTime": "09:00",
+            "target": "calendar",
+            "createdAt": 270003
+      },
+      {
+            "id": 270004,
+            "text": "MONA 博物館票券可查便宜票",
+            "checked": false,
+            "dueDay": "2026-01-22",
+            "dueTime": "12:00",
+            "target": "calendar",
+            "createdAt": 270004
+      },
+      {
+            "id": 270005,
+            "text": "露營車尾款 $1,328 AUD",
+            "checked": false,
+            "dueDay": "2026-01-16",
+            "dueTime": "12:00",
+            "target": "calendar",
+            "createdAt": 270005
+      },
+      {
+            "id": 270006,
+            "text": "Australia Zoo 線上票可查便宜票",
+            "checked": false,
+            "dueDay": "2026-01-23",
+            "dueTime": "12:00",
+            "target": "calendar",
+            "createdAt": 270006
+      },
+      {
+            "id": 270007,
+            "text": "eSIM",
+            "checked": true,
+            "createdAt": 270007,
+            "completedAt": 270007
+      },
+      {
+            "id": 270008,
+            "text": "旅遊保險",
+            "checked": true,
+            "createdAt": 270008,
+            "completedAt": 270008
+      },
+      {
+            "id": 270009,
+            "text": "Holiday Vehicle Pass 有效 2 個月，印出放車窗",
+            "checked": true,
+            "createdAt": 270009,
+            "completedAt": 270009
+      },
+      {
+            "id": 270010,
+            "text": "簽證 ETA 已完成",
+            "checked": true,
+            "createdAt": 270010,
+            "completedAt": 270010
+      },
+      {
+            "id": 270011,
+            "text": "國際駕照 / 信用卡 / 護照",
+            "checked": true,
+            "createdAt": 270011,
+            "completedAt": 270011
+      },
+      {
+            "id": 270012,
+            "text": "Maria Island 船票 10:00 / 17:30",
+            "checked": true,
+            "createdAt": 270012,
+            "completedAt": 270012
+      },
+      {
+            "id": 270013,
+            "text": "Port Arthur / Tasman Island 10:00 憑證",
+            "checked": true,
+            "createdAt": 270013,
+            "completedAt": 270013
+      },
+      {
+            "id": 270014,
+            "text": "Argyle / Bicheno / Old Mac's / Gowrie Park / Discovery / Wrest Point 住宿憑證",
+            "checked": true,
+            "createdAt": 270014,
+            "completedAt": 270014
+      },
+      {
+            "id": 270015,
+            "text": "防風防水外套、羽絨衣、長袖長褲",
+            "checked": true,
+            "createdAt": 270015,
+            "completedAt": 270015
+      },
+      {
+            "id": 270016,
+            "text": "駕照、護照、Park Pass 兩份、ETA",
+            "checked": true,
+            "createdAt": 270016,
+            "completedAt": 270016
+      },
+      {
+            "id": 270017,
+            "text": "延長線、充電器、音響、水壺、墨鏡",
+            "checked": true,
+            "createdAt": 270017,
+            "completedAt": 270017
+      },
+      {
+            "id": 270018,
+            "text": "睡袋、枕頭、洗碗精、菜瓜布、垃圾袋、密封袋",
+            "checked": true,
+            "createdAt": 270018,
+            "completedAt": 270018
+      },
+      {
+            "id": 270019,
+            "text": "個人藥品、防曬油、洗漱用具、浴巾衣、拖鞋",
+            "checked": true,
+            "createdAt": 270019,
+            "completedAt": 270019
+      }
+],
+      journals: [
+      {
+            "id": 280001,
+            "eventId": 2601141230,
+            "title": "Maria Island 袋熊與彩繪峭壁",
+            "date": "2026-01-14",
+            "rating": "5",
+            "tags": [
+                  "Tasmania",
+                  "自駕",
+                  "心得"
+            ],
+            "body": "Maria Island 是這趟塔斯最期待的一站。袋熊、舊監獄建築、Painted Cliffs 都很有塔斯荒野感。下次一定要再確認潮汐、帶足水和食物，島上沒有商店，補給真的很重要。",
+            "photo": null,
+            "video": null,
+            "updatedAt": 280001
+      },
+      {
+            "id": 280002,
+            "eventId": 2601151000,
+            "title": "Port Arthur 歷史遺跡與半島天氣挑戰",
+            "date": "2026-01-15",
+            "rating": "4",
+            "tags": [
+                  "Tasmania",
+                  "自駕",
+                  "心得"
+            ],
+            "body": "Port Arthur 的歷史感很強，但這天行程會受船班與天氣影響。Mt Wellington 如果霧太大就不要硬上，改成市區晚餐或早點休息會更舒服。",
+            "photo": null,
+            "video": null,
+            "updatedAt": 280002
+      },
+      {
+            "id": 280003,
+            "eventId": 2601160830,
+            "title": "Bruny Island 美食與海岸線",
+            "date": "2026-01-16",
+            "rating": "5",
+            "tags": [
+                  "Tasmania",
+                  "自駕",
+                  "心得"
+            ],
+            "body": "Bruny Island 很適合慢慢玩，The Neck、燈塔、生蠔、起司、蜂蜜都很有記憶點。這天重點是早出發、注意渡輪末班，不要把時間塞太滿。",
+            "photo": null,
+            "video": null,
+            "updatedAt": 280003
+      },
+      {
+            "id": 280004,
+            "eventId": 2601171230,
+            "title": "露營車生活正式開始",
+            "date": "2026-01-17",
+            "rating": "5",
+            "tags": [
+                  "Tasmania",
+                  "自駕",
+                  "心得"
+            ],
+            "body": "從小車換成露營車後，旅行感瞬間變強。Richmond 甜點、古橋、採買、第一餐露營車晚餐都很有儀式感。下次要更早熟悉車內設備，第一晚會更順。",
+            "photo": null,
+            "video": null,
+            "updatedAt": 280004
+      },
+      {
+            "id": 280005,
+            "eventId": 2601181600,
+            "title": "Bicheno 海岸與龍蝦堡",
+            "date": "2026-01-18",
+            "rating": "4",
+            "tags": [
+                  "Tasmania",
+                  "自駕",
+                  "心得"
+            ],
+            "body": "原本想吃 Melshell Oysters，但遇到公休有點好笑也很塔斯。Bicheno Blowhole、Peggy's Point、Lobster Shack 這三點很順路，企鵝沒看到雖然殘念，但海邊氣氛很棒。",
+            "photo": null,
+            "video": null,
+            "updatedAt": 280005
+      },
+      {
+            "id": 280006,
+            "eventId": 2601190830,
+            "title": "Wineglass Bay 與東岸轉西北",
+            "date": "2026-01-19",
+            "rating": "5",
+            "tags": [
+                  "Tasmania",
+                  "自駕",
+                  "心得"
+            ],
+            "body": "Wineglass Bay 是塔斯經典畫面，早點出發很值得。後面接 Launceston 洗澡、Josef Chromy、Old Mac's Farm，節奏從海岸切換到農場，很有公路旅行感。",
+            "photo": null,
+            "video": null,
+            "updatedAt": 280006
+      },
+      {
+            "id": 280007,
+            "eventId": 2601201000,
+            "title": "Launceston、冰淇淋、起司與極光備案",
+            "date": "2026-01-20",
+            "rating": "5",
+            "tags": [
+                  "Tasmania",
+                  "自駕",
+                  "心得"
+            ],
+            "body": "Cataract Gorge 很適合安排成輕鬆半日，Van Diemen's Land Creamery 和 Ashgrove Cheese 是開車途中很棒的補給點。如果晚上極光條件好，Gowrie Park 附近會是很值得衝的冒險。",
+            "photo": null,
+            "video": null,
+            "updatedAt": 280007
+      },
+      {
+            "id": 280008,
+            "eventId": 2601211100,
+            "title": "Cradle Mountain 鴿子湖",
+            "date": "2026-01-21",
+            "rating": "5",
+            "tags": [
+                  "Tasmania",
+                  "自駕",
+                  "心得"
+            ],
+            "body": "Dove Lake 環湖是塔斯山區的重點。天氣冷但景色很壯，走完回營地吃火鍋非常合理。山區行程不要貪多，保暖和雨具比什麼都重要。",
+            "photo": null,
+            "video": null,
+            "updatedAt": 280008
+      },
+      {
+            "id": 280009,
+            "eventId": 2601221200,
+            "title": "Queenstown 西岸公路到 Hobart",
+            "date": "2026-01-22",
+            "rating": "4",
+            "tags": [
+                  "Tasmania",
+                  "自駕",
+                  "心得"
+            ],
+            "body": "從搖籃山下山後一路經 Iron Blow Lookout、Queenstown 和 The Gravel Oval，這段是很有塔斯西岸荒涼感的長途駕駛。抵達 Wrest Point 代表露營車段快收尾了。",
+            "photo": null,
+            "video": null,
+            "updatedAt": 280009
+      },
+      {
+            "id": 280010,
+            "eventId": 2601231030,
+            "title": "MONA 與還車日",
+            "date": "2026-01-23",
+            "rating": "4",
+            "tags": [
+                  "Tasmania",
+                  "自駕",
+                  "心得"
+            ],
+            "body": "最後一天安排 MONA 和還露營車，重點是時間控管。14:30 要準時開往 Cambridge 還車，行李寄放和晚餐都要留緩衝。",
+            "photo": null,
+            "video": null,
+            "updatedAt": 280010
+      },
+      {
+            "id": 280011,
+            "eventId": 2601241000,
+            "title": "Australia Zoo 布里斯本延伸行程",
+            "date": "2026-01-24",
+            "rating": "5",
+            "tags": [
+                  "Tasmania",
+                  "自駕",
+                  "心得"
+            ],
+            "body": "回到布里斯本後安排 Australia Zoo，節奏從塔斯自然與露營車切回昆州動物園，很適合讓旅程有收尾的輕鬆感。",
+            "photo": null,
+            "video": null,
+            "updatedAt": 280011
+      },
+      {
+            "id": 280012,
+            "eventId": 2601262000,
+            "title": "Australia Day 煙火",
+            "date": "2026-01-26",
+            "rating": "5",
+            "tags": [
+                  "Tasmania",
+                  "自駕",
+                  "心得"
+            ],
+            "body": "South Bank 河邊卡位看煙火是很有澳洲生活感的一晚。這天不需要塞太多景點，重點是和朋友聚在一起、慢慢感受節慶氣氛。",
+            "photo": null,
+            "video": null,
+            "updatedAt": 280012
+      },
+      {
+            "id": 280013,
+            "eventId": 2601270930,
+            "title": "不想返台的最後一天",
+            "date": "2026-01-27",
+            "rating": "5",
+            "tags": [
+                  "Tasmania",
+                  "自駕",
+                  "心得"
+            ],
+            "body": "最後一天就是收心、打包、補買、準備回台灣。旅行結束前最重要的是不要趕，留時間整理照片、心得和重要票券，也把這趟塔斯公路旅行的記憶收好。",
+            "photo": null,
+            "video": null,
+            "updatedAt": 280013
+      }
+]
+    };
+
+    function seedTasmaniaTripPlan(force = false) {
+      const shouldSeed = force || localStorage.getItem('tasmaniaTripSeedVersion') !== TASMANIA_TRIP_SEED_VERSION;
+      if (!shouldSeed) return;
+
+      tripsMaster.tasmania = TASMANIA_TRIP_DATA.trip;
+      itineraries.tasmania = [...TASMANIA_TRIP_DATA.itineraries];
+      checklists.tasmania = [...TASMANIA_TRIP_DATA.checklists];
+      journals.tasmania = [...TASMANIA_TRIP_DATA.journals];
+      if (!budgets.tasmania) budgets.tasmania = [];
+      tripAccess.tasmania = true;
+
+      if (!localStorage.getItem('companion_tasmania')) {
+        localStorage.setItem('companion_tasmania', '中偉, 聖聖');
+      }
+
+      currentTripKey = 'tasmania';
+      localStorage.setItem('activeTripKey', 'tasmania');
+      localStorage.setItem('tasmaniaTripSeedVersion', TASMANIA_TRIP_SEED_VERSION);
+      saveAll();
+    }
+
+
     function setText(id, text) { const el = document.getElementById(id); if (el) el.textContent = text; }
     function setHTML(id, html) { const el = document.getElementById(id); if (el) el.innerHTML = html; }
     function setPH(id, ph) { const el = document.getElementById(id); if (el) el.placeholder = ph; }
@@ -2868,7 +3886,7 @@
       }
     });
 
-    applyLanguage(false); applyTheme(); setupFormPanels(); ensureTripAccessDefaults(); syncActiveTripAccess(); renderSidebar(); initCurrentTripData();
+    applyLanguage(false); applyTheme(); setupFormPanels(); seedTasmaniaTripPlan(); ensureTripAccessDefaults(); syncActiveTripAccess(); renderSidebar(); initCurrentTripData();
   </script>
 </body>
 </html>
