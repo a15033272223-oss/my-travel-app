@@ -1269,6 +1269,46 @@
       background: rgba(252,165,165,.12) !important;
     }
 
+  
+    /* === AUTO SORT + ACCOMMODATION CARD PATCH === */
+    .accommodation-card {
+      background: #fff7ed !important;
+      border-color: #fed7aa !important;
+    }
+
+    .accommodation-card .accommodation-badge {
+      background: #ffffff !important;
+      color: #9a3412 !important;
+      border: 1px solid #fed7aa !important;
+    }
+
+    body.dark-mode .accommodation-card {
+      background: #2b2118 !important;
+      border-color: #7c2d12 !important;
+    }
+
+    body.dark-mode .accommodation-card .accommodation-badge {
+      background: #1f2937 !important;
+      color: #fed7aa !important;
+      border-color: #7c2d12 !important;
+    }
+
+    #toast-message {
+      background: #111827 !important;
+      color: #ffffff !important;
+      border-radius: 999px !important;
+      width: auto !important;
+      max-width: min(88vw, 420px) !important;
+      min-width: 0 !important;
+      padding: .65rem 1rem !important;
+      box-shadow: 0 12px 30px rgba(17,24,39,.22) !important;
+    }
+
+    body.dark-mode #toast-message {
+      background: #f9fafb !important;
+      color: #111827 !important;
+    }
+
   </style>
 </head>
 <body class="flex h-[100dvh] overflow-hidden relative">
@@ -1393,9 +1433,8 @@
           <div class="flex flex-col md:flex-row md:items-center md:justify-between gap-3 mb-4">
             <div>
               <h3 id="itinerary-title" class="font-black text-stone-900 flex items-center">🗓️ 行程列表</h3>
-              <p id="itinerary-hint" class="text-xs text-stone-400 mt-1">拖曳排序、時間防呆、潛水後高空活動提醒都會自動檢查。</p>
+              <p id="itinerary-hint" class="text-xs text-stone-400 mt-1">行程會依日期與時間自動排序，時間防呆與潛水後高空活動提醒會自動檢查。</p>
             </div>
-            <button id="auto-sort-btn" onclick="autoSortItineraryByTime()" class="touch-safe secondary-btn text-xs font-black px-3 py-2 rounded-2xl"><i class="fa-solid fa-arrow-down-short-wide mr-1"></i>按時間自動排序</button>
           </div>
           <div id="itinerary-validation-summary" class="hidden mb-4 rounded-2xl border px-3 py-2 text-xs md:text-sm font-black"></div>
           <div id="itinerary-list" class="space-y-2"></div>
@@ -1712,7 +1751,7 @@
         pageTitle: 'TripManager', langButton: 'EN', tripListTitle: '我的行程清單',
         newTrip: '<i class="fa-solid fa-plus mr-2"></i>建立新旅程', newTripShort: '<i class="fa-solid fa-plus mr-2"></i>新旅程',
         tabs: ['行程', '待辦', '分帳', '心得'], weather: '目的地天氣', loading: '連線中...', sunny: '多雲時晴', rain: '有降雨機率', timeout: '讀取逾時',
-        eventAdd: '新增行程', eventEdit: '編輯行程', add: '加入', save: '儲存更新', cancelEdit: '取消編輯', sort: '<i class="fa-solid fa-arrow-down-short-wide mr-1"></i>按時間自動排序', itineraryTitle: '🗓️ 行程列表', itineraryHint: '拖曳排序、時間防呆、潛水後高空活動提醒都會自動檢查。',
+        eventAdd: '新增行程', eventEdit: '編輯行程', add: '加入', save: '儲存更新', cancelEdit: '取消編輯', itineraryTitle: '🗓️ 行程列表', itineraryHint: '行程會依日期與時間自動排序，時間防呆與潛水後高空活動提醒會自動檢查。',
         checklistTitle: '🎒 行李清單與行前待辦', checklistHint: '完成後會自動移到底部。提醒日可一鍵加入 Google Calendar。', checklistAdd: '新增項目', pending: '未完成事項', completed: '已完成事項', done: '已完成', todo: '未完成', noReminder: '未設定提醒', addCal: '<i class="fa-solid fa-calendar-plus mr-1"></i>加到 Calendar', edit: '<i class="fa-solid fa-pen mr-1"></i>編輯', emptyTodo: '目前還沒有任何待辦事項。', progress: (d,t,p,pc)=>`已完成 ${d} / ${t}，未完成 ${p}`, progressRate: pc=>`完成率 ${pc}%｜勾選後即時置底`,
         budgetTotal: 'Total Spend', settlement: '結算建議', budgetSummary: '成員分帳概況', budgetNew: '💳 記一筆新的', record: '記錄', selectAll: '全選', clear: '清空', splitLabel: '分帳對象', splitHint: '只勾選這筆帳要一起分的人。若都不勾，系統會視為所有旅伴一起分。', allMembers: '所有成員', calculatedByGroup: '依每筆分帳對象計算', noExpense: '無開銷', settled: '兩清', receive: a=>`收 $${a}`, pay: a=>`付 $${a}`, noDebt: '互不相欠！', pays: (a,b)=>`<b>${a}</b> 給 <b>${b}</b>`,
         table: ['成員','代墊','應攤','結算狀態','項目','分帳對象','金額','操作'], status: { none: '無票券', toBook: '待訂', booked: '已訂' },
@@ -1723,7 +1762,7 @@
         pageTitle: 'TripManager', langButton: '中', tripListTitle: 'My Trips',
         newTrip: '<i class="fa-solid fa-plus mr-2"></i>New Trip', newTripShort: '<i class="fa-solid fa-plus mr-2"></i>Trip',
         tabs: ['Itinerary', 'To-dos', 'Split', 'Journal'], weather: 'Destination Weather', loading: 'Loading...', sunny: 'Partly cloudy', rain: 'Chance of rain', timeout: 'Weather timeout',
-        eventAdd: 'Add itinerary item', eventEdit: 'Edit itinerary item', add: 'Add', save: 'Save Changes', cancelEdit: 'Cancel edit', sort: '<i class="fa-solid fa-arrow-down-short-wide mr-1"></i>Sort by time', itineraryTitle: '🗓️ Itinerary', itineraryHint: 'Drag to reorder. Time conflicts and no-fly-after-diving warnings are checked automatically.',
+        eventAdd: 'Add itinerary item', eventEdit: 'Edit itinerary item', add: 'Add', save: 'Save Changes', cancelEdit: 'Cancel edit', itineraryTitle: '🗓️ Itinerary', itineraryHint: 'Time conflicts and no-fly-after-diving warnings are checked automatically.',
         checklistTitle: '🎒 Packing List & To-dos', checklistHint: 'Completed items move to the bottom automatically. Reminders can be added to Google Calendar.', checklistAdd: 'Add item', pending: 'Pending', completed: 'Completed', done: 'Done', todo: 'Pending', noReminder: 'No reminder', addCal: '<i class="fa-solid fa-calendar-plus mr-1"></i>Add to Calendar', edit: '<i class="fa-solid fa-pen mr-1"></i>Edit', emptyTodo: 'No to-do items yet.', progress: (d,t,p,pc)=>`${d} / ${t} completed, ${p} pending`, progressRate: pc=>`${pc}% complete｜Checked items update instantly`,
         budgetTotal: 'Total Spend', settlement: 'Settlement Plan', budgetSummary: 'Member Summary', budgetNew: '💳 Add expense', record: 'Record', selectAll: 'Select all', clear: 'Clear', splitLabel: 'Split with', splitHint: 'Only check the people sharing this expense. If no one is checked, it will split with all trip members.', allMembers: 'All members', calculatedByGroup: 'Calculated by each expense split group', noExpense: 'No expense yet', settled: 'Settled', receive: a=>`Receive $${a}`, pay: a=>`Pay $${a}`, noDebt: 'All settled!', pays: (a,b)=>`<b>${a}</b> pays <b>${b}</b>`,
         table: ['Member','Paid','Share','Status','Item','Split with','Amount','Action'], status: { none: 'No ticket', toBook: 'To book', booked: 'Booked' },
@@ -1749,7 +1788,7 @@
       setText('trip-list-label', T('tripListTitle')); setHTML('sidebar-create-trip-btn', T('newTrip')); setHTML('mobile-create-trip-fab', T('newTripShort')); setText('lang-toggle-label', T('langButton'));
       setText('tab-timeline', T('tabs')[0]); setText('tab-checklist', T('tabs')[1]); setText('tab-budget', T('tabs')[2]); setText('tab-journal', T('tabs')[3]);
       setText('weather-label', T('weather')); setText('form-title', editingEventId ? T('eventEdit') : T('eventAdd')); setText('cancel-edit-btn', T('cancelEdit')); setText('submit-event-btn', editingEventId ? T('save') : T('add'));
-      setText('itinerary-title', T('itineraryTitle')); setText('itinerary-hint', T('itineraryHint')); setHTML('auto-sort-btn', T('sort'));
+      setText('itinerary-title', T('itineraryTitle')); setText('itinerary-hint', T('itineraryHint'));
       setText('checklist-title', T('checklistTitle')); setText('checklist-hint', T('checklistHint')); setText('cancel-checklist-edit-btn', T('cancelEdit')); setText('submit-checklist-btn', editingChecklistId ? T('save') : T('checklistAdd'));
       setText('budget-total-label', T('budgetTotal')); setHTML('budget-settlement-label', `<i class="fa-solid fa-comments-dollar mr-2"></i>${T('settlement')}`); setHTML('budget-summary-label', `<i class="fa-solid fa-users-viewfinder mr-2"></i>${T('budgetSummary')}`); setText('budget-form-title', T('budgetNew')); setText('cancel-budget-edit-btn', T('cancelEdit')); setText('budget-split-label', T('splitLabel')); setText('budget-split-hint', T('splitHint')); setText('budget-select-all-btn', T('selectAll')); setText('budget-clear-btn', T('clear')); setText('submit-budget-btn', editingBudgetId ? T('save') : T('record'));
       setText('journal-title', T('journalTitle')); setText('cancel-journal-edit-btn', T('cancelEdit')); setText('submit-journal-btn', editingJournalId ? T('save') : T('journalSave')); setText('copy-journal-btn', T('journalCopy')); setText('share-journal-btn', T('journalShare')); setText('download-journal-btn', T('journalDownload')); setText('journal-hint', T('journalHint')); setText('journal-photo-label', T('journalPhoto')); setText('journal-video-label', T('journalVideo')); setText('new-trip-modal-title', T('modalTitle')); setText('new-trip-icon-label', T('icon')); setText('new-trip-start-label', T('start')); setText('new-trip-end-label', T('end')); setText('new-trip-cancel-btn', T('cancel')); setText('new-trip-confirm-btn', T('create'));
@@ -1949,6 +1988,7 @@
       if (currentTripKey==='cairns' && !localStorage.getItem(`companion_${currentTripKey}`)) localStorage.setItem(`companion_${currentTripKey}`, '中偉, 聖聖, Ryan');
       document.getElementById('companionInput').value = localStorage.getItem(`companion_${currentTripKey}`) || '我';
       renderBudgetSplitOptions();
+      saveItinerarySorted();
       fetchWeather(trip.lat, trip.lng);
       renderItinerary();
       renderChecklist();
@@ -2284,7 +2324,7 @@
 
     function editEvent(id){const it=(itineraries[currentTripKey]||[]).find(x=>x.id===id); if(!it)return; editingEventId=id; ['day','time','type','status','title','note'].forEach(k=>{const el=document.getElementById(`event-${k}`); if(el) el.value=it[k]||'';}); applyLanguage(); document.getElementById('cancel-edit-btn').classList.remove('hidden'); openFormModal('event');}
     function cancelEdit(){editingEventId=null; ['event-day','event-time','event-title','event-note'].forEach(id=>document.getElementById(id).value=''); document.getElementById('event-type').value='general'; document.getElementById('event-status').value='none'; document.getElementById('cancel-edit-btn').classList.add('hidden'); applyLanguage(); checkLiveWarning(); closeFormModal();}
-    function submitEvent(){const title=document.getElementById('event-title').value.trim(); if(!title)return alert(currentLang==='zh'?'請填寫行程名稱':'Please enter a title.'); const item={id:editingEventId||Date.now(),day:document.getElementById('event-day').value,time:document.getElementById('event-time').value,type:document.getElementById('event-type').value,status:document.getElementById('event-status').value,title,note:document.getElementById('event-note').value.trim()}; if(item.day){const p=parseTripDate(item.day,item.time||'00:00'); if(!p.valid)return alert(p.reason);} if(!itineraries[currentTripKey]) itineraries[currentTripKey]=[]; if(editingEventId){const i=itineraries[currentTripKey].findIndex(x=>x.id===editingEventId); if(i>-1) itineraries[currentTripKey][i]=item;} else itineraries[currentTripKey].push(item); saveAll(); cancelEdit(); renderItinerary();}
+    function submitEvent(){const title=document.getElementById('event-title').value.trim(); if(!title)return alert(currentLang==='zh'?'請填寫行程名稱':'Please enter a title.'); const item={id:editingEventId||Date.now(),day:document.getElementById('event-day').value,time:document.getElementById('event-time').value,type:document.getElementById('event-type').value,status:document.getElementById('event-status').value,title,note:document.getElementById('event-note').value.trim()}; if(item.day){const p=parseTripDate(item.day,item.time||'00:00'); if(!p.valid)return alert(p.reason);} if(!itineraries[currentTripKey]) itineraries[currentTripKey]=[]; if(editingEventId){const i=itineraries[currentTripKey].findIndex(x=>x.id===editingEventId); if(i>-1) itineraries[currentTripKey][i]=item;} else itineraries[currentTripKey].push(item); saveItinerarySorted(); cancelEdit(); renderItinerary();}
     function validateItinerary(){const arr=itineraries[currentTripKey]||[], issues=[]; const parsed=arr.map((e,i)=>({e,i,p:parseTripDate(e.day,e.time||'00:00')})); parsed.forEach(x=>{if(!x.p.valid) issues.push({id:x.e.id,severity:'error',message:x.p.reason}); else if(!x.p.withinTrip) issues.push({id:x.e.id,severity:'warn',message:currentLang==='zh'?'日期可能不在旅程期間內':'Date may be outside this trip.'});}); for(let i=1;i<parsed.length;i++){if(parsed[i-1].p.valid&&parsed[i].p.valid&&parsed[i].p.date<parsed[i-1].p.date) issues.push({id:parsed[i].e.id,severity:'danger',message:currentLang==='zh'?'順序錯亂：這筆時間早於上一筆行程。':'Order conflict: this item is earlier than the previous item.'});}
       let lastDive=null; parsed.forEach(x=>{if(!x.p.valid)return; if(x.e.type==='dive')lastDive=x.p.date; if(['flight','altitude'].includes(x.e.type)&&lastDive){const h=(x.p.date-lastDive)/36e5; if(h>=0&&h<24) issues.push({id:x.e.id,severity:'danger',message:currentLang==='zh'?`排氮警告：距離上次潛水僅 ${h.toFixed(1)} 小時。`:`No-fly warning: only ${h.toFixed(1)} hours after diving.`});}}); return issues;}
     function renderValidationSummary(issues){const box=document.getElementById('itinerary-validation-summary'); if(!issues.length){box.className='hidden mb-4 rounded-2xl border px-3 py-2 text-xs md:text-sm font-black'; box.innerHTML=''; return;} const danger=issues.some(i=>i.severity==='danger'||i.severity==='error'); box.className=`mb-4 rounded-2xl border px-3 py-2 text-xs md:text-sm font-black ${danger?'nitrogen-blink':'bg-amber-50 border-amber-200 text-amber-700'}`; const title=currentLang==='zh'?`偵測到 ${issues.length} 個行程提醒`:`${issues.length} itinerary alert${issues.length>1?'s':''} found`; box.innerHTML=`<div class="flex items-start"><i class="fa-solid fa-triangle-exclamation mt-0.5 mr-2"></i><div><p>${title}</p><ul class="list-disc ml-4 mt-1 space-y-0.5">${issues.slice(0,3).map(i=>`<li>${escapeHTML(i.message)}</li>`).join('')}</ul></div></div>`;}
@@ -2382,10 +2422,30 @@
       URL.revokeObjectURL(url);
     }
 
+
+    function itinerarySortValue(item) {
+      const parsed = parseTripDate(item.day, item.time || '00:00');
+      return parsed.valid ? parsed.date.getTime() : Number.MAX_SAFE_INTEGER;
+    }
+
+    function getSortedItineraryItems() {
+      return [...(itineraries[currentTripKey] || [])].sort((a, b) => {
+        const diff = itinerarySortValue(a) - itinerarySortValue(b);
+        if (diff !== 0) return diff;
+        return (a.id || 0) - (b.id || 0);
+      });
+    }
+
+    function saveItinerarySorted() {
+      itineraries[currentTripKey] = getSortedItineraryItems();
+      saveAll();
+    }
+
+
     function renderItinerary(){
       const list=document.getElementById('itinerary-list');
       list.innerHTML='';
-      const arr=itineraries[currentTripKey]||[];
+      const arr=getSortedItineraryItems();
       const issues=validateItinerary();
       renderValidationSummary(issues);
 
@@ -2401,15 +2461,15 @@
         const warns=its.map(i=>`<div class="mt-2 ${i.severity==='danger'||i.severity==='error'?'nitrogen-blink':'bg-amber-100 text-amber-800'} text-[11px] font-black px-2 py-1 rounded-xl">⚠️ ${escapeHTML(i.message)}</div>`).join('');
         const noteHTML=item.note?`<p class="event-card-note text-xs mt-2 px-2 py-1 rounded-xl inline-block">${escapeHTML(item.note)}</p>`:'';
         list.innerHTML+=`
-          <div data-id="${item.id}" class="soft-card p-4 group">
+          <div data-id="${item.id}" class="soft-card p-4 group ${item.type==='accommodation'?'accommodation-card':''}">
             <div class="flex justify-between gap-3">
               <div class="min-w-0 flex-1">
                 <div class="flex flex-wrap items-center gap-2">
-                  <button class="drag-handle text-stone-400 hover:text-stone-900"><i class="fa-solid fa-grip-vertical"></i></button>
                   <span class="pill pill-green">${formatShortDate(item.day)}</span>
                   <span class="text-xs font-black text-stone-500">${item.time||'--:--'}</span>
                   ${getEventWeatherHTML(item.day)}
                   ${status}
+                  ${item.type==='accommodation'?`<span class="pill accommodation-badge">住宿</span>`:''}
                 </div>
                 <p class="font-black text-stone-900 text-base md:text-lg mt-2">${icon} ${escapeHTML(item.title)}</p>
                 ${noteHTML}
@@ -2426,10 +2486,10 @@
       });
     }
     function addEventToGoogleCalendar(id){const item=(itineraries[currentTripKey]||[]).find(x=>x.id===id); if(!item)return; const p=parseTripDate(item.day,item.time||'09:00'); if(!p.valid)return alert(p.reason); window.open(calendarUrl(item.title,p.date,item.type==='dining'?90:60,item.note||''),'_blank','noopener,noreferrer');}
-    function deleteEvent(id){if(confirm(currentLang==='zh'?'確定刪除這個行程嗎？':'Delete this itinerary item?')){itineraries[currentTripKey]=itineraries[currentTripKey].filter(x=>x.id!==id); saveAll(); renderItinerary();}}
-    function autoSortItineraryByTime(){itineraries[currentTripKey]=(itineraries[currentTripKey]||[]).sort((a,b)=>{const pa=parseTripDate(a.day,a.time||'00:00'), pb=parseTripDate(b.day,b.time||'00:00'); return (pa.valid?pa.date:Infinity)-(pb.valid?pb.date:Infinity);}); saveAll(); renderItinerary(); showToast(currentLang==='zh'?'已依照日期時間重新排序。':'Sorted by date and time.');}
+    function deleteEvent(id){if(confirm(currentLang==='zh'?'確定刪除這個行程嗎？':'Delete this itinerary item?')){itineraries[currentTripKey]=itineraries[currentTripKey].filter(x=>x.id!==id); saveItinerarySorted(); renderItinerary();}}
+    function autoSortItineraryByTime(){ saveItinerarySorted(); renderItinerary(); }
 
-    new Sortable(document.getElementById('itinerary-list'), { animation:150, handle:'.drag-handle', delay:120, delayOnTouchOnly:true, onEnd(evt){const arr=itineraries[currentTripKey]; arr.splice(evt.newIndex,0,arr.splice(evt.oldIndex,1)[0]); saveAll(); renderItinerary(); if(validateItinerary().length) showToast(currentLang==='zh'?'拖曳後偵測到時間提醒。':'Alerts found after reordering.');} });
+    // Auto-sorted by date/time; manual drag sorting disabled to avoid conflicts.
 
     function getChecklistTime(item){if(!item.dueDay)return Infinity; const p=parseTripDate(item.dueDay,item.dueTime||'09:00'); return p.valid?p.date.getTime():Infinity;}
     function sortChecklist(){if(!checklists[currentTripKey])checklists[currentTripKey]=[]; checklists[currentTripKey].forEach((x,i)=>{if(!x.id)x.id=Date.now()+i;if(!x.createdAt)x.createdAt=x.id;}); checklists[currentTripKey].sort((a,b)=>a.checked!==b.checked?(a.checked?1:-1):(!a.checked?getChecklistTime(a)-getChecklistTime(b):(b.completedAt||0)-(a.completedAt||0))); saveAll(); return checklists[currentTripKey];}
