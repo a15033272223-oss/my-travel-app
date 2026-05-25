@@ -1673,6 +1673,19 @@
       border-color: #374151 !important;
     }
 
+  
+    /* === NOTES FRIENDLY SHARE PATCH === */
+    .notes-share-note {
+      font-size: 11px;
+      line-height: 1.45;
+      color: #6b7280;
+      margin-top: .55rem;
+    }
+
+    body.dark-mode .notes-share-note {
+      color: #d1d5db !important;
+    }
+
   </style>
 </head>
 <body class="flex h-[100dvh] overflow-hidden relative">
@@ -2022,8 +2035,9 @@
       <div class="modal-sticky-actions flex flex-wrap gap-2 mt-4">
         <button onclick="saveEventJournalFromModal(true)" class="primary-btn px-4 py-2 rounded-full text-xs font-black">儲存</button>
         <button onclick="copyEventJournalFromModal()" class="secondary-btn px-4 py-2 rounded-full text-xs font-black">複製 Notes</button>
-        <button onclick="shareEventJournalFromModal()" class="secondary-btn px-4 py-2 rounded-full text-xs font-black">分享</button>
+        <button onclick="shareEventJournalFromModal()" class="secondary-btn px-4 py-2 rounded-full text-xs font-black">分享到 Notes</button>
         <button onclick="downloadEventJournalFromModal()" class="bg-white border border-[#eeeeee] px-4 py-2 rounded-full text-xs font-black text-stone-800">下載 TXT</button>
+        <p class="notes-share-note w-full">分享到 Notes 時會同時附上：文字檔、HTML 圖文檔、相片與影片連結，避免 Notes 只吃相片。</p>
       </div>
     </div>
   </div>
@@ -3982,9 +3996,58 @@
       return new File([text || ''], filename, { type: 'text/plain;charset=utf-8' });
     }
 
-    function buildJournalShareFiles(entries) {
+    function escapeForHtmlDoc(value) {
+      return String(value || '')
+        .replace(/&/g, '&amp;')
+        .replace(/</g, '&lt;')
+        .replace(/>/g, '&gt;')
+        .replace(/"/g, '&quot;');
+    }
+
+    function journalHtmlDocument(entries, title = 'Trip Journal') {
+      const safeEntries = (entries || []).filter(Boolean);
+      const body = safeEntries.map(entry => {
+        const stars = '★'.repeat(Number(entry.rating || 0));
+        const photoHtml = entry.photo ? `<img src="${entry.photo}" style="max-width:100%;border-radius:14px;margin:12px 0;border:1px solid #ddd;">` : '';
+        const videoHtml = entry.videoLink ? `<p><strong>Video link:</strong> <a href="${escapeForHtmlDoc(entry.videoLink)}">${escapeForHtmlDoc(entry.videoLink)}</a></p>` : '';
+        return `
+          <section style="margin:0 0 28px;padding:18px;border:1px solid #e5e7eb;border-radius:18px;">
+            <h2 style="margin:0 0 8px;font-size:20px;">${escapeForHtmlDoc(entry.title || '')}</h2>
+            <p style="margin:0 0 8px;color:#666;">${escapeForHtmlDoc(entry.date || '-')}　${stars}</p>
+            <p style="white-space:pre-wrap;line-height:1.7;">${escapeForHtmlDoc(entry.body || '')}</p>
+            ${photoHtml}
+            ${videoHtml}
+          </section>`;
+      }).join('\n');
+
+      return `<!doctype html>
+<html lang="zh-Hant">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>${escapeForHtmlDoc(title)}</title>
+</head>
+<body style="font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;padding:20px;max-width:760px;margin:auto;color:#111827;">
+<h1>${escapeForHtmlDoc(title)}</h1>
+${body || '<p>No journal entries.</p>'}
+</body>
+</html>`;
+    }
+
+    function htmlToFile(htmlText, filename = 'journal.html') {
+      return new File([htmlText || ''], filename, { type: 'text/html;charset=utf-8' });
+    }
+
+    function buildJournalShareFiles(entries, text = '', title = 'Trip Journal') {
       const files = [];
       const safeEntries = (entries || []).filter(Boolean);
+      const base = safeFilename(title);
+
+      // 重要：Notes 有時會忽略 share(text)；所以把文字也做成檔案，並另做一個 HTML 圖文檔。
+      if (text && text.trim()) {
+        files.push(textToFile(text, `${base}_文字心得.txt`));
+        files.push(htmlToFile(journalHtmlDocument(safeEntries, title), `${base}_圖文心得.html`));
+      }
 
       safeEntries.forEach((entry, idx) => {
         if (entry.photo) {
@@ -3992,14 +4055,14 @@
           if (file) files.push(file);
         }
 
-        // 舊版若曾把影片直接存成 data:video，也盡量一起分享；新版影片主要用連結並寫入分享文字。
+        // 舊版若曾把影片直接存成 data:video，也盡量一起分享；新版影片主要用連結並寫入 TXT / HTML。
         if (entry.video && String(entry.video).startsWith('data:video/')) {
           const file = dataUrlToFile(entry.video, `journal-video-${idx + 1}`);
           if (file) files.push(file);
         }
       });
 
-      // Web Share 在不同平台有檔案數量 / 大小限制，避免一次太多導致整次失敗。
+      // 保留：文字檔 + HTML 檔 + 最多 6 個媒體，避免 canShare 因太多檔案失敗。
       return files.slice(0, 8);
     }
 
@@ -4015,7 +4078,7 @@
     }
 
     async function shareWithMedia({ title, text, entries }) {
-      const files = buildJournalShareFiles(entries);
+      const files = buildJournalShareFiles(entries, text, title);
       const hasNativeShare = !!navigator.share;
 
       if (!text || !text.trim()) {
@@ -4023,7 +4086,6 @@
         return;
       }
 
-      // 本機 file:// 測試時，Chrome / Safari 對 Web Share 支援常不穩；上傳到 GitHub Pages HTTPS 後會比較正常。
       const isLocalFile = location.protocol === 'file:';
 
       if (!hasNativeShare) {
@@ -4031,37 +4093,34 @@
         return;
       }
 
-      const mediaPayload = { title, text, files };
+      const payloadWithFiles = { title, text, files };
 
       try {
-        // 優先嘗試：文字 + 相片 / 舊版影片檔一起分享。影片連結已包含在 text 裡。
-        if (files.length && navigator.canShare && navigator.canShare(mediaPayload)) {
-          await navigator.share(mediaPayload);
+        // 優先分享 TXT + HTML + 相片/舊版影片。這樣 Notes 就算忽略 text，也還會有文字檔與圖文檔。
+        if (files.length && navigator.canShare && navigator.canShare(payloadWithFiles)) {
+          await navigator.share(payloadWithFiles);
+          showToast(currentLang === 'zh'
+            ? '已送出分享。若 Notes 只顯示相片，請查看同時附上的文字心得或圖文心得檔。'
+            : 'Shared. If Notes only shows photos, check the attached text or HTML journal file.');
           return;
         }
 
-        // 若裝置不支援帶檔分享，就至少用原生分享送出文字與影片連結。
+        // 不支援帶檔時，至少分享文字與影片連結。
         await navigator.share({ title, text });
-        if (files.length) {
-          showToast(currentLang === 'zh'
-            ? '此裝置不支援附加相片檔分享，已分享文字與影片連結。'
-            : 'This device cannot attach photo files here, so text and video links were shared.');
-        }
-        return;
+        showToast(currentLang === 'zh'
+          ? '此裝置不支援附檔分享，已分享文字與影片連結。'
+          : 'This device cannot attach files here, so text and video links were shared.');
       } catch (e) {
-        // 使用者按取消，不要誤判成失敗，也不要自動複製文字。
         if (e && e.name === 'AbortError') {
           showToast(currentLang === 'zh' ? '分享已取消。' : 'Sharing cancelled.');
           return;
         }
 
-        // 帶媒體分享失敗時，再試一次「純文字 + 影片連結」原生分享，而不是直接改複製。
         try {
           await navigator.share({ title, text });
           showToast(currentLang === 'zh'
-            ? '媒體附檔分享失敗，已改用原生分享文字與影片連結。'
-            : 'Media attachment sharing failed, so text and video links were shared instead.');
-          return;
+            ? '附檔分享失敗，已改用原生分享文字與影片連結。'
+            : 'File sharing failed, so text and video links were shared instead.');
         } catch (e2) {
           if (e2 && e2.name === 'AbortError') {
             showToast(currentLang === 'zh' ? '分享已取消。' : 'Sharing cancelled.');
