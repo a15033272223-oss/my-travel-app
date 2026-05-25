@@ -1715,6 +1715,93 @@
       border-color: #374151 !important;
     }
 
+  
+    /* === COLLAPSIBLE ITINERARY DAY GROUPS === */
+    .itinerary-day-group {
+      border: 1px solid #eeeeee;
+      border-radius: 24px;
+      background: rgba(255,255,255,.72);
+      overflow: hidden;
+      box-shadow: 0 12px 28px rgba(15,23,42,.04);
+    }
+
+    .itinerary-day-header {
+      width: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: .75rem;
+      padding: .9rem 1rem;
+      text-align: left;
+      font-weight: 950;
+      color: #111827;
+      background: rgba(247,247,248,.86);
+      border-bottom: 1px solid transparent;
+      transition: background-color .15s ease, border-color .15s ease;
+    }
+
+    .itinerary-day-header:hover,
+    .itinerary-day-header:focus-visible {
+      background: #fff7ed;
+      border-color: #fed7aa;
+      outline: none;
+    }
+
+    .itinerary-day-content {
+      padding: .75rem;
+      display: flex;
+      flex-direction: column;
+      gap: .6rem;
+    }
+
+    .itinerary-day-chevron {
+      transition: transform .18s ease;
+      color: #64748b;
+      flex-shrink: 0;
+    }
+
+    .itinerary-day-chevron.open {
+      transform: rotate(180deg);
+    }
+
+    .itinerary-count-pill {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-width: 1.65rem;
+      height: 1.65rem;
+      padding: 0 .55rem;
+      border-radius: 999px;
+      background: #ffffff;
+      border: 1px solid #e5e7eb;
+      color: #475569;
+      font-size: 11px;
+      font-weight: 950;
+      flex-shrink: 0;
+    }
+
+    body.dark-mode .itinerary-day-group {
+      background: rgba(17,24,39,.72) !important;
+      border-color: #374151 !important;
+    }
+
+    body.dark-mode .itinerary-day-header {
+      background: rgba(31,41,55,.86) !important;
+      color: #f9fafb !important;
+    }
+
+    body.dark-mode .itinerary-day-header:hover,
+    body.dark-mode .itinerary-day-header:focus-visible {
+      background: rgba(55,65,81,.92) !important;
+      border-color: #4b5563 !important;
+    }
+
+    body.dark-mode .itinerary-count-pill {
+      background: #111827 !important;
+      color: #f9fafb !important;
+      border-color: #374151 !important;
+    }
+
   </style>
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 </head>
@@ -2120,6 +2207,7 @@
     let currentEventJournalId = null;
     let journalActionTarget = { scope: null, id: null };
     let editingMemberIndex = null;
+    let itineraryDayOpenState = JSON.parse(localStorage.getItem('itineraryDayOpenV1')) || {};
 
     let tripsMaster = JSON.parse(localStorage.getItem('tripsMasterV6')) || {
       cairns: { name: '凱恩斯海陸空大冒險', dates: '2026/06/28 - 2026/07/13', lat: -16.9203, lng: 145.7710, emoji: '🤿', icon: 'fa-anchor' },
@@ -2326,21 +2414,49 @@
       setSyncStatus('☁️ 已同步', 'online');
     }
 
+
+    function normalizeSupabaseProjectUrl(rawUrl) {
+      let url = String(rawUrl || '').trim();
+
+      // If user accidentally pasted the REST/Auth/Storage endpoint, convert it back to project root.
+      url = url.replace(/\/+$/, '');
+      url = url.replace(/\/rest\/v1$/i, '');
+      url = url.replace(/\/auth\/v1$/i, '');
+      url = url.replace(/\/storage\/v1$/i, '');
+      url = url.replace(/\/functions\/v1$/i, '');
+
+      return url;
+    }
+
+    function explainSupabaseUrlProblem() {
+      return currentLang === 'zh'
+        ? 'SUPABASE_URL 請只填 https://xxxx.supabase.co，不要包含 /rest/v1、/auth/v1、SQL 連線字串或 Dashboard 網址。'
+        : 'SUPABASE_URL must be only https://xxxx.supabase.co. Do not include /rest/v1, /auth/v1, SQL connection strings, or dashboard URLs.';
+    }
+
+
     function hasSupabaseConfig() {
-      return SUPABASE_URL.startsWith('http') &&
-        !SUPABASE_URL.includes('PASTE_YOUR_SUPABASE_URL') &&
-        SUPABASE_ANON_KEY.length > 30 &&
+      const normalizedUrl = normalizeSupabaseProjectUrl(SUPABASE_URL);
+      const looksLikeProjectUrl = /^https:\/\/[a-z0-9-]+\.supabase\.co$/i.test(normalizedUrl);
+      return looksLikeProjectUrl &&
+        !normalizedUrl.includes('PASTE_YOUR_SUPABASE_URL') &&
+        SUPABASE_ANON_KEY.trim().length > 30 &&
         !SUPABASE_ANON_KEY.includes('PASTE_YOUR_SUPABASE_ANON_KEY');
     }
 
     async function initSupabaseSync() {
       if (!hasSupabaseConfig()) {
-        setSyncStatus('☁️ 本機模式：尚未設定 Supabase', 'offline');
+        setSyncStatus('☁️ 本機模式：尚未設定 Supabase。' + explainSupabaseUrlProblem(), 'offline');
         return;
       }
 
       try {
-        supabaseClient = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+        const normalizedUrl = normalizeSupabaseProjectUrl(SUPABASE_URL);
+        if (!/^https:\/\/[a-z0-9-]+\.supabase\.co$/i.test(normalizedUrl)) {
+          setSyncStatus('☁️ URL 格式錯誤：' + explainSupabaseUrlProblem(), 'error');
+          return;
+        }
+        supabaseClient = window.supabase.createClient(normalizedUrl, SUPABASE_ANON_KEY.trim());
         setSyncStatus('☁️ 連線中...', 'syncing');
 
         const { data, error } = await supabaseClient
@@ -3962,7 +4078,7 @@
 
     function editEvent(id){const it=(itineraries[currentTripKey]||[]).find(x=>x.id===id); if(!it)return; editingEventId=id; ['day','time','type','status','title','note'].forEach(k=>{const el=document.getElementById(`event-${k}`); if(el) el.value=it[k]||'';}); applyLanguage(); document.getElementById('cancel-edit-btn').classList.remove('hidden'); openFormModal('event');}
     function cancelEdit(){editingEventId=null; ['event-day','event-time','event-title','event-note'].forEach(id=>document.getElementById(id).value=''); document.getElementById('event-type').value='general'; document.getElementById('event-status').value='none'; document.getElementById('cancel-edit-btn').classList.add('hidden'); applyLanguage(); checkLiveWarning(); closeFormModal();}
-    function submitEvent(){const title=document.getElementById('event-title').value.trim(); if(!title)return alert(currentLang==='zh'?'請填寫行程名稱':'Please enter a title.'); const item={id:editingEventId||Date.now(),day:document.getElementById('event-day').value,time:document.getElementById('event-time').value,type:document.getElementById('event-type').value,status:document.getElementById('event-status').value,title,note:document.getElementById('event-note').value.trim()}; if(item.day){const p=parseTripDate(item.day,item.time||'00:00'); if(!p.valid)return alert(p.reason);} if(!itineraries[currentTripKey]) itineraries[currentTripKey]=[]; if(editingEventId){const i=itineraries[currentTripKey].findIndex(x=>x.id===editingEventId); if(i>-1) itineraries[currentTripKey][i]=item;} else itineraries[currentTripKey].push(item); saveItinerarySorted(); cancelEdit(); renderItinerary();}
+    function submitEvent(){const title=document.getElementById('event-title').value.trim(); if(!title)return alert(currentLang==='zh'?'請填寫行程名稱':'Please enter a title.'); const item={id:editingEventId||Date.now(),day:document.getElementById('event-day').value,time:document.getElementById('event-time').value,type:document.getElementById('event-type').value,status:document.getElementById('event-status').value,title,note:document.getElementById('event-note').value.trim()}; if(item.day){const p=parseTripDate(item.day,item.time||'00:00'); if(!p.valid)return alert(p.reason);} if(!itineraries[currentTripKey]) itineraries[currentTripKey]=[]; if(editingEventId){const i=itineraries[currentTripKey].findIndex(x=>x.id===editingEventId); if(i>-1) itineraries[currentTripKey][i]=item;} else itineraries[currentTripKey].push(item); openItineraryDay(item.day); saveItinerarySorted(); cancelEdit(); renderItinerary();}
     function validateItinerary(){const arr=itineraries[currentTripKey]||[], issues=[]; const parsed=arr.map((e,i)=>({e,i,p:parseTripDate(e.day,e.time||'00:00')})); parsed.forEach(x=>{if(!x.p.valid) issues.push({id:x.e.id,severity:'error',message:x.p.reason}); else if(!x.p.withinTrip) issues.push({id:x.e.id,severity:'warn',message:currentLang==='zh'?'日期可能不在旅程期間內':'Date may be outside this trip.'});}); for(let i=1;i<parsed.length;i++){if(parsed[i-1].p.valid&&parsed[i].p.valid&&parsed[i].p.date<parsed[i-1].p.date) issues.push({id:parsed[i].e.id,severity:'danger',message:currentLang==='zh'?'順序錯亂：這筆時間早於上一筆行程。':'Order conflict: this item is earlier than the previous item.'});}
       let lastDive=null; parsed.forEach(x=>{if(!x.p.valid)return; if(x.e.type==='dive')lastDive=x.p.date; if(['flight','altitude'].includes(x.e.type)&&lastDive){const h=(x.p.date-lastDive)/36e5; if(h>=0&&h<24) issues.push({id:x.e.id,severity:'danger',message:currentLang==='zh'?`排氮警告：距離上次潛水僅 ${h.toFixed(1)} 小時。`:`No-fly warning: only ${h.toFixed(1)} hours after diving.`});}}); return issues;}
     function renderValidationSummary(issues){const box=document.getElementById('itinerary-validation-summary'); if(!issues.length){box.className='hidden mb-4 rounded-2xl border px-3 py-2 text-xs md:text-sm font-black'; box.innerHTML=''; return;} const danger=issues.some(i=>i.severity==='danger'||i.severity==='error'); box.className=`mb-4 rounded-2xl border px-3 py-2 text-xs md:text-sm font-black ${danger?'nitrogen-blink':'bg-amber-50 border-amber-200 text-amber-700'}`; const title=currentLang==='zh'?`偵測到 ${issues.length} 個行程提醒`:`${issues.length} itinerary alert${issues.length>1?'s':''} found`; box.innerHTML=`<div class="flex items-start"><i class="fa-solid fa-triangle-exclamation mt-0.5 mr-2"></i><div><p>${title}</p><ul class="list-disc ml-4 mt-1 space-y-0.5">${issues.slice(0,3).map(i=>`<li>${escapeHTML(i.message)}</li>`).join('')}</ul></div></div>`;}
@@ -4247,6 +4363,45 @@ ${entry?.body || ''}`;
     }
 
 
+
+    function itineraryDayStateKey(day) {
+      return `${currentTripKey || 'trip'}__${day}`;
+    }
+
+    function isItineraryDayOpen(day, defaultOpen = false) {
+      const key = itineraryDayStateKey(day);
+      if (Object.prototype.hasOwnProperty.call(itineraryDayOpenState, key)) {
+        return !!itineraryDayOpenState[key];
+      }
+      return defaultOpen;
+    }
+
+    function setItineraryDayOpen(day, open) {
+      itineraryDayOpenState[itineraryDayStateKey(day)] = !!open;
+      localStorage.setItem('itineraryDayOpenV1', JSON.stringify(itineraryDayOpenState));
+    }
+
+    function toggleItineraryDay(day) {
+      setItineraryDayOpen(day, !isItineraryDayOpen(day, false));
+      renderItinerary();
+    }
+
+    function openItineraryDay(day) {
+      if (!day) return;
+      setItineraryDayOpen(day, true);
+    }
+
+    function formatItineraryDayHeader(day) {
+      if (!day) return currentLang === 'zh' ? '未設定日期' : 'No date';
+      const d = new Date(`${day}T00:00:00`);
+      if (Number.isNaN(d.getTime())) return day;
+      if (currentLang === 'zh') {
+        return d.toLocaleDateString('zh-TW', { month: '2-digit', day: '2-digit', weekday: 'long' });
+      }
+      return d.toLocaleDateString('en-AU', { month: 'short', day: 'numeric', weekday: 'long' });
+    }
+
+
     function renderItinerary(){
       const list=document.getElementById('itinerary-list');
       list.innerHTML='';
@@ -4259,18 +4414,30 @@ ${entry?.body || ''}`;
         return;
       }
 
-      arr.forEach(item=>{
+      const grouped = arr.reduce((acc, item) => {
+        const day = item.day || 'no-date';
+        if (!acc[day]) acc[day] = [];
+        acc[day].push(item);
+        return acc;
+      }, {});
+
+      const dayKeys = Object.keys(grouped).sort((a,b) => {
+        if (a === 'no-date') return 1;
+        if (b === 'no-date') return -1;
+        return String(a).localeCompare(String(b));
+      });
+
+      const itemCardHTML = (item) => {
         const its=issues.filter(i=>i.id===item.id);
         const icon={dive:'🤿',altitude:'🚁',flight:'✈️',accommodation:'⛺️',dining:'🍽️'}[item.type]||'📍';
         const status=item.status==='to-book'?`<span class="pill pill-red">${T('status.toBook')}</span>`:item.status==='booked'?`<span class="pill pill-green">${T('status.booked')}</span>`:'';
         const warns=its.map(i=>`<div class="mt-2 ${i.severity==='danger'||i.severity==='error'?'nitrogen-blink':'bg-amber-100 text-amber-800'} text-[11px] font-black px-2 py-1 rounded-xl">⚠️ ${escapeHTML(i.message)}</div>`).join('');
         const noteHTML=item.note?`<p class="event-card-note text-xs mt-2 px-2 py-1 rounded-xl inline-block">${escapeHTML(item.note)}</p>`:'';
-        list.innerHTML+=`
+        return `
           <div data-id="${item.id}" class="soft-card p-4 group ${item.type==='accommodation'?'accommodation-card':''}">
             <div class="flex justify-between gap-3">
               <div class="min-w-0 flex-1">
                 <div class="flex flex-wrap items-center gap-2">
-                  <span class="pill pill-green">${formatShortDate(item.day)}</span>
                   <span class="text-xs font-black text-stone-500">${item.time||'--:--'}</span>
                   ${getEventWeatherHTML(item.day)}
                   ${status}
@@ -4288,7 +4455,38 @@ ${entry?.body || ''}`;
             </div>
             ${renderEventJournalPanel(item)}
           </div>`;
-      });
+      };
+
+      list.innerHTML = dayKeys.map((day, index) => {
+        const items = grouped[day];
+        const defaultOpen = index === 0;
+        const open = isItineraryDayOpen(day, defaultOpen);
+        const dayIssues = issues.filter(issue => items.some(item => item.id === issue.id));
+        const issueBadge = dayIssues.length ? `<span class="pill pill-red">⚠️ ${dayIssues.length}</span>` : '';
+        const label = day === 'no-date'
+          ? (currentLang === 'zh' ? '未設定日期' : 'No date')
+          : formatItineraryDayHeader(day);
+        return `
+          <section class="itinerary-day-group">
+            <button type="button" class="itinerary-day-header" onclick="toggleItineraryDay('${day}')" aria-expanded="${open ? 'true' : 'false'}">
+              <div class="min-w-0 flex items-center gap-2">
+                <span class="text-lg">📅</span>
+                <div class="min-w-0">
+                  <div class="truncate">${escapeHTML(label)}</div>
+                  <div class="text-[11px] text-stone-400 font-black mt-0.5">${currentLang==='zh' ? '點擊展開 / 收合' : 'Tap to expand / collapse'}</div>
+                </div>
+              </div>
+              <div class="flex items-center gap-2">
+                ${issueBadge}
+                <span class="itinerary-count-pill">${items.length}</span>
+                <i class="fa-solid fa-chevron-down itinerary-day-chevron ${open ? 'open' : ''}"></i>
+              </div>
+            </button>
+            <div class="itinerary-day-content ${open ? '' : 'hidden'}">
+              ${items.map(itemCardHTML).join('')}
+            </div>
+          </section>`;
+      }).join('');
     }
     function addEventToGoogleCalendar(id){const item=(itineraries[currentTripKey]||[]).find(x=>x.id===id); if(!item)return; const p=parseTripDate(item.day,item.time||'09:00'); if(!p.valid)return alert(p.reason); window.open(calendarUrl(item.title,p.date,item.type==='dining'?90:60,item.note||''),'_blank','noopener,noreferrer');}
     function deleteEvent(id){if(confirm(currentLang==='zh'?'確定刪除這個行程嗎？':'Delete this itinerary item?')){itineraries[currentTripKey]=itineraries[currentTripKey].filter(x=>x.id!==id); saveItinerarySorted(); renderItinerary();}}
