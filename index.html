@@ -1309,6 +1309,370 @@
       color: #111827 !important;
     }
 
+  
+    /* === SAFE MEDIA STORAGE PATCH === */
+    .media-storage-note {
+      font-size: 12px;
+      line-height: 1.45;
+      color: #6b7280;
+      background: #f7f7f8;
+      border: 1px solid #eeeeee;
+      border-radius: 14px;
+      padding: .65rem .75rem;
+      margin-top: .75rem;
+    }
+
+    .video-link-preview {
+      display: inline-flex;
+      align-items: center;
+      gap: .35rem;
+      padding: .55rem .8rem;
+      border-radius: 999px;
+      border: 1px solid #e5e7eb;
+      background: #ffffff;
+      color: #111827;
+      font-size: 12px;
+      font-weight: 900;
+      text-decoration: none;
+    }
+
+    body.dark-mode .media-storage-note {
+      background: #1f2937 !important;
+      color: #d1d5db !important;
+      border-color: #374151 !important;
+    }
+
+    body.dark-mode .video-link-preview {
+      background: #111827 !important;
+      color: #f9fafb !important;
+      border-color: #374151 !important;
+    }
+
+  
+    /* === VISIBLE JOURNAL MEDIA PREVIEW PATCH === */
+    .journal-visible-preview {
+      margin-top: .85rem;
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: .65rem;
+    }
+
+    @media (min-width: 768px) {
+      .journal-visible-preview {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+      }
+    }
+
+    .journal-visible-photo,
+    .journal-visible-video,
+    .journal-visible-link {
+      width: 100%;
+      border-radius: 16px;
+      border: 1px solid #e5e7eb;
+      background: #ffffff;
+      overflow: hidden;
+    }
+
+    .journal-visible-photo,
+    .journal-visible-video {
+      max-height: 260px;
+      object-fit: cover;
+    }
+
+    .journal-visible-link {
+      min-height: 72px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: .5rem;
+      padding: .9rem;
+      color: #111827;
+      font-size: 13px;
+      font-weight: 900;
+      text-decoration: none;
+    }
+
+    .journal-card-mini-body {
+      margin-top: .65rem;
+      padding: .75rem .9rem;
+      border-radius: 16px;
+      background: #ffffff;
+      border: 1px solid #eeeeee;
+      color: #374151;
+      font-size: 13px;
+      line-height: 1.65;
+      white-space: pre-wrap;
+    }
+
+    body.dark-mode .journal-visible-photo,
+    body.dark-mode .journal-visible-video,
+    body.dark-mode .journal-visible-link,
+    body.dark-mode .journal-card-mini-body {
+      background: #111827 !important;
+      color: #f9fafb !important;
+      border-color: #374151 !important;
+    }
+
+  
+    /* === INTUITIVE VIDEO LINK INPUT PATCH === */
+    .video-link-box {
+      border: 1px solid #e5e7eb;
+      background: #f7f7f8;
+      border-radius: 18px;
+      padding: .85rem;
+    }
+
+    .video-link-label {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: .5rem;
+      font-size: 12px;
+      font-weight: 900;
+      color: #111827;
+      margin-bottom: .55rem;
+    }
+
+    .video-link-tag {
+      display: inline-flex;
+      align-items: center;
+      padding: .15rem .5rem;
+      border-radius: 999px;
+      background: #ffffff;
+      border: 1px solid #e5e7eb;
+      color: #6b7280;
+      font-size: 10px;
+      font-weight: 900;
+    }
+
+    body.dark-mode .video-link-box,
+    body.dark-mode .video-link-tag {
+      background: #1f2937 !important;
+      border-color: #374151 !important;
+      color: #f9fafb !important;
+    }
+
+    body.dark-mode .video-link-label {
+      color: #f9fafb !important;
+    }
+
+  
+    /* === NO CLIPBOARD PERMISSION VIDEO LINK PATCH === */
+    #event-journal-video-link-modal {
+      min-height: 46px;
+    }
+
+    .video-link-box .media-storage-note {
+      margin-top: .65rem !important;
+    }
+
+  
+    /* === MODAL ACCESSIBILITY / RESPONSIVE VIEWPORT PATCH === */
+    #formModal,
+    #eventJournalModal,
+    #memberModal,
+    #editTripModal,
+    #newTripModal {
+      overflow-y: auto !important;
+      overscroll-behavior: contain;
+      align-items: flex-start !important;
+      justify-content: center !important;
+      padding-top: max(14px, env(safe-area-inset-top)) !important;
+      padding-bottom: max(14px, env(safe-area-inset-bottom)) !important;
+      padding-left: max(12px, env(safe-area-inset-left)) !important;
+      padding-right: max(12px, env(safe-area-inset-right)) !important;
+    }
+
+    #formModal .modal-shell,
+    #eventJournalModal .modal-shell,
+    #memberModal .modal-shell,
+    #editTripModal .modal-shell,
+    #newTripModal .card {
+      width: min(100%, 720px) !important;
+      max-height: calc(100dvh - max(28px, env(safe-area-inset-top)) - max(28px, env(safe-area-inset-bottom))) !important;
+      overflow-y: auto !important;
+      -webkit-overflow-scrolling: touch;
+      margin-top: auto !important;
+      margin-bottom: auto !important;
+      overscroll-behavior: contain;
+      scroll-padding-bottom: 110px;
+    }
+
+    @supports not (height: 100dvh) {
+      #formModal .modal-shell,
+      #eventJournalModal .modal-shell,
+      #memberModal .modal-shell,
+      #editTripModal .modal-shell,
+      #newTripModal .card {
+        max-height: calc(100vh - 32px) !important;
+      }
+    }
+
+    @media (max-width: 640px) {
+      #formModal,
+      #eventJournalModal,
+      #memberModal,
+      #editTripModal,
+      #newTripModal {
+        align-items: flex-end !important;
+        padding: 10px !important;
+        padding-bottom: max(10px, env(safe-area-inset-bottom)) !important;
+      }
+
+      #formModal .modal-shell,
+      #eventJournalModal .modal-shell,
+      #memberModal .modal-shell,
+      #editTripModal .modal-shell,
+      #newTripModal .card {
+        width: 100% !important;
+        max-height: calc(100dvh - 20px - env(safe-area-inset-bottom)) !important;
+        border-radius: 24px 24px 18px 18px !important;
+        margin-top: 0 !important;
+        margin-bottom: 0 !important;
+      }
+
+      #eventJournalModal textarea,
+      #formModal textarea {
+        min-height: 130px;
+      }
+    }
+
+    .modal-sticky-actions {
+      position: sticky;
+      bottom: -1px;
+      z-index: 5;
+      background: rgba(255, 255, 255, .94);
+      backdrop-filter: blur(10px);
+      -webkit-backdrop-filter: blur(10px);
+      padding-top: .85rem;
+      padding-bottom: .35rem;
+      margin-left: -.15rem;
+      margin-right: -.15rem;
+    }
+
+    body.dark-mode .modal-sticky-actions {
+      background: rgba(17, 24, 39, .94) !important;
+    }
+
+    .modal-close-btn {
+      min-width: 44px;
+      min-height: 44px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .modal-shell input,
+    .modal-shell select,
+    .modal-shell textarea,
+    #newTripModal input,
+    #newTripModal select {
+      font-size: 16px !important; /* avoid iOS zoom and keep fields tappable */
+    }
+
+  
+    body.dark-mode #eventJournalModal .sticky.top-0 {
+      background: rgba(17, 24, 39, .95) !important;
+    }
+
+  
+    /* === JOURNAL THUMBNAIL + LIGHTBOX + DELETE PATCH === */
+    .journal-media-thumb-wrap {
+      position: relative;
+      width: 132px;
+      max-width: 42vw;
+      aspect-ratio: 4 / 3;
+      border-radius: 16px;
+      overflow: hidden;
+      border: 1px solid #e5e7eb;
+      background: #ffffff;
+      box-shadow: 0 10px 24px rgba(17, 24, 39, .06);
+    }
+
+    .journal-media-thumb {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      cursor: zoom-in;
+      display: block;
+    }
+
+    .journal-media-delete-btn {
+      position: absolute;
+      top: .35rem;
+      right: .35rem;
+      width: 1.8rem;
+      height: 1.8rem;
+      border-radius: 999px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      background: rgba(17, 24, 39, .78);
+      color: #ffffff;
+      border: 1px solid rgba(255,255,255,.28);
+      box-shadow: 0 6px 16px rgba(17,24,39,.22);
+      z-index: 2;
+    }
+
+    .journal-media-delete-btn:hover {
+      background: #dc2626;
+    }
+
+    .journal-visible-preview {
+      grid-template-columns: repeat(auto-fit, minmax(132px, 132px)) !important;
+      align-items: start;
+    }
+
+    #event-journal-modal-preview {
+      grid-template-columns: repeat(auto-fit, minmax(132px, 132px)) !important;
+      align-items: start;
+    }
+
+    .journal-visible-link {
+      width: 132px !important;
+      max-width: 42vw;
+      aspect-ratio: 4 / 3;
+      min-height: 0 !important;
+      text-align: center;
+      flex-direction: column;
+      line-height: 1.35;
+    }
+
+    body.dark-mode .journal-media-thumb-wrap {
+      background: #111827 !important;
+      border-color: #374151 !important;
+    }
+
+  
+    /* === SHARE TEXT FILE + VIDEO DELETE PATCH === */
+    .journal-video-preview-wrap {
+      position: relative;
+      width: 132px;
+      max-width: 42vw;
+      aspect-ratio: 4 / 3;
+      border-radius: 16px;
+      overflow: hidden;
+      border: 1px solid #e5e7eb;
+      background: #ffffff;
+      box-shadow: 0 10px 24px rgba(17, 24, 39, .06);
+    }
+
+    .journal-video-preview-wrap .journal-visible-link,
+    .journal-video-preview-wrap .journal-visible-video {
+      width: 100% !important;
+      height: 100% !important;
+      min-height: 0 !important;
+      max-height: none !important;
+      border: 0 !important;
+      border-radius: 0 !important;
+      box-shadow: none !important;
+    }
+
+    body.dark-mode .journal-video-preview-wrap {
+      background: #111827 !important;
+      border-color: #374151 !important;
+    }
+
   </style>
 </head>
 <body class="flex h-[100dvh] overflow-hidden relative">
@@ -1555,7 +1919,7 @@
     <div class="modal-shell card w-full max-w-md p-5">
       <div class="flex items-center justify-between gap-3 mb-4">
         <h3 id="member-modal-title" class="font-black text-lg text-stone-900">旅伴成員</h3>
-        <button type="button" onclick="closeMemberModal()" class="touch-safe text-stone-400 hover:text-stone-900 text-xl"><i class="fa-solid fa-xmark"></i></button>
+        <button type="button" onclick="closeMemberModal()" class="touch-safe modal-close-btn text-stone-400 hover:text-stone-900 text-xl"><i class="fa-solid fa-xmark"></i></button>
       </div>
 
       <p id="member-modal-hint" class="text-xs text-stone-500 mb-3">用下方 + 新增成員；點筆可以編輯，點垃圾桶可以刪除。</p>
@@ -1577,7 +1941,7 @@
     <div class="modal-shell card w-full max-w-md p-5">
       <div class="flex items-center justify-between gap-3 mb-4">
         <h3 id="edit-trip-modal-title" class="font-black text-lg text-stone-900">修改行程名稱</h3>
-        <button type="button" onclick="closeEditTripModal()" class="touch-safe text-stone-400 hover:text-stone-900 text-xl"><i class="fa-solid fa-xmark"></i></button>
+        <button type="button" onclick="closeEditTripModal()" class="touch-safe modal-close-btn text-stone-400 hover:text-stone-900 text-xl"><i class="fa-solid fa-xmark"></i></button>
       </div>
       <div class="space-y-3">
         <input id="edit-trip-name" type="text" class="w-full px-3 py-2 text-sm" placeholder="行程名稱">
@@ -1602,7 +1966,7 @@
     <div class="modal-shell card w-full max-w-2xl p-5">
       <div class="flex items-center justify-between gap-3 mb-4">
         <h3 id="form-modal-title" class="font-black text-lg text-stone-900">新增</h3>
-        <button type="button" onclick="closeFormModal()" class="touch-safe text-stone-400 hover:text-stone-900 text-xl"><i class="fa-solid fa-xmark"></i></button>
+        <button type="button" onclick="closeFormModal()" class="touch-safe modal-close-btn text-stone-400 hover:text-stone-900 text-xl"><i class="fa-solid fa-xmark"></i></button>
       </div>
       <div id="form-modal-body"></div>
     </div>
@@ -1618,12 +1982,12 @@
 
   <div id="eventJournalModal" class="fixed inset-0 bg-black/40 hidden items-center justify-center z-[65] p-4">
     <div class="modal-shell card w-full max-w-2xl p-5">
-      <div class="flex items-center justify-between gap-3 mb-4">
+      <div class="sticky top-0 z-10 bg-white/95 backdrop-blur flex items-center justify-between gap-3 mb-4 pb-3">
         <div class="min-w-0">
           <h3 id="event-journal-modal-title" class="font-black text-lg text-stone-900 truncate">寫心得</h3>
           <p id="event-journal-modal-subtitle" class="text-xs text-stone-500 mt-1"></p>
         </div>
-        <button type="button" onclick="closeEventJournalModal()" class="touch-safe text-stone-400 hover:text-stone-900 text-xl"><i class="fa-solid fa-xmark"></i></button>
+        <button type="button" onclick="closeEventJournalModal()" class="touch-safe modal-close-btn text-stone-400 hover:text-stone-900 text-xl"><i class="fa-solid fa-xmark"></i></button>
       </div>
 
       <div class="event-journal-rating-row">
@@ -1639,19 +2003,38 @@
 
       <textarea id="event-journal-body-modal" rows="6" class="w-full px-3 py-2 text-sm" placeholder="心得、推薦、踩雷、花費感想、下次提醒..."></textarea>
 
-      <div class="grid grid-cols-1 md:grid-cols-2 gap-2 mt-3">
-        <input id="event-journal-photo-modal" type="file" accept="image/*" class="px-3 py-2 text-sm">
-        <input id="event-journal-video-modal" type="file" accept="video/*" class="px-3 py-2 text-sm">
+      <div class="mt-3">
+        <label class="block text-xs font-black text-stone-500 mb-2">照片上傳</label>
+        <input id="event-journal-photo-modal" type="file" accept="image/*" class="w-full px-3 py-2 text-sm">
+      </div>
+
+      <div class="video-link-box mt-3">
+        <label class="video-link-label" for="event-journal-video-link-modal">
+          <span>🎬 影片連結</span>
+          <span class="video-link-tag">推薦</span>
+        </label>
+        <input id="event-journal-video-link-modal" type="url" class="w-full px-3 py-2 text-sm" placeholder="直接貼上 iCloud / Google Drive / YouTube 不公開連結">
+        <p class="media-storage-note">請直接點欄位後貼上影片分享連結，再按「儲存」。這樣不會跳出剪貼簿權限視窗，也不會把影片檔塞進瀏覽器容量。</p>
       </div>
 
       <div id="event-journal-modal-preview" class="grid grid-cols-1 md:grid-cols-2 gap-2 mt-3"></div>
 
-      <div class="flex flex-wrap gap-2 mt-4">
+      <div class="modal-sticky-actions flex flex-wrap gap-2 mt-4">
         <button onclick="saveEventJournalFromModal(true)" class="primary-btn px-4 py-2 rounded-full text-xs font-black">儲存</button>
         <button onclick="copyEventJournalFromModal()" class="secondary-btn px-4 py-2 rounded-full text-xs font-black">複製 Notes</button>
         <button onclick="shareEventJournalFromModal()" class="secondary-btn px-4 py-2 rounded-full text-xs font-black">分享</button>
         <button onclick="downloadEventJournalFromModal()" class="bg-white border border-[#eeeeee] px-4 py-2 rounded-full text-xs font-black text-stone-800">下載 TXT</button>
       </div>
+    </div>
+  </div>
+
+
+  <div id="imageLightboxModal" class="fixed inset-0 bg-black/80 hidden items-center justify-center z-[80] p-4" onclick="closeImageLightbox()">
+    <div class="relative max-w-5xl w-full max-h-[92dvh] flex items-center justify-center">
+      <button type="button" onclick="event.stopPropagation(); closeImageLightbox()" class="absolute top-2 right-2 z-10 bg-white/90 hover:bg-white text-stone-900 w-11 h-11 rounded-full flex items-center justify-center shadow-lg">
+        <i class="fa-solid fa-xmark"></i>
+      </button>
+      <img id="imageLightboxImg" src="" alt="journal image" class="max-w-full max-h-[90dvh] object-contain rounded-2xl shadow-2xl" onclick="event.stopPropagation()">
     </div>
   </div>
 
@@ -3123,6 +3506,7 @@
       if (input) input.value = '';
       updateMemberAddButton();
       modal.classList.replace('hidden','flex');
+      installModalFocusScrollFix();
       setTimeout(() => input && input.focus(), 30);
     }
 
@@ -3205,6 +3589,18 @@
       openAddEventModal();
     }
 
+    function installModalFocusScrollFix() {
+      document.querySelectorAll('#formModal input, #formModal textarea, #formModal select, #eventJournalModal input, #eventJournalModal textarea, #eventJournalModal select, #memberModal input, #editTripModal input, #editTripModal select, #newTripModal input, #newTripModal select').forEach(el => {
+        if (el.dataset.focusFixInstalled) return;
+        el.dataset.focusFixInstalled = '1';
+        el.addEventListener('focus', () => {
+          setTimeout(() => {
+            try { el.scrollIntoView({ behavior: 'smooth', block: 'center' }); } catch(e) {}
+          }, 250);
+        });
+      });
+    }
+
     function openEventJournalModal(eventId) {
       const eventItem = (itineraries[currentTripKey] || []).find(x => x.id === eventId);
       if (!eventItem) return;
@@ -3216,7 +3612,7 @@
       const rating = document.getElementById('event-journal-rating-modal');
       const body = document.getElementById('event-journal-body-modal');
       const photo = document.getElementById('event-journal-photo-modal');
-      const video = document.getElementById('event-journal-video-modal');
+      const videoLink = document.getElementById('event-journal-video-link-modal');
       const preview = document.getElementById('event-journal-modal-preview');
       const modal = document.getElementById('eventJournalModal');
 
@@ -3225,12 +3621,13 @@
       if (rating) rating.value = String(entry.rating || '5');
       if (body) body.value = entry.body || '';
       if (photo) photo.value = '';
-      if (video) video.value = '';
+      if (videoLink) videoLink.value = entry.videoLink || '';
       if (preview) {
-        preview.innerHTML = `${entry.photo ? `<img src="${entry.photo}" class="event-journal-media" alt="journal photo">` : ''}${entry.video ? `<video src="${entry.video}" class="event-journal-media" controls playsinline></video>` : ''}`;
+        preview.innerHTML = renderJournalMediaPreview(entry, 'modal');
       }
 
       if (modal) modal.classList.replace('hidden','flex');
+      installModalFocusScrollFix();
       setTimeout(() => body && body.focus(), 30);
     }
 
@@ -3298,6 +3695,7 @@
       currentFormPanelId = cfg.id;
       document.getElementById('form-modal-title').textContent = cfg.title;
       modal.classList.replace('hidden','flex');
+      installModalFocusScrollFix();
       setTimeout(() => {
         const first = panel.querySelector('input:not([type="hidden"]), select, textarea');
         if (first) first.focus();
@@ -3352,18 +3750,165 @@
       return journals[currentTripKey].find(x => String(x.eventId) === String(eventId));
     }
 
+
+    function isDirectVideoSource(src) {
+      if (!src) return false;
+      return src.startsWith('data:video/') || /\.(mp4|webm|ogg)(\?|#|$)/i.test(src);
+    }
+
+    function isYouTubeUrl(url) {
+      return /(?:youtube\.com|youtu\.be)/i.test(url || '');
+    }
+
+    function youtubeEmbedUrl(url) {
+      try {
+        const u = new URL(url);
+        let id = '';
+        if (u.hostname.includes('youtu.be')) id = u.pathname.replace('/', '');
+        else id = u.searchParams.get('v') || u.pathname.split('/').filter(Boolean).pop();
+        return id ? `https://www.youtube.com/embed/${id}` : '';
+      } catch(e) {
+        return '';
+      }
+    }
+
+
+    function openImageLightbox(src) {
+      const modal = document.getElementById('imageLightboxModal');
+      const img = document.getElementById('imageLightboxImg');
+      if (!modal || !img || !src) return;
+      img.src = src;
+      modal.classList.replace('hidden', 'flex');
+    }
+
+    function closeImageLightbox() {
+      const modal = document.getElementById('imageLightboxModal');
+      const img = document.getElementById('imageLightboxImg');
+      if (modal) modal.classList.replace('flex', 'hidden');
+      if (img) img.src = '';
+    }
+
+    function removeJournalPhotoByEntryId(entryId) {
+      const entry = (journals[currentTripKey] || []).find(x => String(x.id) === String(entryId));
+      if (!entry) return;
+      const ok = confirm(currentLang === 'zh' ? '確定刪除這張照片嗎？' : 'Delete this photo?');
+      if (!ok) return;
+      entry.photo = null;
+      entry.updatedAt = Date.now();
+      saveAll();
+
+      const preview = document.getElementById('event-journal-modal-preview');
+      if (preview && currentEventJournalId && String(entry.eventId) === String(currentEventJournalId)) {
+        preview.innerHTML = renderJournalMediaPreview(entry, 'modal');
+      }
+
+      renderItinerary();
+      renderJournal();
+      showToast(currentLang === 'zh' ? '照片已刪除。' : 'Photo deleted.');
+    }
+
+    function renderJournalPhotoThumb(entry, extraClass = '') {
+      if (!entry || !entry.photo) return '';
+      const entryId = entry.id || '';
+      const safeSrc = entry.photo;
+      const deleteBtn = entryId ? `<button type="button" onclick="event.stopPropagation(); removeJournalPhotoByEntryId(${entryId})" class="journal-media-delete-btn" title="${currentLang === 'zh' ? '刪除照片' : 'Delete photo'}"><i class="fa-solid fa-trash-can"></i></button>` : '';
+      return `<div class="journal-media-thumb-wrap ${extraClass}">
+        <img src="${safeSrc}" class="journal-media-thumb" alt="journal photo" onclick="openImageLightbox('${safeSrc}')">
+        ${deleteBtn}
+      </div>`;
+    }
+
+    function removeJournalVideoByEntryId(entryId) {
+      const entry = (journals[currentTripKey] || []).find(x => String(x.id) === String(entryId));
+      if (!entry) return;
+      const ok = confirm(currentLang === 'zh' ? '確定刪除這個影片連結嗎？' : 'Delete this video link?');
+      if (!ok) return;
+      entry.videoLink = '';
+      entry.video = null;
+      entry.updatedAt = Date.now();
+      saveAll();
+
+      const input = document.getElementById('event-journal-video-link-modal');
+      if (input && currentEventJournalId && String(entry.eventId) === String(currentEventJournalId)) {
+        input.value = '';
+      }
+
+      const preview = document.getElementById('event-journal-modal-preview');
+      if (preview && currentEventJournalId && String(entry.eventId) === String(currentEventJournalId)) {
+        preview.innerHTML = renderJournalMediaPreview(entry, 'modal');
+      }
+
+      renderItinerary();
+      renderJournal();
+      showToast(currentLang === 'zh' ? '影片連結已刪除。' : 'Video link deleted.');
+    }
+
+    function renderJournalVideoThumb(entry) {
+      const link = entry?.videoLink || entry?.video || '';
+      if (!link) return '';
+      const entryId = entry.id || '';
+      const deleteBtn = entryId ? `<button type="button" onclick="event.stopPropagation(); removeJournalVideoByEntryId(${entryId})" class="journal-media-delete-btn" title="${currentLang === 'zh' ? '刪除影片' : 'Delete video'}"><i class="fa-solid fa-trash-can"></i></button>` : '';
+
+      let content = '';
+      if (isDirectVideoSource(link)) {
+        content = `<video src="${link}" class="journal-visible-video" controls playsinline></video>`;
+      } else if (isYouTubeUrl(link) && youtubeEmbedUrl(link)) {
+        content = `<iframe class="journal-visible-video" src="${youtubeEmbedUrl(link)}" title="journal video" allowfullscreen></iframe>`;
+      } else {
+        content = `<a class="journal-visible-link" href="${escapeHTML(link)}" target="_blank" rel="noopener noreferrer">🎬<span>開啟影片連結</span></a>`;
+      }
+
+      return `<div class="journal-video-preview-wrap">
+        ${content}
+        ${deleteBtn}
+      </div>`;
+    }
+
+
+
+    function renderJournalMediaPreview(entry, mode = 'card') {
+      if (!entry) return '';
+      const pieces = [];
+
+      if (entry.photo) {
+        pieces.push(renderJournalPhotoThumb(entry));
+      }
+
+      if (entry.videoLink || entry.video) {
+        pieces.push(renderJournalVideoThumb(entry));
+      }
+
+      if (!pieces.length) return '';
+      return `<div class="journal-visible-preview">${pieces.join('')}</div>`;
+    }
+
     function renderEventJournalPanel(item) {
       const entry = getEventJournal(item.id) || {};
-      const hasContent = !!((entry.body || '').trim() || entry.photo || entry.video);
+      const hasContent = !!((entry.body || '').trim() || entry.photo || entry.videoLink || entry.video);
       const stars = entry.rating ? '★'.repeat(Number(entry.rating || 0)) : '';
       const label = hasContent
-        ? `${currentLang === 'zh' ? '查看/編輯心得' : 'View/Edit notes'} ${stars ? '· ' + stars : ''}`
+        ? `${currentLang === 'zh' ? '編輯心得' : 'Edit notes'} ${stars ? '· ' + stars : ''}`
         : (currentLang === 'zh' ? '寫心得' : 'Add notes');
+
+      const bodyPreview = entry.body
+        ? `<div class="journal-card-mini-body">${escapeHTML(entry.body)}</div>`
+        : '';
+
       return `<div class="mt-3">
-        <button onclick="openEventJournalModal(${item.id})" class="secondary-btn px-3 py-2 rounded-full text-xs font-black">
+        ${bodyPreview}
+        ${renderJournalMediaPreview(entry, 'card')}
+        <button onclick="openEventJournalModal(${item.id})" class="secondary-btn px-3 py-2 rounded-full text-xs font-black mt-3">
           <i class="fa-regular fa-note-sticky mr-1"></i>${label}
         </button>
       </div>`;
+    }
+
+
+    function normalizeVideoLinkValue(value) {
+      const link = String(value || '').trim();
+      if (!link) return '';
+      if (/^https?:\/\//i.test(link)) return link;
+      return `https://${link}`;
     }
 
     async function saveEventJournal(eventId) {
@@ -3372,11 +3917,11 @@
       const usingModal = currentEventJournalId && String(currentEventJournalId) === String(eventId);
       const bodyEl = usingModal ? document.getElementById('event-journal-body-modal') : document.getElementById(`event-journal-body-${eventId}`);
       const photoEl = usingModal ? document.getElementById('event-journal-photo-modal') : document.getElementById(`event-journal-photo-${eventId}`);
-      const videoEl = usingModal ? document.getElementById('event-journal-video-modal') : document.getElementById(`event-journal-video-${eventId}`);
+      const videoLinkEl = usingModal ? document.getElementById('event-journal-video-link-modal') : null;
       const ratingEl = usingModal ? document.getElementById('event-journal-rating-modal') : document.getElementById(`event-journal-rating-${eventId}`);
       const old = getEventJournal(eventId) || {};
-      const photo = photoEl && photoEl.files[0] ? await fileToDataURL(photoEl.files[0]) : old.photo || null;
-      const video = videoEl && videoEl.files[0] ? await fileToDataURL(videoEl.files[0]) : old.video || null;
+      const photo = photoEl && photoEl.files[0] ? await fileToDataURL(photoEl.files[0], { kind: 'image' }) : old.photo || null;
+      const videoLink = videoLinkEl && videoLinkEl.value.trim() ? normalizeVideoLinkValue(videoLinkEl.value) : (old.videoLink || '');
       const payload = {
         id: old.id || Date.now(),
         eventId,
@@ -3386,7 +3931,8 @@
         tags: old.tags || ['itinerary'],
         body: bodyEl ? bodyEl.value.trim() : '',
         photo,
-        video,
+        video: null,
+        videoLink,
         updatedAt: Date.now()
       };
       if (!journals[currentTripKey]) journals[currentTripKey] = [];
@@ -3399,11 +3945,148 @@
       showToast(currentLang === 'zh' ? '心得已儲存。' : 'Journal saved.');
     }
 
+
+    function dataUrlToFile(dataUrl, filenameBase = 'journal-media') {
+      if (!dataUrl || !String(dataUrl).startsWith('data:')) return null;
+      const parts = String(dataUrl).split(',');
+      if (parts.length < 2) return null;
+      const meta = parts[0];
+      const mimeMatch = meta.match(/data:([^;]+)/);
+      const mime = mimeMatch ? mimeMatch[1] : 'application/octet-stream';
+      const binary = atob(parts[1]);
+      const len = binary.length;
+      const bytes = new Uint8Array(len);
+      for (let i = 0; i < len; i++) bytes[i] = binary.charCodeAt(i);
+
+      const extMap = {
+        'image/jpeg': 'jpg',
+        'image/png': 'png',
+        'image/webp': 'webp',
+        'image/gif': 'gif',
+        'video/mp4': 'mp4',
+        'video/webm': 'webm',
+        'video/quicktime': 'mov'
+      };
+      const ext = extMap[mime] || 'bin';
+      return new File([bytes], `${filenameBase}.${ext}`, { type: mime });
+    }
+
+    async function safeFilename(text, fallback = 'trip-journal') {
+      return String(text || fallback)
+        .replace(/[\\/:*?"<>|]+/g, '_')
+        .replace(/\s+/g, '_')
+        .slice(0, 60) || fallback;
+    }
+
+    function textToFile(text, filename = 'journal.txt') {
+      return new File([text || ''], filename, { type: 'text/plain;charset=utf-8' });
+    }
+
+    function buildJournalShareFiles(entries) {
+      const files = [];
+      const safeEntries = (entries || []).filter(Boolean);
+
+      safeEntries.forEach((entry, idx) => {
+        if (entry.photo) {
+          const file = dataUrlToFile(entry.photo, `journal-photo-${idx + 1}`);
+          if (file) files.push(file);
+        }
+
+        // 舊版若曾把影片直接存成 data:video，也盡量一起分享；新版影片主要用連結並寫入分享文字。
+        if (entry.video && String(entry.video).startsWith('data:video/')) {
+          const file = dataUrlToFile(entry.video, `journal-video-${idx + 1}`);
+          if (file) files.push(file);
+        }
+      });
+
+      // Web Share 在不同平台有檔案數量 / 大小限制，避免一次太多導致整次失敗。
+      return files.slice(0, 8);
+    }
+
+    async function copyShareTextFallback(text, message) {
+      try {
+        await navigator.clipboard.writeText(text);
+        showToast(message || (currentLang === 'zh'
+          ? '此瀏覽器不支援系統分享，已複製文字。'
+          : 'System sharing is unavailable. Text copied instead.'));
+      } catch (err) {
+        alert(text);
+      }
+    }
+
+    async function shareWithMedia({ title, text, entries }) {
+      const files = buildJournalShareFiles(entries);
+      const hasNativeShare = !!navigator.share;
+
+      if (!text || !text.trim()) {
+        alert(currentLang === 'zh' ? '目前沒有可分享的文字內容。' : 'No text content to share.');
+        return;
+      }
+
+      // 本機 file:// 測試時，Chrome / Safari 對 Web Share 支援常不穩；上傳到 GitHub Pages HTTPS 後會比較正常。
+      const isLocalFile = location.protocol === 'file:';
+
+      if (!hasNativeShare) {
+        await copyShareTextFallback(text);
+        return;
+      }
+
+      const mediaPayload = { title, text, files };
+
+      try {
+        // 優先嘗試：文字 + 相片 / 舊版影片檔一起分享。影片連結已包含在 text 裡。
+        if (files.length && navigator.canShare && navigator.canShare(mediaPayload)) {
+          await navigator.share(mediaPayload);
+          return;
+        }
+
+        // 若裝置不支援帶檔分享，就至少用原生分享送出文字與影片連結。
+        await navigator.share({ title, text });
+        if (files.length) {
+          showToast(currentLang === 'zh'
+            ? '此裝置不支援附加相片檔分享，已分享文字與影片連結。'
+            : 'This device cannot attach photo files here, so text and video links were shared.');
+        }
+        return;
+      } catch (e) {
+        // 使用者按取消，不要誤判成失敗，也不要自動複製文字。
+        if (e && e.name === 'AbortError') {
+          showToast(currentLang === 'zh' ? '分享已取消。' : 'Sharing cancelled.');
+          return;
+        }
+
+        // 帶媒體分享失敗時，再試一次「純文字 + 影片連結」原生分享，而不是直接改複製。
+        try {
+          await navigator.share({ title, text });
+          showToast(currentLang === 'zh'
+            ? '媒體附檔分享失敗，已改用原生分享文字與影片連結。'
+            : 'Media attachment sharing failed, so text and video links were shared instead.');
+          return;
+        } catch (e2) {
+          if (e2 && e2.name === 'AbortError') {
+            showToast(currentLang === 'zh' ? '分享已取消。' : 'Sharing cancelled.');
+            return;
+          }
+
+          await copyShareTextFallback(
+            text,
+            isLocalFile
+              ? (currentLang === 'zh'
+                  ? '本機檔案模式無法穩定開啟系統分享。請上傳到 GitHub Pages 後再測試；目前已先複製文字。'
+                  : 'Local file mode cannot reliably open system sharing. Upload to GitHub Pages and test again; text copied for now.')
+              : (currentLang === 'zh'
+                  ? '系統分享仍失敗，已先複製文字。'
+                  : 'System sharing still failed, so text was copied.')
+          );
+        }
+      }
+    }
+
     function eventJournalText(eventId) {
       const eventItem = (itineraries[currentTripKey] || []).find(x => x.id === eventId);
       const entry = getEventJournal(eventId);
       if (!eventItem && !entry) return '';
-      return `${eventItem?.title || entry?.title || ''}\nDate: ${eventItem?.day || entry?.date || '-'}\nRating: ${'★'.repeat(Number(entry?.rating || 0))}\n\n${entry?.body || ''}`;
+      return `${eventItem?.title || entry?.title || ''}\nDate: ${eventItem?.day || entry?.date || '-'}\nRating: ${'★'.repeat(Number(entry?.rating || 0))}\n${entry?.photo ? (currentLang === 'zh' ? 'Photo: 已附加在分享檔案\n' : 'Photo: attached as shared file\n') : ''}${entry?.videoLink ? (currentLang === 'zh' ? 'Video link: ' : 'Video link: ') + entry.videoLink + '\n' : ''}\n${entry?.body || ''}`;
     }
 
     async function copyEventJournal(eventId) {
@@ -3420,11 +4103,12 @@
     async function shareEventJournal(eventId) {
       const text = eventJournalText(eventId);
       if (!text.trim()) return alert(currentLang === 'zh' ? '請先儲存這段心得。' : 'Please save notes first.');
-      if (navigator.share) {
-        try { await navigator.share({ title: tripsMaster[currentTripKey]?.name || 'Trip Journal', text }); } catch(e) {}
-      } else {
-        await copyEventJournal(eventId);
-      }
+      const entry = getEventJournal(eventId);
+      await shareWithMedia({
+        title: tripsMaster[currentTripKey]?.name || 'Trip Journal',
+        text,
+        entries: entry ? [entry] : []
+      });
     }
 
     function downloadEventJournal(eventId) {
@@ -3562,17 +4246,60 @@
     function addChecklistReminderToCalendar(id){const x=getChecklistItem(id); if(!x||!x.dueDay)return alert(currentLang==='zh'?'這個待辦還沒有設定提醒日期':'This item has no reminder date.'); const p=parseTripDate(x.dueDay,x.dueTime||'09:00'); if(!p.valid)return alert(p.reason); window.open(calendarUrl(`To-do｜${x.text}`,p.date,30,tripsMaster[currentTripKey]?.name||''),'_blank','noopener,noreferrer');}
 
 
-    async function fileToDataURL(file) {
+    async function fileToDataURL(file, options = {}) {
       if (!file) return '';
-      if (file.size > 3.5 * 1024 * 1024) {
-        alert(currentLang === 'zh' ? '檔案較大，可能超出瀏覽器儲存限制。' : 'This file is large and may exceed browser storage.');
+      const kind = options.kind || 'file';
+
+      if (kind === 'video' || file.type.startsWith('video/')) {
+        alert(currentLang === 'zh'
+          ? '影片檔太容易超過瀏覽器儲存限制。請先上傳到 iCloud / Google Drive / YouTube 不公開，再把影片連結貼到下方欄位。'
+          : 'Video files can exceed browser storage. Upload it to iCloud / Google Drive / YouTube unlisted, then paste the link below.');
+        return '';
       }
+
+      if (file.type.startsWith('image/')) {
+        return await compressImageToDataURL(file, 1280, 0.74);
+      }
+
+      if (file.size > 1.5 * 1024 * 1024) {
+        alert(currentLang === 'zh'
+          ? '這個檔案太大，無法安全儲存在瀏覽器。'
+          : 'This file is too large to store safely in the browser.');
+        return '';
+      }
+
       return await new Promise((resolve, reject) => {
         const reader = new FileReader();
         reader.onload = () => resolve(reader.result);
         reader.onerror = reject;
         reader.readAsDataURL(file);
       });
+    }
+
+    async function compressImageToDataURL(file, maxSize = 1280, quality = 0.74) {
+      const src = await new Promise((resolve, reject) => {
+        const reader = new FileReader();
+        reader.onload = () => resolve(reader.result);
+        reader.onerror = reject;
+        reader.readAsDataURL(file);
+      });
+
+      const img = await new Promise((resolve, reject) => {
+        const image = new Image();
+        image.onload = () => resolve(image);
+        image.onerror = reject;
+        image.src = src;
+      });
+
+      const scale = Math.min(1, maxSize / Math.max(img.width, img.height));
+      const canvas = document.createElement('canvas');
+      canvas.width = Math.max(1, Math.round(img.width * scale));
+      canvas.height = Math.max(1, Math.round(img.height * scale));
+
+      const ctx = canvas.getContext('2d');
+      ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
+
+      return canvas.toDataURL('image/jpeg', quality);
     }
 
     function resetJournalForm() {
@@ -3594,6 +4321,7 @@
       if(e.key === 'Escape') {
         closeMemberModal();
         closeEditTripModal();
+        closeImageLightbox();
       }
     });
 
@@ -3672,12 +4400,12 @@
     }
 
     function journalEntryToText(entry) {
-      return `${entry.title}\nDate: ${entry.date || '-'}\nRating: ${'★'.repeat(Number(entry.rating || 0))}\nTags: ${(entry.tags || []).join(', ')}\n\n${entry.body || ''}\n`;
+      return `${entry.title}\nDate: ${entry.date || '-'}\nRating: ${'★'.repeat(Number(entry.rating || 0))}\nTags: ${(entry.tags || []).join(', ')}\n${entry.photo ? (currentLang === 'zh' ? 'Photo: 已附加在分享檔案\n' : 'Photo: attached as shared file\n') : ''}${entry.videoLink ? (currentLang === 'zh' ? 'Video link: ' : 'Video link: ') + entry.videoLink + '\n' : ''}\n${entry.body || ''}\n`;
     }
 
     function allJournalText() {
       return (journals[currentTripKey] || [])
-        .filter(entry => (entry.body || '').trim() || entry.photo || entry.video)
+        .filter(entry => (entry.body || '').trim() || entry.photo || entry.videoLink)
         .slice()
         .sort((a,b) => String(a.date || '').localeCompare(String(b.date || '')) || (a.updatedAt || 0) - (b.updatedAt || 0))
         .map(journalEntryToText)
@@ -3698,11 +4426,13 @@
     async function shareJournalText() {
       const text = allJournalText();
       if (!text.trim()) return alert(currentLang === 'zh' ? '目前還沒有心得可分享。' : 'No journal entries to share.');
-      if (navigator.share) {
-        try { await navigator.share({ title: tripsMaster[currentTripKey]?.name || 'Trip Journal', text }); } catch (e) {}
-      } else {
-        await copyAllJournalText();
-      }
+      const entries = (journals[currentTripKey] || [])
+        .filter(entry => (entry.body || '').trim() || entry.photo || entry.videoLink || entry.video);
+      await shareWithMedia({
+        title: tripsMaster[currentTripKey]?.name || 'Trip Journal',
+        text,
+        entries
+      });
     }
 
     function downloadJournalTxt() {
@@ -3743,7 +4473,7 @@
     function renderJournal() {
       const list = document.getElementById('journal-list');
       if (!list) return;
-      const entries = (journals[currentTripKey] || []).filter(entry => (entry.body || '').trim() || entry.photo || entry.video);
+      const entries = (journals[currentTripKey] || []).filter(entry => (entry.body || '').trim() || entry.photo || entry.videoLink);
       list.innerHTML = '';
       if (!entries.length) {
         list.innerHTML = `<div class="journal-overview-card p-5 text-center text-sm font-bold text-stone-700">${T('journalEmpty')}</div>`;
@@ -3776,10 +4506,7 @@
                   </button>
                 </div>
               </div>
-              <div class="grid grid-cols-1 md:grid-cols-2 gap-3 mt-4">
-                ${entry.photo ? `<img src="${entry.photo}" class="journal-media" alt="journal photo">` : ''}
-                ${entry.video ? `<video src="${entry.video}" class="journal-media" controls playsinline></video>` : ''}
-              </div>
+              ${renderJournalMediaPreview(entry, 'overview')}
             </div>`;
         });
     }
@@ -3809,6 +4536,7 @@
       document.getElementById('edit-trip-name').value = trip.name || '';
       document.getElementById('edit-trip-emoji').value = trip.emoji || '🧳';
       document.getElementById('editTripModal').classList.replace('hidden','flex');
+      installModalFocusScrollFix();
       setTimeout(() => document.getElementById('edit-trip-name').focus(), 30);
     }
 
@@ -3833,7 +4561,7 @@
     }
 
 
-    function openNewTripModal(){ if(!isAdminMode){ alert(currentLang==='zh'?'請先輸入管理密碼，才能建立新旅程。':'Please enter the admin password before creating a new trip.'); const input=document.getElementById('admin-password-input'); if(input) input.focus(); return; } document.getElementById('newTripModal').classList.replace('hidden','flex'); applyLanguage();} function closeNewTripModal(){document.getElementById('newTripModal').classList.replace('flex','hidden');}
+    function openNewTripModal(){ if(!isAdminMode){ alert(currentLang==='zh'?'請先輸入管理密碼，才能建立新旅程。':'Please enter the admin password before creating a new trip.'); const input=document.getElementById('admin-password-input'); if(input) input.focus(); return; } document.getElementById('newTripModal').classList.replace('hidden','flex'); installModalFocusScrollFix(); applyLanguage();} function closeNewTripModal(){document.getElementById('newTripModal').classList.replace('flex','hidden');}
     function formatTripDate(v){return v.replace(/-/g,'/');}
     function createNewTrip(){const name=document.getElementById('new-trip-name').value.trim(), start=document.getElementById('new-trip-start').value, end=document.getElementById('new-trip-end').value, emoji=document.getElementById('new-trip-emoji').value||'🧳'; if(!name||!start||!end)return alert(currentLang==='zh'?'請填寫旅程名稱、開始日期與結束日期':'Please enter destination, start date, and end date.'); if(new Date(end)<new Date(start))return alert(currentLang==='zh'?'結束日期不能早於開始日期':'End date cannot be earlier than start date.'); const key='trip_'+Date.now(); tripsMaster[key]={name,dates:`${formatTripDate(start)} - ${formatTripDate(end)}`,lat:-16.9203,lng:145.7710,emoji,icon:'fa-route'}; itineraries[key]=[]; checklists[key]=[]; budgets[key]=[]; journals[key]=[]; tripAccess[key]=false; currentTripKey=key; localStorage.setItem('activeTripKey',key); saveAll(); closeNewTripModal(); ['new-trip-name','new-trip-start','new-trip-end'].forEach(id=>document.getElementById(id).value=''); document.getElementById('new-trip-emoji').value='🧳'; renderSidebar(); initCurrentTripData(); updateGlobalAddButton();}
     function deleteCurrentTrip(key = currentTripKey){if(!isAdminMode)return alert(currentLang==='zh'?'請先輸入管理密碼，才能刪除旅程。':'Please enter the admin password before deleting a trip.'); if(Object.keys(tripsMaster).length<=1)return alert(currentLang==='zh'?'至少保留一個旅程':'Keep at least one trip.'); const targetKey = key || currentTripKey; const tripName = tripsMaster[targetKey]?.name || ''; if(confirm(currentLang==='zh'?`確定刪除「${tripName}」？`:`Delete "${tripName}"?`)){delete tripsMaster[targetKey]; delete itineraries[targetKey]; delete checklists[targetKey]; delete budgets[targetKey]; delete journals[targetKey]; delete tripAccess[targetKey]; if(currentTripKey===targetKey) currentTripKey=Object.keys(tripsMaster)[0]; localStorage.setItem('activeTripKey',currentTripKey); saveAll(); renderSidebar(); initCurrentTripData();}}
