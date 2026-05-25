@@ -1681,9 +1681,46 @@
       border-color: #16a34a !important;
     }
 
+  
+    /* === SUPABASE CLOUD SYNC STATUS === */
+    #sync-status {
+      position: fixed;
+      left: max(.75rem, env(safe-area-inset-left));
+      bottom: max(.75rem, env(safe-area-inset-bottom));
+      z-index: 57;
+      display: inline-flex;
+      align-items: center;
+      gap: .4rem;
+      padding: .45rem .7rem;
+      border-radius: 999px;
+      background: rgba(255,255,255,.92);
+      color: #475569;
+      border: 1px solid #e5e7eb;
+      box-shadow: 0 12px 28px rgba(15,23,42,.10);
+      font-size: 11px;
+      font-weight: 900;
+      backdrop-filter: blur(10px);
+      -webkit-backdrop-filter: blur(10px);
+      pointer-events: none;
+    }
+
+    #sync-status.online { color: #047857; border-color: #a7f3d0; }
+    #sync-status.syncing { color: #1d4ed8; border-color: #bfdbfe; }
+    #sync-status.offline { color: #b45309; border-color: #fde68a; }
+    #sync-status.error { color: #dc2626; border-color: #fecaca; }
+
+    body.dark-mode #sync-status {
+      background: rgba(17,24,39,.92) !important;
+      color: #f9fafb !important;
+      border-color: #374151 !important;
+    }
+
   </style>
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 </head>
 <body class="flex h-[100dvh] overflow-hidden relative">
+  <div id="sync-status" class="offline">☁️ 本機模式</div>
+
   <div id="sidebar-overlay" onclick="toggleSidebar()" class="fixed inset-0 bg-black/40 z-40 hidden md:hidden"></div>
 
   <aside id="mobile-sidebar" class="absolute z-50 h-full w-72 transform -translate-x-full transition-transform duration-300 md:relative md:translate-x-0 bg-white border-r border-[#f1d7ce] flex flex-col shadow-xl md:shadow-none">
@@ -2152,7 +2189,189 @@
     };
 
     function escapeHTML(v) { return String(v ?? '').replace(/[&<>'"]/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;',"'":'&#39;','"':'&quot;'}[c])); }
-    function saveAll() { localStorage.setItem('tripsMasterV6', JSON.stringify(tripsMaster)); localStorage.setItem('tripItinerariesV6', JSON.stringify(itineraries)); localStorage.setItem('tripChecklistsV6', JSON.stringify(checklists)); localStorage.setItem('tripBudgetsV6', JSON.stringify(budgets)); localStorage.setItem('tripJournalsV1', JSON.stringify(journals)); localStorage.setItem('tripAccessV1', JSON.stringify(tripAccess)); }
+    // === Supabase settings ===
+    // 1) 到 Supabase Project Settings > API 複製 URL 與 anon public key
+    // 2) 把下面兩行換成你自己的值
+    const SUPABASE_URL = 'https://vynlbdidsgtvedvpamsb.supabase.co/rest/v1/';
+    const SUPABASE_ANON_KEY = 'sb_publishable_PqmctPWNeYgDVAlJTrDqMQ_s7U6Uh3x';
+    const SUPABASE_STATE_ID = 'main';
+
+    let supabaseClient = null;
+    let supabaseReady = false;
+    let supabaseSaveTimer = null;
+    let suppressRemoteSave = false;
+    const localClientId = localStorage.getItem('tripManagerClientId') || crypto.randomUUID();
+    localStorage.setItem('tripManagerClientId', localClientId);
+
+    function setSyncStatus(text, mode = 'offline') {
+      const el = document.getElementById('sync-status');
+      if (!el) return;
+      el.textContent = text;
+      el.className = mode;
+    }
+
+    function getCompanionMap() {
+      const map = {};
+      Object.keys(localStorage).forEach(key => {
+        if (key.startsWith('companion_')) {
+          map[key.replace('companion_', '')] = localStorage.getItem(key) || '';
+        }
+      });
+      return map;
+    }
+
+    function applyCompanionMap(map = {}) {
+      Object.entries(map || {}).forEach(([tripKey, value]) => {
+        localStorage.setItem(`companion_${tripKey}`, value || '');
+      });
+    }
+
+    function collectAppState() {
+      return {
+        schemaVersion: 1,
+        tripsMaster,
+        itineraries,
+        checklists,
+        budgets,
+        journals,
+        tripAccess,
+        companions: getCompanionMap(),
+        updatedAt: new Date().toISOString()
+      };
+    }
+
+    function saveLocalStateOnly() {
+      localStorage.setItem('tripsMasterV6', JSON.stringify(tripsMaster));
+      localStorage.setItem('tripItinerariesV6', JSON.stringify(itineraries));
+      localStorage.setItem('tripChecklistsV6', JSON.stringify(checklists));
+      localStorage.setItem('tripBudgetsV6', JSON.stringify(budgets));
+      localStorage.setItem('tripJournalsV1', JSON.stringify(journals));
+      localStorage.setItem('tripAccessV1', JSON.stringify(tripAccess));
+    }
+
+    function saveAll() {
+      saveLocalStateOnly();
+      scheduleSupabaseSave();
+    }
+
+    function applyRemoteState(payload = {}) {
+      if (!payload || typeof payload !== 'object') return;
+      tripsMaster = payload.tripsMaster || tripsMaster || {};
+      itineraries = payload.itineraries || itineraries || {};
+      checklists = payload.checklists || checklists || {};
+      budgets = payload.budgets || budgets || {};
+      journals = payload.journals || journals || {};
+      tripAccess = payload.tripAccess || tripAccess || {};
+      applyCompanionMap(payload.companions || {});
+      saveLocalStateOnly();
+
+      if (!tripsMaster[currentTripKey]) {
+        currentTripKey = Object.keys(tripsMaster)[0] || null;
+        if (currentTripKey) localStorage.setItem('activeTripKey', currentTripKey);
+      }
+    }
+
+    function rerenderAfterRemoteSync() {
+      suppressRemoteSave = true;
+      try {
+        ensureTripAccessDefaults();
+        syncActiveTripAccess();
+        renderSidebar();
+        initCurrentTripData();
+      } finally {
+        setTimeout(() => { suppressRemoteSave = false; }, 0);
+      }
+    }
+
+    function scheduleSupabaseSave() {
+      if (!supabaseClient || !supabaseReady || suppressRemoteSave) return;
+      clearTimeout(supabaseSaveTimer);
+      setSyncStatus('☁️ 同步中...', 'syncing');
+      supabaseSaveTimer = setTimeout(pushStateToSupabase, 650);
+    }
+
+    async function pushStateToSupabase() {
+      if (!supabaseClient || suppressRemoteSave) return;
+      const payload = collectAppState();
+      const { error } = await supabaseClient
+        .from('trip_manager_state')
+        .upsert({
+          id: SUPABASE_STATE_ID,
+          payload,
+          updated_by: localClientId,
+          updated_at: new Date().toISOString()
+        }, { onConflict: 'id' });
+
+      if (error) {
+        console.error('Supabase save error:', error);
+        setSyncStatus('☁️ 同步失敗', 'error');
+        return;
+      }
+      setSyncStatus('☁️ 已同步', 'online');
+    }
+
+    function hasSupabaseConfig() {
+      return SUPABASE_URL.startsWith('http') && SUPABASE_ANON_KEY.length > 30;
+    }
+
+    async function initSupabaseSync() {
+      if (!hasSupabaseConfig()) {
+        setSyncStatus('☁️ 本機模式：尚未設定 Supabase', 'offline');
+        return;
+      }
+
+      try {
+        supabaseClient = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+        setSyncStatus('☁️ 連線中...', 'syncing');
+
+        const { data, error } = await supabaseClient
+          .from('trip_manager_state')
+          .select('*')
+          .eq('id', SUPABASE_STATE_ID)
+          .maybeSingle();
+
+        if (error) throw error;
+
+        if (data && data.payload) {
+          suppressRemoteSave = true;
+          applyRemoteState(data.payload);
+          suppressRemoteSave = false;
+          setSyncStatus('☁️ 已載入雲端資料', 'online');
+        } else {
+          await pushStateToSupabase();
+          setSyncStatus('☁️ 已建立雲端資料', 'online');
+        }
+
+        supabaseReady = true;
+
+        supabaseClient
+          .channel(`trip_manager_state_${SUPABASE_STATE_ID}`)
+          .on(
+            'postgres_changes',
+            {
+              event: '*',
+              schema: 'public',
+              table: 'trip_manager_state',
+              filter: `id=eq.${SUPABASE_STATE_ID}`
+            },
+            payload => {
+              const row = payload.new;
+              if (!row || row.updated_by === localClientId) return;
+              suppressRemoteSave = true;
+              applyRemoteState(row.payload);
+              rerenderAfterRemoteSync();
+              setSyncStatus('☁️ 已接收同步更新', 'online');
+            }
+          )
+          .subscribe(status => {
+            if (status === 'SUBSCRIBED') setSyncStatus('☁️ 即時同步中', 'online');
+          });
+
+      } catch (error) {
+        console.error('Supabase init error:', error);
+        setSyncStatus('☁️ 雲端連線失敗，暫用本機', 'error');
+      }
+    }
 
     const TASMANIA_TRIP_SEED_VERSION = 'tasmania_full_plan_2026_01_v1';
 
@@ -3214,7 +3433,7 @@
       const list = raw.split(/[,，]/).map(x=>x.trim()).filter(Boolean);
       return [...new Set(list.length ? list : ['我'])];
     }
-    function saveCompanion(value) { localStorage.setItem(`companion_${currentTripKey}`, value); renderBudgetSplitOptions(); renderBudget(); }
+    function saveCompanion(value) { localStorage.setItem(`companion_${currentTripKey}`, value); saveAll(); renderBudgetSplitOptions(); renderBudget(); }
 
 
     function saveTripAccess() {
@@ -4486,7 +4705,19 @@ ${entry.body || ''}
       }
     });
 
-    applyLanguage(false); applyTheme(); setupFormPanels(); seedTasmaniaTripPlan(); ensureTripAccessDefaults(); syncActiveTripAccess(); renderSidebar(); initCurrentTripData();
+    async function initApp() {
+      applyLanguage(false);
+      applyTheme();
+      setupFormPanels();
+      seedTasmaniaTripPlan();
+      await initSupabaseSync();
+      ensureTripAccessDefaults();
+      syncActiveTripAccess();
+      renderSidebar();
+      initCurrentTripData();
+    }
+
+    initApp();
   </script>
 </body>
 </html>
