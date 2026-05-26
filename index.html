@@ -1999,7 +1999,7 @@
             <input type="date" id="event-day" class="px-3 py-2 text-xs md:text-sm" oninput="checkLiveWarning()" onchange="checkLiveWarning()">
             <input type="time" id="event-time" class="px-3 py-2 text-xs md:text-sm" oninput="checkLiveWarning()" onchange="checkLiveWarning()">
             <select id="event-type" class="px-3 py-2 text-xs md:text-sm bg-white" onchange="checkLiveWarning()">
-              <option value="general">一般</option>
+              <option value="general">📌 其他</option>
               <option value="dining">🍽️ 餐飲</option>
               <option value="dive">🤿 潛水</option>
               <option value="flight">✈️ 航班</option>
@@ -4526,7 +4526,7 @@ ${entry?.body || ''}`;
 
       const itemCardHTML = (item) => {
         const its=issues.filter(i=>i.id===item.id);
-        const icon={dive:'🤿',altitude:'🚁',flight:'✈️',accommodation:'⛺️',dining:'🍽️'}[item.type]||'📍';
+        const icon={general:'📌',dive:'🤿',altitude:'🚁',flight:'✈️',accommodation:'⛺️',dining:'🍽️'}[item.type]||'📍';
         const status=item.status==='to-book'?`<span class="pill pill-red">${T('status.toBook')}</span>`:item.status==='booked'?`<span class="pill pill-green">${T('status.booked')}</span>`:'';
         const warns=its.map(i=>`<div class="mt-2 ${i.severity==='danger'||i.severity==='error'?'nitrogen-blink':'bg-amber-100 text-amber-800'} text-[11px] font-black px-2 py-1 rounded-xl">⚠️ ${escapeHTML(i.message)}</div>`).join('');
         const noteHTML=item.note?`<p class="event-card-note text-xs mt-2 px-2 py-1 rounded-xl inline-block">${escapeHTML(item.note)}</p>`:'';
