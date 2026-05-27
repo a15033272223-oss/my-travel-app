@@ -2023,11 +2023,13 @@
             <span class="mr-2">✨</span><span id="form-title">新增行程</span>
             <button id="cancel-edit-btn" onclick="cancelEdit()" class="hidden ml-auto text-xs text-stone-400 hover:text-stone-700 underline">取消編輯</button>
           </h3>
-          <div class="grid grid-cols-2 md:grid-cols-5 gap-2 mb-2">
+          <div class="mb-2">
+            <input type="text" id="event-title" placeholder="做什麼？例如：吃海鮮大餐、逛市集、搭車移動" class="w-full px-3 py-2 text-xs md:text-sm font-black">
+          </div>
+          <div class="grid grid-cols-2 md:grid-cols-4 gap-2 mb-2">
             <input type="date" id="event-day" class="px-3 py-2 text-xs md:text-sm" oninput="checkLiveWarning()" onchange="checkLiveWarning()">
             <input type="time" id="event-time" class="px-3 py-2 text-xs md:text-sm" oninput="checkLiveWarning()" onchange="checkLiveWarning()">
             <select id="event-type" class="px-3 py-2 text-xs md:text-sm bg-white" onchange="checkLiveWarning()">
-              
               <option value="general">📌 其他</option>
               <option value="travel">🧳 旅遊</option>
               <option value="hiking">🥾 爬山</option>
@@ -2038,15 +2040,14 @@
               <option value="altitude">🚁 高空活動</option>
               <option value="accommodation">⛺️ 住宿</option>
             </select>
-            <select id="event-status" class="col-span-2 md:col-span-1 px-3 py-2 text-xs md:text-sm bg-white">
+            <select id="event-status" class="px-3 py-2 text-xs md:text-sm bg-white">
               <option value="none">無票券</option>
               <option value="to-book">🔴 待定</option>
               <option value="booked">🟢 已定</option>
             </select>
           </div>
           <div class="flex flex-col md:flex-row gap-2">
-            <input type="text" id="event-title" placeholder="做什麼？" class="flex-1 px-3 py-2 text-xs md:text-sm">
-            <input type="text" id="event-note" placeholder="備註" class="flex-1 px-3 py-2 text-xs md:text-sm">
+            <input type="text" id="event-note" placeholder="備註 / 網址（選填）" class="flex-1 px-3 py-2 text-xs md:text-sm">
             <button id="submit-event-btn" onclick="submitEvent()" class="primary-btn font-black py-2 px-8 rounded-2xl text-sm whitespace-nowrap">加入</button>
           </div>
           <div id="live-warning-box" class="hidden mt-3 nitrogen-blink text-xs md:text-sm font-black px-3 py-2 rounded-2xl flex items-center">
@@ -2385,7 +2386,7 @@
         budgetTotal: 'Total Spend', settlement: '結算建議', budgetSummary: '成員分帳概況', budgetNew: '💳 記一筆新的', record: '記錄', selectAll: '全選', clear: '清空', splitLabel: '分帳對象', splitHint: '只勾選這筆帳要一起分的人。若都不勾，系統會視為所有旅伴一起分。', allMembers: '所有成員', calculatedByGroup: '依每筆分帳對象計算', noExpense: '無開銷', settled: '兩清', receive: a=>`收 $${a}`, pay: a=>`付 $${a}`, noDebt: '互不相欠！', pays: (a,b)=>`<b>${a}</b> 給 <b>${b}</b>`,
         table: ['成員','代墊','應攤','結算狀態','項目','分帳對象','金額','操作'], status: { none: '無票券', toBook: '待訂', booked: '已訂' },
         journalTitle: '📝 心得', journalSave: '儲存心得', journalCopy: '複製', journalShare: '分享', journalDownload: '下載 TXT', journalEmpty: '目前還沒有心得，先寫下第一篇吧！', journalHint: '這裡會自動統整每一段行程下方儲存的心得，可複製到 Notes、分享或下載 TXT。', journalPhoto: '附上照片', journalVideo: '附上影片', modalTitle: '建立全新旅程計畫', icon: '代表圖示', start: '開始日期', end: '結束日期', cancel: '取消', create: '確認建立',
-        ph: { companion:'如: 中偉, 聖聖, Ryan', eventTitle:'做什麼？例如：吃海鮮大餐', eventNote:'備註（選填）', todo:'物品或待辦事項，例如：訂餐廳、防風外套', budgetTitle:'花費項目', amount:'金額', payer:'代墊人', tripName:'行程目的地', journalTitle:'心得標題，例如：第一次船宿超值得', journalTags:'標籤，例如：美食, 潛水, 住宿', journalBody:'寫下你的心得、推薦、踩雷、花費感想...' }
+        ph: { companion:'如: 中偉, 聖聖, Ryan', eventTitle:'做什麼？例如：吃海鮮大餐、逛市集、搭車移動', eventNote:'備註 / 網址（選填）', todo:'物品或待辦事項，例如：訂餐廳、防風外套', budgetTitle:'花費項目', amount:'金額', payer:'代墊人', tripName:'行程目的地', journalTitle:'心得標題，例如：第一次船宿超值得', journalTags:'標籤，例如：美食, 潛水, 住宿', journalBody:'寫下你的心得、推薦、踩雷、花費感想...' }
       },
       en: {
         pageTitle: 'TripManager', langButton: '中', tripListTitle: 'My Trips',
@@ -2396,7 +2397,7 @@
         budgetTotal: 'Total Spend', settlement: 'Settlement Plan', budgetSummary: 'Member Summary', budgetNew: '💳 Add expense', record: 'Record', selectAll: 'Select all', clear: 'Clear', splitLabel: 'Split with', splitHint: 'Only check the people sharing this expense. If no one is checked, it will split with all trip members.', allMembers: 'All members', calculatedByGroup: 'Calculated by each expense split group', noExpense: 'No expense yet', settled: 'Settled', receive: a=>`Receive $${a}`, pay: a=>`Pay $${a}`, noDebt: 'All settled!', pays: (a,b)=>`<b>${a}</b> pays <b>${b}</b>`,
         table: ['Member','Paid','Share','Status','Item','Split with','Amount','Action'], status: { none: 'No ticket', toBook: 'To book', booked: 'Booked' },
         journalTitle: '📝 Journal Overview', journalSave: 'Save journal', journalCopy: 'Copy', journalShare: 'Share', journalDownload: 'Download TXT', journalEmpty: 'No journal entries yet. Write your first one!', journalHint: 'This overview collects the notes saved under each itinerary item. You can copy, share, or download TXT.', journalPhoto: 'Add photo', journalVideo: 'Add video', modalTitle: 'Create a New Trip', icon: 'Trip Icon', start: 'Start Date', end: 'End Date', cancel: 'Cancel', create: 'Create',
-        ph: { companion:'e.g. Will, Sheng, Ryan', eventTitle:'What to do? e.g. Seafood dinner', eventNote:'Notes (optional)', todo:'Item or task, e.g. book restaurant, windbreaker', budgetTitle:'Expense item', amount:'Amount', payer:'Payer', tripName:'Destination', journalTitle:'Entry title, e.g. Best day of the trip', journalTags:'Tags, e.g. food, diving, hotel', journalBody:'Write your experience, highlights, recommendations, costs, or things to avoid...' }
+        ph: { companion:'e.g. Will, Sheng, Ryan', eventTitle:'What to do? e.g. seafood dinner, market walk, transport', eventNote:'Notes / URL (optional)', todo:'Item or task, e.g. book restaurant, windbreaker', budgetTitle:'Expense item', amount:'Amount', payer:'Payer', tripName:'Destination', journalTitle:'Entry title, e.g. Best day of the trip', journalTags:'Tags, e.g. food, diving, hotel', journalBody:'Write your experience, highlights, recommendations, costs, or things to avoid...' }
       }
     };
 
