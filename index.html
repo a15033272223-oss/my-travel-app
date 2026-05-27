@@ -1900,6 +1900,33 @@
       color: #9ca3af !important;
     }
 
+  
+    /* === AUTO LINK URLS IN ITINERARY NOTES === */
+    .event-card-note .note-link,
+    .note-link {
+      color: #2563eb !important;
+      font-weight: 900;
+      text-decoration: underline;
+      text-underline-offset: 3px;
+      word-break: break-word;
+    }
+
+    .event-card-note .note-link:hover,
+    .note-link:hover {
+      color: #1d4ed8 !important;
+      opacity: .86;
+    }
+
+    body.dark-mode .event-card-note .note-link,
+    body.dark-mode .note-link {
+      color: #93c5fd !important;
+    }
+
+    body.dark-mode .event-card-note .note-link:hover,
+    body.dark-mode .note-link:hover {
+      color: #bfdbfe !important;
+    }
+
   </style>
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 </head>
@@ -2000,13 +2027,14 @@
             <input type="date" id="event-day" class="px-3 py-2 text-xs md:text-sm" oninput="checkLiveWarning()" onchange="checkLiveWarning()">
             <input type="time" id="event-time" class="px-3 py-2 text-xs md:text-sm" oninput="checkLiveWarning()" onchange="checkLiveWarning()">
             <select id="event-type" class="px-3 py-2 text-xs md:text-sm bg-white" onchange="checkLiveWarning()">
+              
               <option value="general">📌 其他</option>
               <option value="travel">🧳 旅遊</option>
               <option value="hiking">🥾 爬山</option>
               <option value="shopping">🛍️ 購物</option>
               <option value="dining">🍽️ 餐飲</option>
               <option value="dive">🤿 潛水</option>
-              <option value="flight">✈️ 航班</option>
+              <option value="flight">🚗 交通</option>
               <option value="altitude">🚁 高空活動</option>
               <option value="accommodation">⛺️ 住宿</option>
             </select>
@@ -2378,6 +2406,16 @@
     };
 
     function escapeHTML(v) { return String(v ?? '').replace(/[&<>'"]/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;',"'":'&#39;','"':'&quot;'}[c])); }
+
+    function autoLinkUrls(text) {
+      const escaped = escapeHTML(text);
+      return escaped.replace(/(https?:\/\/[^\s<]+|www\.[^\s<]+)/g, (url) => {
+        const cleanUrl = url.replace(/[),.;!?]+$/g, '');
+        const trailing = url.slice(cleanUrl.length);
+        const href = cleanUrl.startsWith('www.') ? `https://${cleanUrl}` : cleanUrl;
+        return `<a href="${href}" target="_blank" rel="noopener noreferrer" class="note-link">${cleanUrl}</a>${trailing}`;
+      });
+    }
     // === Supabase settings ===
     // 1) 到 Supabase Project Settings > API 複製 URL 與 anon public key
     // 2) 把下面兩行換成你自己的值
@@ -3641,7 +3679,12 @@
       setText('journal-title', T('journalTitle')); setText('cancel-journal-edit-btn', T('cancelEdit')); setText('submit-journal-btn', editingJournalId ? T('save') : T('journalSave')); setText('copy-journal-btn', T('journalCopy')); setText('share-journal-btn', T('journalShare')); setText('download-journal-btn', T('journalDownload')); setText('journal-hint', T('journalHint')); setText('journal-photo-label', T('journalPhoto')); setText('journal-video-label', T('journalVideo')); setText('new-trip-modal-title', T('modalTitle')); setText('new-trip-icon-label', T('icon')); setText('new-trip-start-label', T('start')); setText('new-trip-end-label', T('end')); setText('new-trip-cancel-btn', T('cancel')); setText('new-trip-confirm-btn', T('create'));
       setPH('companionInput', T('ph.companion')); setPH('event-title', T('ph.eventTitle')); setPH('event-note', T('ph.eventNote')); setPH('newChecklistItem', T('ph.todo')); setPH('budget-title', T('ph.budgetTitle')); setPH('budget-amount', T('ph.amount')); setPH('budget-payer', T('ph.payer')); setPH('new-trip-name', T('ph.tripName')); setPH('journal-entry-title', T('ph.journalTitle')); setPH('journal-entry-tags', T('ph.journalTags')); setPH('journal-entry-body', T('ph.journalBody'));
       const status = document.getElementById('event-status'); if (status) { status.options[0].textContent = T('status.none'); status.options[1].textContent = `🔴 ${T('status.toBook')}`; status.options[2].textContent = `🟢 ${T('status.booked')}`; }
-      const type = document.getElementById('event-type'); if (type) { const labels = currentLang === 'zh' ? ['一般','🍽️ 餐飲','🤿 潛水','✈️ 航班','🚁 高空活動','⛺️ 住宿'] : ['General','🍽️ Dining','🤿 Diving','✈️ Flight','🚁 Altitude','⛺️ Stay']; [...type.options].forEach((o,i)=>o.textContent=labels[i]); }
+      const type = document.getElementById('event-type'); if (type) {
+        const labels = currentLang === 'zh'
+          ? { general:'📌 其他', travel:'🧳 旅遊', hiking:'🥾 爬山', shopping:'🛍️ 購物', dining:'🍽️ 餐飲', dive:'🤿 潛水', flight:'🚗 交通', altitude:'🚁 高空活動', accommodation:'⛺️ 住宿' }
+          : { general:'📌 Other', travel:'🧳 Travel', hiking:'🥾 Hiking', shopping:'🛍️ Shopping', dining:'🍽️ Dining', dive:'🤿 Diving', flight:'🚗 Transport', altitude:'🚁 Altitude', accommodation:'⛺️ Stay' };
+        [...type.options].forEach(o => { if (labels[o.value]) o.textContent = labels[o.value]; });
+      }
       updateBudgetTableHeaders();
       if (render) { renderSidebar(); renderItinerary(); renderChecklist(); renderBudget(); renderBudgetSplitOptions(); renderJournal(); }
     }
@@ -4530,10 +4573,10 @@ ${entry?.body || ''}`;
 
       const itemCardHTML = (item) => {
         const its=issues.filter(i=>i.id===item.id);
-        const icon={general:'📌',travel:'🧳',hiking:'🥾',shopping:'🛍️',dive:'🤿',altitude:'🚁',flight:'✈️',accommodation:'⛺️',dining:'🍽️'}[item.type]||'📍';
+        const icon={general:'📌',travel:'🧳',hiking:'🥾',shopping:'🛍️',dive:'🤿',altitude:'🚁',flight:'🚗',accommodation:'⛺️',dining:'🍽️'}[item.type]||'📍';
         const status=item.status==='to-book'?`<span class="pill pill-red">${T('status.toBook')}</span>`:item.status==='booked'?`<span class="pill pill-green">${T('status.booked')}</span>`:'';
         const warns=its.map(i=>`<div class="mt-2 ${i.severity==='danger'||i.severity==='error'?'nitrogen-blink':'bg-amber-100 text-amber-800'} text-[11px] font-black px-2 py-1 rounded-xl">⚠️ ${escapeHTML(i.message)}</div>`).join('');
-        const noteHTML=item.note?`<p class="event-card-note text-xs mt-2 px-2 py-1 rounded-xl inline-block">${escapeHTML(item.note)}</p>`:'';
+        const noteHTML=item.note?`<p class="event-card-note text-xs mt-2 px-2 py-1 rounded-xl inline-block">${autoLinkUrls(item.note)}</p>`:'';
         return `
           <div data-id="${item.id}" class="soft-card p-4 group ${item.type==='accommodation'?'accommodation-card':''}">
             <div class="flex justify-between gap-3">
