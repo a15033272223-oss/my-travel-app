@@ -1927,6 +1927,43 @@
       color: #bfdbfe !important;
     }
 
+  
+    /* === BUDGET CURRENCY SWITCHER === */
+    .currency-switcher {
+      background: #ffffff;
+      border: 1px solid var(--line);
+      border-radius: 18px;
+      padding: .45rem .55rem;
+      flex-shrink: 0;
+    }
+
+    .currency-switcher select {
+      min-width: 5.8rem;
+    }
+
+    .money-original {
+      display: block;
+      margin-top: .15rem;
+      font-size: 10px;
+      font-weight: 800;
+      color: #6b7280;
+      white-space: normal;
+    }
+
+    body.dark-mode .currency-switcher {
+      background: #1f2937 !important;
+      border-color: #374151 !important;
+    }
+
+    body.dark-mode .money-original {
+      color: #d1d5db !important;
+    }
+
+    body.dark-mode #exchange-rate-status,
+    body.dark-mode #budget-currency-label {
+      color: #d1d5db !important;
+    }
+
   </style>
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 </head>
@@ -2102,8 +2139,20 @@
           </h3>
           <div class="flex flex-col gap-3 mb-4">
             <input type="text" id="budget-title" placeholder="花費項目" class="px-3 py-2 text-sm">
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-2">
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-2">
               <input type="number" id="budget-amount" placeholder="金額" class="px-3 py-2 text-sm">
+              <select id="budget-currency" class="px-3 py-2 text-sm bg-white">
+                <option value="AUD">🇦🇺 AUD</option>
+                <option value="TWD">🇹🇼 TWD</option>
+                <option value="USD">🇺🇸 USD</option>
+                <option value="JPY">🇯🇵 JPY</option>
+                <option value="EUR">🇪🇺 EUR</option>
+                <option value="GBP">🇬🇧 GBP</option>
+                <option value="NZD">🇳🇿 NZD</option>
+                <option value="SGD">🇸🇬 SGD</option>
+                <option value="THB">🇹🇭 THB</option>
+                <option value="IDR">🇮🇩 IDR</option>
+              </select>
               <input type="text" id="budget-payer" placeholder="代墊人" class="px-3 py-2 text-sm">
             </div>
             <div class="soft-card p-3">
@@ -2122,8 +2171,27 @@
         </div>
 
         <div class="card p-4 md:p-6">
-          <div class="flex items-center justify-between gap-3 mb-3">
-            <h3 class="font-black text-base md:text-lg text-stone-900">💸 花費列表</h3>
+          <div class="flex flex-col md:flex-row md:items-center md:justify-between gap-3 mb-3">
+            <div>
+              <h3 class="font-black text-base md:text-lg text-stone-900">💸 花費列表</h3>
+              <p id="exchange-rate-status" class="text-[11px] text-stone-400 mt-1">匯率準備中...</p>
+            </div>
+            <div class="currency-switcher flex items-center gap-2">
+              <span id="budget-currency-label" class="text-xs font-black text-stone-500">顯示幣值</span>
+              <select id="budget-display-currency" onchange="setBudgetDisplayCurrency(this.value)" class="px-3 py-2 text-xs font-black bg-white">
+                <option value="AUD">AUD</option>
+                <option value="TWD">TWD</option>
+                <option value="USD">USD</option>
+                <option value="JPY">JPY</option>
+                <option value="EUR">EUR</option>
+                <option value="GBP">GBP</option>
+                <option value="NZD">NZD</option>
+                <option value="SGD">SGD</option>
+                <option value="THB">THB</option>
+                <option value="IDR">IDR</option>
+              </select>
+              <button type="button" onclick="refreshExchangeRates(true)" class="secondary-btn px-3 py-2 rounded-2xl text-xs font-black" title="更新匯率">更新</button>
+            </div>
           </div>
           <div class="overflow-x-auto no-scrollbar">
             <table class="w-full text-left border-collapse text-xs md:text-sm whitespace-nowrap">
@@ -2365,10 +2433,19 @@
 
     let budgets = JSON.parse(localStorage.getItem('tripBudgetsV6')) || {
       cairns: [
-        { id: 1001, title: '船宿費用', amount: 1200, payer: '中偉', splitWith: '中偉, 聖聖' },
-        { id: 1002, title: '小鬚鯨船票', amount: 560, payer: '聖聖', splitWith: '中偉, 聖聖' }
+        { id: 1001, title: '船宿費用', amount: 1200, currency: 'AUD', payer: '中偉', splitWith: '中偉, 聖聖' },
+        { id: 1002, title: '小鬚鯨船票', amount: 560, currency: 'AUD', payer: '聖聖', splitWith: '中偉, 聖聖' }
       ],
       tasmania: []
+    };
+
+    const SUPPORTED_CURRENCIES = ['AUD','TWD','USD','JPY','EUR','GBP','NZD','SGD','THB','IDR'];
+    let budgetDisplayCurrency = localStorage.getItem('budgetDisplayCurrencyV1') || 'AUD';
+    let exchangeRateState = JSON.parse(localStorage.getItem('exchangeRateStateV1') || 'null') || {
+      base: 'AUD',
+      rates: { AUD: 1 },
+      updatedAt: null,
+      source: 'cached'
     };
 
     let journals = JSON.parse(localStorage.getItem('tripJournalsV1')) || {
@@ -3678,7 +3755,7 @@
       setText('checklist-title', T('checklistTitle')); setText('checklist-hint', T('checklistHint')); setText('cancel-checklist-edit-btn', T('cancelEdit')); setText('submit-checklist-btn', editingChecklistId ? T('save') : T('checklistAdd'));
       setText('budget-total-label', T('budgetTotal')); setHTML('budget-settlement-label', `<i class="fa-solid fa-comments-dollar mr-2"></i>${T('settlement')}`); setHTML('budget-summary-label', `<i class="fa-solid fa-users-viewfinder mr-2"></i>${T('budgetSummary')}`); setText('budget-form-title', T('budgetNew')); setText('cancel-budget-edit-btn', T('cancelEdit')); setText('budget-split-label', T('splitLabel')); setText('budget-split-hint', T('splitHint')); setText('budget-select-all-btn', T('selectAll')); setText('budget-clear-btn', T('clear')); setText('submit-budget-btn', editingBudgetId ? T('save') : T('record'));
       setText('journal-title', T('journalTitle')); setText('cancel-journal-edit-btn', T('cancelEdit')); setText('submit-journal-btn', editingJournalId ? T('save') : T('journalSave')); setText('copy-journal-btn', T('journalCopy')); setText('share-journal-btn', T('journalShare')); setText('download-journal-btn', T('journalDownload')); setText('journal-hint', T('journalHint')); setText('journal-photo-label', T('journalPhoto')); setText('journal-video-label', T('journalVideo')); setText('new-trip-modal-title', T('modalTitle')); setText('new-trip-icon-label', T('icon')); setText('new-trip-start-label', T('start')); setText('new-trip-end-label', T('end')); setText('new-trip-cancel-btn', T('cancel')); setText('new-trip-confirm-btn', T('create'));
-      setPH('companionInput', T('ph.companion')); setPH('event-title', T('ph.eventTitle')); setPH('event-note', T('ph.eventNote')); setPH('newChecklistItem', T('ph.todo')); setPH('budget-title', T('ph.budgetTitle')); setPH('budget-amount', T('ph.amount')); setPH('budget-payer', T('ph.payer')); setPH('new-trip-name', T('ph.tripName')); setPH('journal-entry-title', T('ph.journalTitle')); setPH('journal-entry-tags', T('ph.journalTags')); setPH('journal-entry-body', T('ph.journalBody'));
+      setPH('companionInput', T('ph.companion')); setPH('event-title', T('ph.eventTitle')); setPH('event-note', T('ph.eventNote')); setPH('newChecklistItem', T('ph.todo')); setPH('budget-title', T('ph.budgetTitle')); setPH('budget-amount', T('ph.amount')); updateCurrencyControls(); setPH('budget-payer', T('ph.payer')); setPH('new-trip-name', T('ph.tripName')); setPH('journal-entry-title', T('ph.journalTitle')); setPH('journal-entry-tags', T('ph.journalTags')); setPH('journal-entry-body', T('ph.journalBody'));
       const status = document.getElementById('event-status'); if (status) { status.options[0].textContent = T('status.none'); status.options[1].textContent = `🔴 ${T('status.toBook')}`; status.options[2].textContent = `🟢 ${T('status.booked')}`; }
       const type = document.getElementById('event-type'); if (type) {
         const labels = currentLang === 'zh'
@@ -3762,6 +3839,7 @@
       syncActiveTripAccess();
       renderSidebar();
       initCurrentTripData();
+      refreshExchangeRates(false);
       showToast(currentLang === 'zh' ? '已解鎖管理模式。' : 'Admin mode unlocked.');
     }
 
@@ -3771,6 +3849,7 @@
       syncActiveTripAccess();
       renderSidebar();
       initCurrentTripData();
+      refreshExchangeRates(false);
       showToast(currentLang === 'zh' ? '已鎖定管理模式。' : 'Admin mode locked.');
     }
 
@@ -3863,6 +3942,7 @@
       localStorage.setItem('activeTripKey', key);
       renderSidebar();
       initCurrentTripData();
+      refreshExchangeRates(false);
       cancelEdit();
       if (window.innerWidth<768 && isSidebarOpen) toggleSidebar();
     }
@@ -4966,12 +5046,241 @@ ${entry.body || ''}
     function parseList(value){return Array.isArray(value)?value.map(String).map(x=>x.trim()).filter(Boolean):String(value||'').split(/[,，]/).map(x=>x.trim()).filter(Boolean);} function getBudgetSplitMembers(item, base){const selected=parseList(item.splitWith); return selected.length?selected:[...base];}
     function renderBudgetSplitOptions(selected=parseList(document.getElementById('budget-split-hidden')?.value)) { const wrap=document.getElementById('budget-split-options'); if(!wrap)return; const members=getTripMembers(); wrap.innerHTML=members.map(name=>`<label class="split-chip"><input type="checkbox" value="${escapeHTML(name)}" ${selected.includes(name)?'checked':''}><span>👤 ${escapeHTML(name)}</span></label>`).join(''); }
     function getSelectedSplitMembers(){return [...document.querySelectorAll('#budget-split-options input:checked')].map(x=>x.value.trim()).filter(Boolean);} function selectAllBudgetMembers(state){document.querySelectorAll('#budget-split-options input').forEach(x=>x.checked=state);}
-    function updateBudgetTableHeaders(){const tables=document.querySelectorAll('#module-budget table'); if(tables[0]){const th=tables[0].querySelectorAll('th'); [0,1,2,3].forEach((i)=>{if(th[i])th[i].textContent=T('table')[i];});} if(tables[1]){const th=tables[1].querySelectorAll('th'); if(th[0])th[0].textContent=T('table')[4]; if(th[1])th[1].textContent=T('table')[1]; if(th[2])th[2].textContent=T('table')[5]; if(th[3])th[3].textContent=T('table')[6]; if(th[4])th[4].textContent=T('table')[7];}}
-    function renderBudget(){const list=document.getElementById('budget-list'), sum=document.getElementById('member-summary-list'); list.innerHTML=''; sum.innerHTML=''; const items=budgets[currentTripKey]||[], base=getTripMembers(), people=new Set(base); let paid={}, share={}, total=0; const ensure=p=>{if(!p)return; people.add(p); if(!paid[p])paid[p]=0;if(!share[p])share[p]=0;}; base.forEach(ensure); items.forEach(item=>{const amount=+item.amount||0,payer=(item.payer||'我').trim(); let splits=getBudgetSplitMembers(item,base); if(!splits.length)splits=[payer]; ensure(payer); splits.forEach(ensure); total+=amount; paid[payer]=(paid[payer]||0)+amount; splits.forEach(p=>share[p]=(share[p]||0)+amount/splits.length); const label=parseList(item.splitWith).length?splits.join(', '):T('allMembers'); list.innerHTML+=`<tr><td class="p-3 font-bold text-stone-800">${escapeHTML(item.title)}</td><td class="p-3"><span class="pill pill-green">${escapeHTML(payer)}</span></td><td class="p-3 text-stone-500 text-xs max-w-[220px] whitespace-normal">${escapeHTML(label)}</td><td class="p-3 text-right font-black text-stone-900">$${Math.round(amount).toLocaleString()}</td><td class="p-3 text-center whitespace-nowrap"><span class="tm-action-row justify-center"><button onclick="editBudgetItem(${item.id})" class="tm-action-btn edit" title="Edit"><i class="fa-solid fa-pen"></i></button><button onclick="deleteBudgetItem(${item.id})" class="tm-action-btn delete" title="Delete"><i class="fa-solid fa-trash-can"></i></button></span></td></tr>`;}); setText('budget-total','$'+Math.round(total).toLocaleString()); setText('budget-per-capita',T('calculatedByGroup')); if(total===0){setHTML('budget-settlement',`<span class="text-white/70 text-sm">${T('noExpense')}</span>`);return;} let balances={}; [...people].forEach(p=>{const pa=paid[p]||0, sh=share[p]||0, net=pa-sh; balances[p]=net; const status=net>.01?`<span class="text-stone-900 font-black">${T('receive',Math.round(net).toLocaleString())}</span>`:net<-.01?`<span class="text-red-500 font-black">${T('pay',Math.round(Math.abs(net)).toLocaleString())}</span>`:`<span class="text-stone-400">${T('settled')}</span>`; sum.innerHTML+=`<tr><td class="p-3 font-bold text-stone-800">${escapeHTML(p)}</td><td class="p-3 text-right text-stone-600">$${Math.round(pa).toLocaleString()}</td><td class="p-3 text-right text-stone-600">$${Math.round(sh).toLocaleString()}</td><td class="p-3 text-right">${status}</td></tr>`;}); let debtors=[], creditors=[]; Object.entries(balances).forEach(([p,n])=>{if(n<-.01)debtors.push({p,amt:-n}); else if(n>.01)creditors.push({p,amt:n});}); let out='',i=0,j=0; while(i<debtors.length&&j<creditors.length){const amt=Math.min(debtors[i].amt,creditors[j].amt); out+=`<div class="flex justify-between items-center bg-white/10 px-3 py-1.5 rounded-xl border border-white/10 text-xs md:text-sm"><span>${T('pays',escapeHTML(debtors[i].p),escapeHTML(creditors[j].p))}</span><span class="font-black text-[#fff2ea]">$${Math.round(amt).toLocaleString()}</span></div>`; debtors[i].amt-=amt; creditors[j].amt-=amt; if(debtors[i].amt<.01)i++; if(creditors[j].amt<.01)j++;} setHTML('budget-settlement',out||T('noDebt')); updateBudgetTableHeaders();}
-    function resetBudgetForm(){editingBudgetId=null; document.getElementById('budget-title').value='';document.getElementById('budget-amount').value='';document.getElementById('budget-payer').value='';selectAllBudgetMembers(false);document.getElementById('cancel-budget-edit-btn').classList.add('hidden');applyLanguage();}
-    function editBudgetItem(id){const item=(budgets[currentTripKey]||[]).find(x=>x.id===id); if(!item)return; editingBudgetId=id; document.getElementById('budget-title').value=item.title||'';document.getElementById('budget-amount').value=item.amount||'';document.getElementById('budget-payer').value=item.payer||''; renderBudgetSplitOptions(parseList(item.splitWith)); document.getElementById('cancel-budget-edit-btn').classList.remove('hidden'); applyLanguage(); openFormModal('budget');}
+
+    function getExpenseCurrency(item) {
+      return item && item.currency ? String(item.currency).toUpperCase() : 'AUD';
+    }
+
+    function getCurrencyRate(code) {
+      const c = String(code || 'AUD').toUpperCase();
+      const rates = exchangeRateState?.rates || {};
+      if (c === exchangeRateState?.base) return 1;
+      return Number(rates[c]) || null;
+    }
+
+    function convertCurrency(amount, from = 'AUD', to = budgetDisplayCurrency) {
+      const n = Number(amount) || 0;
+      const fromCode = String(from || 'AUD').toUpperCase();
+      const toCode = String(to || budgetDisplayCurrency || 'AUD').toUpperCase();
+      if (fromCode === toCode) return n;
+
+      const fromRate = getCurrencyRate(fromCode);
+      const toRate = getCurrencyRate(toCode);
+      if (!fromRate || !toRate) return n;
+
+      // exchangeRateState is based on AUD. Convert from original currency -> AUD -> display currency.
+      const amountInAud = n / fromRate;
+      return amountInAud * toRate;
+    }
+
+    function formatMoney(amount, currency = budgetDisplayCurrency) {
+      const code = String(currency || 'AUD').toUpperCase();
+      const noDecimal = ['TWD','JPY','IDR','KRW'].includes(code);
+      try {
+        return new Intl.NumberFormat(currentLang === 'zh' ? 'zh-TW' : 'en-AU', {
+          style: 'currency',
+          currency: code,
+          maximumFractionDigits: noDecimal ? 0 : 2,
+          minimumFractionDigits: noDecimal ? 0 : 0
+        }).format(Number(amount) || 0);
+      } catch (e) {
+        return `${code} ${Math.round(Number(amount) || 0).toLocaleString()}`;
+      }
+    }
+
+    function setExchangeRateStatus(text, tone = 'muted') {
+      const el = document.getElementById('exchange-rate-status');
+      if (!el) return;
+      el.textContent = text;
+      el.dataset.tone = tone;
+    }
+
+    function updateCurrencyControls() {
+      const formCurrency = document.getElementById('budget-currency');
+      const displayCurrency = document.getElementById('budget-display-currency');
+      if (formCurrency && !SUPPORTED_CURRENCIES.includes(formCurrency.value)) formCurrency.value = 'AUD';
+      if (displayCurrency) displayCurrency.value = budgetDisplayCurrency;
+      setText('budget-currency-label', currentLang === 'zh' ? '顯示幣值' : 'Display');
+    }
+
+    function setBudgetDisplayCurrency(code) {
+      budgetDisplayCurrency = String(code || 'AUD').toUpperCase();
+      localStorage.setItem('budgetDisplayCurrencyV1', budgetDisplayCurrency);
+      updateCurrencyControls();
+      renderBudget();
+    }
+
+    function exchangeRateAgeText() {
+      const updated = exchangeRateState?.updatedAt ? new Date(exchangeRateState.updatedAt) : null;
+      if (!updated || Number.isNaN(updated.getTime())) return currentLang === 'zh' ? '尚未更新匯率' : 'Rates not updated yet';
+      return currentLang === 'zh'
+        ? `匯率更新：${updated.toLocaleString('zh-TW')}`
+        : `Rates updated: ${updated.toLocaleString('en-AU')}`;
+    }
+
+    async function refreshExchangeRates(force = false) {
+      const cachedAt = exchangeRateState?.updatedAt ? new Date(exchangeRateState.updatedAt).getTime() : 0;
+      const freshEnough = cachedAt && (Date.now() - cachedAt < 6 * 60 * 60 * 1000);
+      if (!force && freshEnough && exchangeRateState?.rates?.AUD) {
+        setExchangeRateStatus(exchangeRateAgeText());
+        updateCurrencyControls();
+        return;
+      }
+
+      setExchangeRateStatus(currentLang === 'zh' ? '正在更新即時匯率...' : 'Updating exchange rates...');
+      try {
+        const res = await fetch('https://open.er-api.com/v6/latest/AUD', { cache: 'no-store' });
+        if (!res.ok) throw new Error(`HTTP ${res.status}`);
+        const data = await res.json();
+        if (data.result && data.result !== 'success') throw new Error(data['error-type'] || data.result);
+        const rates = data.rates || {};
+        exchangeRateState = {
+          base: 'AUD',
+          rates: { ...rates, AUD: 1 },
+          updatedAt: data.time_last_update_utc || new Date().toISOString(),
+          source: 'open.er-api.com'
+        };
+        localStorage.setItem('exchangeRateStateV1', JSON.stringify(exchangeRateState));
+        setExchangeRateStatus(exchangeRateAgeText());
+        updateCurrencyControls();
+        renderBudget();
+      } catch (error) {
+        console.warn('Exchange rate update failed:', error);
+        setExchangeRateStatus(currentLang === 'zh' ? '匯率更新失敗，暫用快取匯率。' : 'Rate update failed. Using cached rates.', 'error');
+        updateCurrencyControls();
+      }
+    }
+
+
+    function updateBudgetTableHeaders(){
+      const tables=document.querySelectorAll('#module-budget table');
+      const amountLabel = `${T('table')[6]} (${budgetDisplayCurrency || 'AUD'})`;
+      if(tables[0]){
+        const th=tables[0].querySelectorAll('th');
+        [0,1,2,3].forEach((i)=>{if(th[i])th[i].textContent=T('table')[i];});
+        if(th[3]) th[3].textContent=amountLabel;
+      }
+      if(tables[1]){
+        const th=tables[1].querySelectorAll('th');
+        if(th[0])th[0].textContent=T('table')[4];
+        if(th[1])th[1].textContent=T('table')[1];
+        if(th[2])th[2].textContent=T('table')[5];
+        if(th[3])th[3].textContent=T('table')[6];
+        if(th[4])th[4].textContent=T('table')[7];
+      }
+    }
+    function renderBudget(){
+      const list=document.getElementById('budget-list'), sum=document.getElementById('member-summary-list');
+      list.innerHTML='';
+      sum.innerHTML='';
+      updateCurrencyControls();
+
+      const items=budgets[currentTripKey]||[], base=getTripMembers(), people=new Set(base);
+      let paid={}, share={}, total=0;
+      const displayCurrency = budgetDisplayCurrency || 'AUD';
+      const ensure=p=>{if(!p)return; people.add(p); if(!paid[p])paid[p]=0;if(!share[p])share[p]=0;};
+      base.forEach(ensure);
+
+      items.forEach(item=>{
+        const rawAmount=+item.amount||0;
+        const originalCurrency=getExpenseCurrency(item);
+        const amount=convertCurrency(rawAmount, originalCurrency, displayCurrency);
+        const payer=(item.payer||'我').trim();
+        let splits=getBudgetSplitMembers(item,base);
+        if(!splits.length)splits=[payer];
+        ensure(payer);
+        splits.forEach(ensure);
+        total+=amount;
+        paid[payer]=(paid[payer]||0)+amount;
+        splits.forEach(p=>share[p]=(share[p]||0)+amount/splits.length);
+        const label=parseList(item.splitWith).length?splits.join(', '):T('allMembers');
+        const originalLine = originalCurrency !== displayCurrency
+          ? `<span class="money-original">${formatMoney(rawAmount, originalCurrency)}</span>`
+          : '';
+        list.innerHTML+=`<tr><td class="p-3 font-bold text-stone-800">${escapeHTML(item.title)}</td><td class="p-3"><span class="pill pill-green">${escapeHTML(payer)}</span></td><td class="p-3 text-stone-500 text-xs max-w-[220px] whitespace-normal">${escapeHTML(label)}</td><td class="p-3 text-right font-black text-stone-900">${formatMoney(amount, displayCurrency)}${originalLine}</td><td class="p-3 text-center whitespace-nowrap"><span class="tm-action-row justify-center"><button onclick="editBudgetItem(${item.id})" class="tm-action-btn edit" title="Edit"><i class="fa-solid fa-pen"></i></button><button onclick="deleteBudgetItem(${item.id})" class="tm-action-btn delete" title="Delete"><i class="fa-solid fa-trash-can"></i></button></span></td></tr>`;
+      });
+
+      setText('budget-total',formatMoney(total, displayCurrency));
+      setText('budget-per-capita',`${T('calculatedByGroup')} · ${displayCurrency}`);
+      setExchangeRateStatus(exchangeRateAgeText());
+      if(total===0){
+        setHTML('budget-settlement',`<span class="text-white/70 text-sm">${T('noExpense')}</span>`);
+        updateBudgetTableHeaders();
+        return;
+      }
+
+      let balances={};
+      [...people].forEach(p=>{
+        const pa=paid[p]||0, sh=share[p]||0, net=pa-sh;
+        balances[p]=net;
+        const status=net>.01?`<span class="text-stone-900 font-black">${currentLang==='zh'?'收':'Receive'} ${formatMoney(net, displayCurrency)}</span>`:net<-.01?`<span class="text-red-500 font-black">${currentLang==='zh'?'付':'Pay'} ${formatMoney(Math.abs(net), displayCurrency)}</span>`:`<span class="text-stone-400">${T('settled')}</span>`;
+        sum.innerHTML+=`<tr><td class="p-3 font-bold text-stone-800">${escapeHTML(p)}</td><td class="p-3 text-right text-stone-600">${formatMoney(pa, displayCurrency)}</td><td class="p-3 text-right text-stone-600">${formatMoney(sh, displayCurrency)}</td><td class="p-3 text-right">${status}</td></tr>`;
+      });
+
+      let debtors=[], creditors=[];
+      Object.entries(balances).forEach(([p,n])=>{if(n<-.01)debtors.push({p,amt:-n}); else if(n>.01)creditors.push({p,amt:n});});
+      let out='',i=0,j=0;
+      while(i<debtors.length&&j<creditors.length){
+        const amt=Math.min(debtors[i].amt,creditors[j].amt);
+        out+=`<div class="flex justify-between items-center bg-white/10 px-3 py-1.5 rounded-xl border border-white/10 text-xs md:text-sm"><span>${T('pays',escapeHTML(debtors[i].p),escapeHTML(creditors[j].p))}</span><span class="font-black text-[#fff2ea]">${formatMoney(amt, displayCurrency)}</span></div>`;
+        debtors[i].amt-=amt;
+        creditors[j].amt-=amt;
+        if(debtors[i].amt<.01)i++;
+        if(creditors[j].amt<.01)j++;
+      }
+      setHTML('budget-settlement',out||T('noDebt'));
+      updateBudgetTableHeaders();
+    }
+
+    function resetBudgetForm(){
+      editingBudgetId=null;
+      document.getElementById('budget-title').value='';
+      document.getElementById('budget-amount').value='';
+      document.getElementById('budget-currency').value=budgetDisplayCurrency || 'AUD';
+      document.getElementById('budget-payer').value='';
+      selectAllBudgetMembers(false);
+      document.getElementById('cancel-budget-edit-btn').classList.add('hidden');
+      applyLanguage();
+      updateCurrencyControls();
+    }
+
+    function editBudgetItem(id){
+      const item=(budgets[currentTripKey]||[]).find(x=>x.id===id);
+      if(!item)return;
+      editingBudgetId=id;
+      document.getElementById('budget-title').value=item.title||'';
+      document.getElementById('budget-amount').value=item.amount||'';
+      document.getElementById('budget-currency').value=getExpenseCurrency(item);
+      document.getElementById('budget-payer').value=item.payer||'';
+      renderBudgetSplitOptions(parseList(item.splitWith));
+      document.getElementById('cancel-budget-edit-btn').classList.remove('hidden');
+      applyLanguage();
+      updateCurrencyControls();
+      openFormModal('budget');
+    }
+
     function cancelBudgetEdit(){resetBudgetForm(); closeFormModal();}
-    function submitBudgetItem(){const title=document.getElementById('budget-title').value.trim(), amount=parseFloat(document.getElementById('budget-amount').value), payer=document.getElementById('budget-payer').value.trim()||'我', splitWith=getSelectedSplitMembers().join(', '); if(!title||isNaN(amount))return alert(currentLang==='zh'?'輸入不完整':'Please complete the expense item and amount.'); if(!budgets[currentTripKey])budgets[currentTripKey]=[]; if(editingBudgetId){const item=budgets[currentTripKey].find(x=>x.id===editingBudgetId); Object.assign(item,{title,amount,payer,splitWith,updatedAt:Date.now()});} else budgets[currentTripKey].push({id:Date.now(),title,amount,payer,splitWith,createdAt:Date.now(),updatedAt:Date.now()}); saveAll(); resetBudgetForm(); closeFormModal(); renderBudget();}
+
+    function submitBudgetItem(){
+      const title=document.getElementById('budget-title').value.trim(),
+        amount=parseFloat(document.getElementById('budget-amount').value),
+        currency=(document.getElementById('budget-currency').value||'AUD').toUpperCase(),
+        payer=document.getElementById('budget-payer').value.trim()||'我',
+        splitWith=getSelectedSplitMembers().join(', ');
+      if(!title||isNaN(amount))return alert(currentLang==='zh'?'輸入不完整':'Please complete the expense item and amount.');
+      if(!budgets[currentTripKey])budgets[currentTripKey]=[];
+      if(editingBudgetId){
+        const item=budgets[currentTripKey].find(x=>x.id===editingBudgetId);
+        Object.assign(item,{title,amount,currency,payer,splitWith,updatedAt:Date.now()});
+      } else {
+        budgets[currentTripKey].push({id:Date.now(),title,amount,currency,payer,splitWith,createdAt:Date.now(),updatedAt:Date.now()});
+      }
+      saveAll();
+      resetBudgetForm();
+      closeFormModal();
+      renderBudget();
+    }
+
     function deleteBudgetItem(id){budgets[currentTripKey]=budgets[currentTripKey].filter(x=>x.id!==id); saveAll(); renderBudget();}
 
 
@@ -5009,6 +5318,7 @@ ${entry.body || ''}
       closeEditTripModal();
       renderSidebar();
       initCurrentTripData();
+      refreshExchangeRates(false);
       showToast(currentLang === 'zh' ? '行程名稱已更新。' : 'Trip name updated.');
     }
 
@@ -5076,6 +5386,7 @@ ${entry.body || ''}
       syncActiveTripAccess();
       renderSidebar();
       initCurrentTripData();
+      refreshExchangeRates(false);
     }
 
     initApp();
